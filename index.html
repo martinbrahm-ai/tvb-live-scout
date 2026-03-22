@@ -69,9 +69,38 @@
 
     // 👉 HIER DEINE FIREBASE CONFIG EINTRAGEN
     const firebaseConfig = {
-      apiKey: "DEIN_API_KEY",
-      authDomain: "DEIN_PROJECT.firebaseapp.com",
-      projectId: "DEIN_PROJECT_ID"
+    "type": "service_account",
+    "project_id": "udoagentendaten",
+    "private_key_id": "e4cbd0a2a55d49245e4e9f60dce572831bf4e40e",
+    "private_key": "-----BEGIN PRIVATE KEY-----\n" + \
+        "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCs55/eFTVS7eSE\n" + \
+        "MyYQCk0f+1LcZnUV+k9MVcVBovWLor9FPOMSsV0yvv+1pZY308StdPcgqbpc6fj5\n" + \
+        "rW47/+yVQeSDmYSN+BTSaAIXy1mNiAp4yHsau1Qu/fpvjH6iZNacsBN4aF9R1VHC\n" + \
+        "r4ETfhKvH+a7+s0xrRbZHXOs4pqqSJ6XWuwz5KMJaBnERCLPEPc44VbDXSl0d6u9\n" + \
+        "UiD82hinFj0OrJHxS/Bjsya+BG5PZ8kZrE3W7sPptdmxuFuy73WUW2SxQ4JbURKK\n" + \
+        "aOk1B7xfhfTc1AjH+4t+DIcKWjnYErOQApa/EP7/wVDQAq0UuJJXANXQlm/ZTm58\n" + \
+        "rmCWnUjRAgMBAAECggEAKFIfetexRrSJTLbs0mLEl4exTApslYJ4yZFa3bKV1klO\n" + \
+        "l2PahDpuRG48DW0e+cfdnqGfG7PY7N/3GqpyAXXuAuSJ2JKNUdofaO2uR0Q5jwLB\n" + \
+        "hmciJhq3R/ocU7UMtuwTDBkXgUW9rMS1O1RYImaNDt++m+mhvkriACGZHyD89mZ0\n" + \
+        "xOICzuAP8ug+s8NU10iGsZd7OyfEbEtsFlxHfBhms2FBj/A8eFKXlyETJ2LfoLym\n" + \
+        "+KmKntO5TrLqdAAQxMQgNBt+yOmjkNTf9TlJjjPQgyXxqq0yEeMurLjmsN+BHwKW\n" + \
+        "zWni6nYsFnHWE5ycU3UutuHdyXmPbrBopl4wtCARrQKBgQDX3S3QN05z9dMPYMTH\n" + \
+        "B+ADwM/LhSwanCC2tiCx5dLMvNKJGzjDDxeO6qAZLDzCdJLsLndyXuBBEhnfa3iH\n" + \
+        "R7HpPR3qeoHic4c+WIZC7kUNjDbLqD3P2N+QvM/n9TpB+IC9KWHP81YMshyBxs0l\n" + \
+        "jBCtUNsBTN1cECuv23//DTFA/wKBgQDNDaX4aQQFUVJhLHAFhM1iuYs5OJ0bTne/\n" + \
+        "nSwTipwc1S0XLbKdvqAOKPHqXl8uO0bn/FVzBccvRCZRkDpsVVDLkg6CqoeXp/6d\n" + \
+        "GbF9drHR3k6HDIE88+mZ1lU86Sr9gnmX7WAYyMwj5EAC7ASaE1v+ni7/jtbtsMhv\n" + \
+        "sAZhGJOmLwKBgQCC00qbwZkrkFWtIUHBOlWbELUfLIPRUMRG19Sy3I3Ihbu3Wqcp\n" + \
+        "GLF3bV1ARF5Cn/IXcAX2a+fPqA/EJ1cx7dK2f9Lss/iZ7NiPgYlFcTCqiEsBXOKx\n" + \
+        "YEgGaVg7xZTcPKaRfk4IgPqq0RuTz4+vbNcCo1lHzXTvAeHoP8iwJCewswKBgGmc\n" + \
+        "L/FDVTjP65f05TVSct34Jkawa+pWfcKI1tyxtTn8aZ7YgHhSZ+kjGYXWWTtceGaf\nRftZ7H7hoMK9f/mv708JyMNvxSpM8gxD4XB3I5qt3tAblqyoC5aaF4ippuSuwKWJ\nMsdRFCMgOf/HQ49/jRAUtKwXC4ecV39+r6pumA0tAoGBAMaNGWgg8Q7flvC5psm4\nTjLpuMrObSNlxJYpzoKP/iH4WVdy+JlYdd9SmcXCRMjbfncO8cjrissxIldljgZV\nIvBf5TyiV8yP8u3+K03OUMKgWKMo5nu5+1bsgqBydOn/yZfl32gbwe5au/ALauKM\ni4nf6iGGIh9ixOZQcoyRWa7G\n" + \
+        "-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-fbsvc@udoagentendaten.iam.gserviceaccount.com",
+    "client_id": "104104033246729548488",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40udoagentendaten.iam.gserviceaccount.com"
     };
 
     const app = initializeApp(firebaseConfig);
