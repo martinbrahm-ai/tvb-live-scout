@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>TVB Live Scout</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f5f6f8;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 15px;
+    }
+
+    label {
+      font-size: 14px;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    textarea {
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background: #2b6cb0;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1e4e86;
+    }
+  </style>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // 👉 HIER DEINE FIREBASE CONFIG EINTRAGEN
+    const firebaseConfig = {
+      apiKey: "DEIN_API_KEY",
+      authDomain: "DEIN_PROJECT.firebaseapp.com",
+      projectId: "DEIN_PROJECT_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.submitEvent = async function() {
+      const payload = {
+        match_id: "62090160",
+
+        team_context: document.getElementById("context").value,
+        action_type: document.getElementById("action").value,
+        result: document.getElementById("result").value,
+        follow_action: document.getElementById("follow").value,
+
+        numerical_situation: document.getElementById("numbers").value,
+        is_one_v_one: document.getElementById("onevone").checked,
+
+        player_tvb: document.getElementById("player_tvb").value,
+        player_opponent: document.getElementById("player_opponent").value,
+
+        tvb_system_label: document.getElementById("system").value,
+
+        zone: document.getElementById("zone").value,
+        shot_from_zone: document.getElementById("shot_from").value,
+        shot_target_zone: document.getElementById("target").value,
+
+        notes: document.getElementById("notes").value,
+
+        source: "manual_ui",
+        created_at: serverTimestamp()
+      };
+
+      await addDoc(collection(db, "scout_events"), payload);
+
+      alert("Gespeichert!");
+
+      document.getElementById("notes").value = "";
+    }
+  </script>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Manuelle Erfassung</h2>
+
+  <div class="grid">
+
+    <div>
+      <label>Kontext</label>
+      <select id="context">
+        <option value="tvb_attack">TVB Angriff</option>
+        <option value="tvb_defense">TVB Abwehr</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Aktion</label>
+      <select id="action">
+        <option value="duel">Zweikampf</option>
+        <option value="shot">Wurf</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Ergebnis</label>
+      <select id="result">
+        <option value="won">Gewonnen</option>
+        <option value="lost">Verloren</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Folgeaktion</label>
+      <select id="follow">
+        <option value="goal">Tor</option>
+        <option value="none">Keine</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Zahlensituation</label>
+      <select id="numbers">
+        <option value="equal">Gleichzahl</option>
+        <option value="overload">Überzahl</option>
+      </select>
+    </div>
+
+    <div>
+      <label>1:1</label>
+      <input type="checkbox" id="onevone">
+    </div>
+
+    <div>
+      <label>TVB Spieler</label>
+      <input id="player_tvb">
+    </div>
+
+    <div>
+      <label>Gegenspieler</label>
+      <input id="player_opponent">
+    </div>
+
+    <div>
+      <label>TVB System</label>
+      <select id="system">
+        <option value="6:0">6:0</option>
+        <option value="5:1">5:1</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Zone</label>
+      <input id="zone" value="0/1">
+    </div>
+
+    <div>
+      <label>Wurf von Zone</label>
+      <input id="shot_from" value="0/1">
+    </div>
+
+    <div>
+      <label>Ziel im Tor</label>
+      <select id="target">
+        <option value="center_high">center_high</option>
+        <option value="left_low">left_low</option>
+        <option value="right_low">right_low</option>
+      </select>
+    </div>
+
+  </div>
+
+  <label>Notizen / Rohtext</label>
+  <textarea id="notes" rows="3"></textarea>
+
+  <button onclick="submitEvent()">Senden</button>
+
+</div>
+
+</body>
+</html>
