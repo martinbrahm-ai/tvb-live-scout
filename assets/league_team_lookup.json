@@ -1,0 +1,4232 @@
+{
+  "teams": {
+    "bergischer_hc": {
+      "team_id": "bergischer_hc",
+      "team_name": "Bergischer HC",
+      "players": [
+        {
+          "player_id": "317365",
+          "player_name": "Christopher Rudeck",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Christopher",
+            "Christopher Rudeck",
+            "Rudeck"
+          ]
+        },
+        {
+          "player_id": "880856",
+          "player_name": "Noah Beyer",
+          "number": "2",
+          "position": "LA",
+          "aliases": [
+            "Beyer",
+            "Noah",
+            "Noah Beyer"
+          ]
+        },
+        {
+          "player_id": "2121216",
+          "player_name": "Elias Scholtes",
+          "number": "4",
+          "position": "RR",
+          "aliases": [
+            "Elias",
+            "Elias Scholtes",
+            "Scholtes"
+          ]
+        },
+        {
+          "player_id": "2791285",
+          "player_name": "Soeren Servos",
+          "number": "6",
+          "position": "RL",
+          "aliases": [
+            "Servos",
+            "Soeren",
+            "Soeren Servos"
+          ]
+        },
+        {
+          "player_id": "1854132",
+          "player_name": "Lukas Becher",
+          "number": "7",
+          "position": "LW",
+          "aliases": [
+            "Becher",
+            "Lukas",
+            "Lukas Becher"
+          ]
+        },
+        {
+          "player_id": "2188008",
+          "player_name": "Nico Schöttle",
+          "number": "8",
+          "position": "RL",
+          "aliases": [
+            "Nico",
+            "Nico Schöttle",
+            "Schöttle"
+          ]
+        },
+        {
+          "player_id": "1412553",
+          "player_name": "Fynn Hangstein",
+          "number": "10",
+          "position": "RM",
+          "aliases": [
+            "Fynn",
+            "Fynn Hangstein",
+            "Hangstein"
+          ]
+        },
+        {
+          "player_id": "2060621",
+          "player_name": "Louis Oberosler",
+          "number": "12",
+          "position": "TW",
+          "aliases": [
+            "Louis",
+            "Louis Oberosler",
+            "Oberosler"
+          ]
+        },
+        {
+          "player_id": "876218",
+          "player_name": "Gerdas Babarskas",
+          "number": "14",
+          "position": "RL",
+          "aliases": [
+            "Babarskas",
+            "Gerdas",
+            "Gerdas Babarskas"
+          ]
+        },
+        {
+          "player_id": "2091301",
+          "player_name": "Lars Mitchell Kooij",
+          "number": "15",
+          "position": "KR",
+          "aliases": [
+            "Kooij",
+            "Lars Mitchell",
+            "Lars Mitchell Kooij"
+          ]
+        },
+        {
+          "player_id": "1336660",
+          "player_name": "Lukas Diedrich",
+          "number": "16",
+          "position": "TW",
+          "aliases": [
+            "Diedrich",
+            "Lukas",
+            "Lukas Diedrich"
+          ]
+        },
+        {
+          "player_id": "1027239",
+          "player_name": "Yannick Fraatz",
+          "number": "18",
+          "position": "RA",
+          "aliases": [
+            "Fraatz",
+            "Yannick",
+            "Yannick Fraatz"
+          ]
+        },
+        {
+          "player_id": "1028431",
+          "player_name": "Tomas Babak",
+          "number": "19",
+          "position": "RM",
+          "aliases": [
+            "Babak",
+            "Tomas",
+            "Tomas Babak"
+          ]
+        },
+        {
+          "player_id": "2844345",
+          "player_name": "Belal Ibrahim Massoud",
+          "number": "20",
+          "position": "LA",
+          "aliases": [
+            "Belal Ibrahim",
+            "Belal Ibrahim Massoud",
+            "Massoud"
+          ]
+        },
+        {
+          "player_id": "1260198",
+          "player_name": "Kim Voss-Fels",
+          "number": "21",
+          "position": "RR",
+          "aliases": [
+            "Kim",
+            "Kim Voss-Fels",
+            "Voss-Fels"
+          ]
+        },
+        {
+          "player_id": "3112752",
+          "player_name": "Justus Püttmann",
+          "number": "25",
+          "position": "RA",
+          "aliases": [
+            "Justus",
+            "Justus Püttmann",
+            "Püttmann"
+          ]
+        },
+        {
+          "player_id": "123345",
+          "player_name": "Niklas Michalski",
+          "number": "25",
+          "position": "RA",
+          "aliases": [
+            "Michalski",
+            "Niklas",
+            "Niklas Michalski"
+          ]
+        },
+        {
+          "player_id": "906724",
+          "player_name": "Eloy Morante Maldonado",
+          "number": "33",
+          "position": "RM",
+          "aliases": [
+            "Eloy",
+            "Eloy Morante Maldonado",
+            "Morante Maldonado"
+          ]
+        },
+        {
+          "player_id": "2125754",
+          "player_name": "Julian Fuchs",
+          "number": "46",
+          "position": "RA",
+          "aliases": [
+            "Fuchs",
+            "Julian",
+            "Julian Fuchs"
+          ]
+        },
+        {
+          "player_id": "2077741",
+          "player_name": "Aron Seesing",
+          "number": "49",
+          "position": "KR",
+          "aliases": [
+            "Aron",
+            "Aron Seesing",
+            "Seesing"
+          ]
+        },
+        {
+          "player_id": "2110364",
+          "player_name": "Sören Steinhaus",
+          "number": "53",
+          "position": "RL",
+          "aliases": [
+            "Steinhaus",
+            "Sören",
+            "Sören Steinhaus"
+          ]
+        },
+        {
+          "player_id": "1086722",
+          "player_name": "Johannes Wasielewski",
+          "number": "77",
+          "position": "RR",
+          "aliases": [
+            "Johannes",
+            "Johannes Wasielewski",
+            "Wasielewski"
+          ]
+        }
+      ]
+    },
+    "frisch_auf_goeppingen": {
+      "team_id": "frisch_auf_goeppingen",
+      "team_name": "Frisch Auf! Göppingen",
+      "players": [
+        {
+          "player_id": "2147274",
+          "player_name": "Julian Buchele",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Buchele",
+            "Julian",
+            "Julian Buchele"
+          ]
+        },
+        {
+          "player_id": "2017339",
+          "player_name": "Oskar Neudeck",
+          "number": "2",
+          "position": "RL",
+          "aliases": [
+            "Neudeck",
+            "Oskar",
+            "Oskar Neudeck"
+          ]
+        },
+        {
+          "player_id": "1261830",
+          "player_name": "Rutger ten Velde",
+          "number": "5",
+          "position": "LA",
+          "aliases": [
+            "Rutger",
+            "Rutger ten Velde",
+            "ten Velde"
+          ]
+        },
+        {
+          "player_id": "1873586",
+          "player_name": "Victor Klöve",
+          "number": "7",
+          "position": "RL",
+          "aliases": [
+            "Klöve",
+            "Victor",
+            "Victor Klöve"
+          ]
+        },
+        {
+          "player_id": "1315846",
+          "player_name": "Kristian Sæverås",
+          "number": "12",
+          "position": "TW",
+          "aliases": [
+            "Kristian",
+            "Kristian Sæverås",
+            "Sæverås"
+          ]
+        },
+        {
+          "player_id": "2625597",
+          "player_name": "Tim Goßner",
+          "number": "17",
+          "position": "RA",
+          "aliases": [
+            "Goßner",
+            "Tim",
+            "Tim Goßner"
+          ]
+        },
+        {
+          "player_id": "3040495",
+          "player_name": "Fynn Hofele",
+          "number": "18",
+          "position": "CB",
+          "aliases": [
+            "Fynn",
+            "Fynn Hofele",
+            "Hofele"
+          ]
+        },
+        {
+          "player_id": "1560130",
+          "player_name": "Ludvig Hallbäck",
+          "number": "20",
+          "position": "RM",
+          "aliases": [
+            "Hallbäck",
+            "Ludvig",
+            "Ludvig Hallbäck"
+          ]
+        },
+        {
+          "player_id": "2913961",
+          "player_name": "Sascha Brodbeck",
+          "number": "21",
+          "position": "KR",
+          "aliases": [
+            "Brodbeck",
+            "Sascha",
+            "Sascha Brodbeck"
+          ]
+        },
+        {
+          "player_id": "1515939",
+          "player_name": "Erik Persson",
+          "number": "22",
+          "position": "RR",
+          "aliases": [
+            "Erik",
+            "Erik Persson",
+            "Persson"
+          ]
+        },
+        {
+          "player_id": "1958589",
+          "player_name": "Ole Pregler",
+          "number": "23",
+          "position": "RM",
+          "aliases": [
+            "Ole",
+            "Ole Pregler",
+            "Pregler"
+          ]
+        },
+        {
+          "player_id": "257887",
+          "player_name": "Marcel Schiller",
+          "number": "24",
+          "position": "LA",
+          "aliases": [
+            "Marcel",
+            "Marcel Schiller",
+            "Schiller"
+          ]
+        },
+        {
+          "player_id": "1516027",
+          "player_name": "Ludvig Jurmala Aström",
+          "number": "25",
+          "position": "KR",
+          "aliases": [
+            "Jurmala Aström",
+            "Ludvig",
+            "Ludvig Jurmala Aström"
+          ]
+        },
+        {
+          "player_id": "1515923",
+          "player_name": "Oskar Sunnefeldt",
+          "number": "27",
+          "position": "RL",
+          "aliases": [
+            "Oskar",
+            "Oskar Sunnefeldt",
+            "Sunnefeldt"
+          ]
+        },
+        {
+          "player_id": "2013767",
+          "player_name": "Franko Lastro",
+          "number": "28",
+          "position": "RA",
+          "aliases": [
+            "Franko",
+            "Franko Lastro",
+            "Lastro"
+          ]
+        },
+        {
+          "player_id": "1291140",
+          "player_name": "Ymir Örn Gislason",
+          "number": "33",
+          "position": "KR",
+          "aliases": [
+            "Gislason",
+            "Ymir Örn",
+            "Ymir Örn Gislason"
+          ]
+        },
+        {
+          "player_id": "2673951",
+          "player_name": "Elias Newel",
+          "number": "40",
+          "position": "RM",
+          "aliases": [
+            "Elias",
+            "Elias Newel",
+            "Newel"
+          ]
+        },
+        {
+          "player_id": "1652709",
+          "player_name": "Martin Hanne",
+          "number": "42",
+          "position": "RL",
+          "aliases": [
+            "Hanne",
+            "Martin",
+            "Martin Hanne"
+          ]
+        },
+        {
+          "player_id": "318353",
+          "player_name": "David Schmidt",
+          "number": "77",
+          "position": "RR",
+          "aliases": [
+            "David",
+            "David Schmidt",
+            "Schmidt"
+          ]
+        }
+      ]
+    },
+    "fuechse_berlin": {
+      "team_id": "fuechse_berlin",
+      "team_name": "Füchse Berlin",
+      "players": [
+        {
+          "player_id": "1968383",
+          "player_name": "Lasse Ludwig",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Lasse",
+            "Lasse Ludwig",
+            "Ludwig"
+          ]
+        },
+        {
+          "player_id": "257843",
+          "player_name": "Fabian Wiede",
+          "number": "3",
+          "position": "RR",
+          "aliases": [
+            "Fabian",
+            "Fabian Wiede",
+            "Wiede"
+          ]
+        },
+        {
+          "player_id": "904748",
+          "player_name": "Max Darj",
+          "number": "5",
+          "position": "KR",
+          "aliases": [
+            "Darj",
+            "Max",
+            "Max Darj"
+          ]
+        },
+        {
+          "player_id": "1568538",
+          "player_name": "Leo Prantner",
+          "number": "6",
+          "position": "RA",
+          "aliases": [
+            "Leo",
+            "Leo Prantner",
+            "Prantner"
+          ]
+        },
+        {
+          "player_id": "1293802",
+          "player_name": "Lasse Bredekjaer Andersson",
+          "number": "11",
+          "position": "RL",
+          "aliases": [
+            "Andersson",
+            "Lasse Bredekjaer",
+            "Lasse Bredekjaer Andersson"
+          ]
+        },
+        {
+          "player_id": "898198",
+          "player_name": "Aitor Arino",
+          "number": "14",
+          "position": "LA",
+          "aliases": [
+            "Aitor",
+            "Aitor Arino",
+            "Arino"
+          ]
+        },
+        {
+          "player_id": "1560150",
+          "player_name": "Tobias Schjølberg Grøndahl",
+          "number": "15",
+          "position": "RM",
+          "aliases": [
+            "Grøndahl",
+            "Tobias Schjølberg",
+            "Tobias Schjølberg Grøndahl"
+          ]
+        },
+        {
+          "player_id": "1968291",
+          "player_name": "Nils Lichtlein",
+          "number": "17",
+          "position": "RM",
+          "aliases": [
+            "Lichtlein",
+            "Nils",
+            "Nils Lichtlein"
+          ]
+        },
+        {
+          "player_id": "1515701",
+          "player_name": "Mathias Gidsel",
+          "number": "19",
+          "position": "RR",
+          "aliases": [
+            "Gidsel",
+            "Mathias",
+            "Mathias Gidsel"
+          ]
+        },
+        {
+          "player_id": "1968395",
+          "player_name": "Tim Freihöfer",
+          "number": "20",
+          "position": "LA",
+          "aliases": [
+            "Freihöfer",
+            "Tim",
+            "Tim Freihöfer"
+          ]
+        },
+        {
+          "player_id": "2393459",
+          "player_name": "Frederik Höler",
+          "number": "21",
+          "position": "TW",
+          "aliases": [
+            "Frederik",
+            "Frederik Höler",
+            "Höler"
+          ]
+        },
+        {
+          "player_id": "1291470",
+          "player_name": "Nejc Cehte",
+          "number": "22",
+          "position": "RR",
+          "aliases": [
+            "Cehte",
+            "Nejc",
+            "Nejc Cehte"
+          ]
+        },
+        {
+          "player_id": "2313073",
+          "player_name": "Lauro Pichiri",
+          "number": "24",
+          "position": "RL",
+          "aliases": [
+            "Lauro",
+            "Lauro Pichiri",
+            "Pichiri"
+          ]
+        },
+        {
+          "player_id": "2060371",
+          "player_name": "Matthes Langhoff",
+          "number": "25",
+          "position": "RL",
+          "aliases": [
+            "Langhoff",
+            "Matthes",
+            "Matthes Langhoff"
+          ]
+        },
+        {
+          "player_id": "1278376",
+          "player_name": "Lukas Herburger",
+          "number": "29",
+          "position": "KR",
+          "aliases": [
+            "Herburger",
+            "Lukas",
+            "Lukas Herburger"
+          ]
+        },
+        {
+          "player_id": "2209196",
+          "player_name": "Jonas Kofler",
+          "number": "31",
+          "position": "RM",
+          "aliases": [
+            "Jonas",
+            "Jonas Kofler",
+            "Kofler"
+          ]
+        },
+        {
+          "player_id": "2209186",
+          "player_name": "Felix Bernkop-Schnürch",
+          "number": "33",
+          "position": "RL",
+          "aliases": [
+            "Bernkop-Schnürch",
+            "Felix",
+            "Felix Bernkop-Schnürch"
+          ]
+        },
+        {
+          "player_id": "2091203",
+          "player_name": "Hakun West av Teigum",
+          "number": "34",
+          "position": "RA",
+          "aliases": [
+            "Hakun",
+            "Hakun West av Teigum",
+            "West av Teigum"
+          ]
+        },
+        {
+          "player_id": "2393399",
+          "player_name": "Max Günther",
+          "number": "35",
+          "position": "RW",
+          "aliases": [
+            "Günther",
+            "Max",
+            "Max Günther"
+          ]
+        },
+        {
+          "player_id": "2819513",
+          "player_name": "Tim Schröder",
+          "number": "38",
+          "position": "KR",
+          "aliases": [
+            "Schröder",
+            "Tim",
+            "Tim Schröder"
+          ]
+        },
+        {
+          "player_id": "1290086",
+          "player_name": "Mijajlo Marsenic",
+          "number": "93",
+          "position": "KR",
+          "aliases": [
+            "Marsenic",
+            "Mijajlo",
+            "Mijajlo Marsenic"
+          ]
+        },
+        {
+          "player_id": "1386395",
+          "player_name": "Dejan Milosavljev",
+          "number": "96",
+          "position": "TW",
+          "aliases": [
+            "Dejan",
+            "Dejan Milosavljev",
+            "Milosavljev"
+          ]
+        }
+      ]
+    },
+    "hc_erlangen": {
+      "team_id": "hc_erlangen",
+      "team_name": "HC Erlangen",
+      "players": [
+        {
+          "player_id": "124865",
+          "player_name": "Dario Quenstedt",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Dario",
+            "Dario Quenstedt",
+            "Quenstedt"
+          ]
+        },
+        {
+          "player_id": "2819277",
+          "player_name": "Lars Genz",
+          "number": "3",
+          "position": "RL",
+          "aliases": [
+            "Genz",
+            "Lars",
+            "Lars Genz"
+          ]
+        },
+        {
+          "player_id": "2183644",
+          "player_name": "Andri Mar Runarsson",
+          "number": "4",
+          "position": "RM",
+          "aliases": [
+            "Andri Mar",
+            "Andri Mar Runarsson",
+            "Runarsson"
+          ]
+        },
+        {
+          "player_id": "2200728",
+          "player_name": "Milos Kos",
+          "number": "5",
+          "position": "RL",
+          "aliases": [
+            "Kos",
+            "Milos",
+            "Milos Kos"
+          ]
+        },
+        {
+          "player_id": "2525999",
+          "player_name": "David Sehnke",
+          "number": "5",
+          "position": "RM",
+          "aliases": [
+            "David",
+            "David Sehnke",
+            "Sehnke"
+          ]
+        },
+        {
+          "player_id": "2057801",
+          "player_name": "Marek Nissen",
+          "number": "6",
+          "position": "RL",
+          "aliases": [
+            "Marek",
+            "Marek Nissen",
+            "Nissen"
+          ]
+        },
+        {
+          "player_id": "1723108",
+          "player_name": "Yannik Bialowas",
+          "number": "7",
+          "position": "LA",
+          "aliases": [
+            "Bialowas",
+            "Yannik",
+            "Yannik Bialowas"
+          ]
+        },
+        {
+          "player_id": "1983099",
+          "player_name": "Sander Andreassen Øverjordet",
+          "number": "8",
+          "position": "RM",
+          "aliases": [
+            "Sander Andreassen",
+            "Sander Andreassen Øverjordet",
+            "Øverjordet"
+          ]
+        },
+        {
+          "player_id": "2428725",
+          "player_name": "Florian Scheerer",
+          "number": "10",
+          "position": "KR",
+          "aliases": [
+            "Florian",
+            "Florian Scheerer",
+            "Scheerer"
+          ]
+        },
+        {
+          "player_id": "2406397",
+          "player_name": "Tin Herceg",
+          "number": "16",
+          "position": "TW",
+          "aliases": [
+            "Herceg",
+            "Tin",
+            "Tin Herceg"
+          ]
+        },
+        {
+          "player_id": "869458",
+          "player_name": "Sebastian Firnhaber",
+          "number": "18",
+          "position": "KR",
+          "aliases": [
+            "Firnhaber",
+            "Sebastian",
+            "Sebastian Firnhaber"
+          ]
+        },
+        {
+          "player_id": "876782",
+          "player_name": "Christopher Bissel",
+          "number": "21",
+          "position": "LA",
+          "aliases": [
+            "Bissel",
+            "Christopher",
+            "Christopher Bissel"
+          ]
+        },
+        {
+          "player_id": "3055979",
+          "player_name": "Hans-Lukas Willax",
+          "number": "24",
+          "position": "KM",
+          "aliases": [
+            "Hans-Lukas",
+            "Hans-Lukas Willax",
+            "Willax"
+          ]
+        },
+        {
+          "player_id": "874108",
+          "player_name": "Antonio Metzner",
+          "number": "27",
+          "position": "RR",
+          "aliases": [
+            "Antonio",
+            "Antonio Metzner",
+            "Metzner"
+          ]
+        },
+        {
+          "player_id": "3061373",
+          "player_name": "Finn Schultz",
+          "number": "27",
+          "position": "LA",
+          "aliases": [
+            "Finn",
+            "Finn Schultz",
+            "Schultz"
+          ]
+        },
+        {
+          "player_id": "3050233",
+          "player_name": "Finn Scharnweber",
+          "number": "32",
+          "position": "RA",
+          "aliases": [
+            "Finn",
+            "Finn Scharnweber",
+            "Scharnweber"
+          ]
+        },
+        {
+          "player_id": "3061379",
+          "player_name": "Maxim Lochmann",
+          "number": "32",
+          "position": "RR",
+          "aliases": [
+            "Lochmann",
+            "Maxim",
+            "Maxim Lochmann"
+          ]
+        },
+        {
+          "player_id": "2563451",
+          "player_name": "Tobias Buck",
+          "number": "39",
+          "position": "RL",
+          "aliases": [
+            "Buck",
+            "Tobias",
+            "Tobias Buck"
+          ]
+        },
+        {
+          "player_id": "257919",
+          "player_name": "Christoph Steinert",
+          "number": "44",
+          "position": "RR",
+          "aliases": [
+            "Christoph",
+            "Christoph Steinert",
+            "Steinert"
+          ]
+        },
+        {
+          "player_id": "1291920",
+          "player_name": "Viggó Kristjánsson",
+          "number": "73",
+          "position": "RR",
+          "aliases": [
+            "Kristjánsson",
+            "Viggó",
+            "Viggó Kristjánsson"
+          ]
+        },
+        {
+          "player_id": "544378",
+          "player_name": "Maciej Gebala",
+          "number": "77",
+          "position": "KR",
+          "aliases": [
+            "Gebala",
+            "Maciej",
+            "Maciej Gebala"
+          ]
+        },
+        {
+          "player_id": "3061381",
+          "player_name": "Philipp Senft",
+          "number": "85",
+          "position": "RA",
+          "aliases": [
+            "Philipp",
+            "Philipp Senft",
+            "Senft"
+          ]
+        },
+        {
+          "player_id": "2407493",
+          "player_name": "Tim Gömmel",
+          "number": "95",
+          "position": "RA",
+          "aliases": [
+            "Gömmel",
+            "Tim",
+            "Tim Gömmel"
+          ]
+        },
+        {
+          "player_id": "1621042",
+          "player_name": "Khalifa Ghedbane",
+          "number": "96",
+          "position": "TW",
+          "aliases": [
+            "Ghedbane",
+            "Khalifa",
+            "Khalifa Ghedbane"
+          ]
+        }
+      ]
+    },
+    "hsg_wetzlar": {
+      "team_id": "hsg_wetzlar",
+      "team_name": "HSG Wetzlar",
+      "players": [
+        {
+          "player_id": "1280214",
+          "player_name": "Nikola Grahovac",
+          "number": "2",
+          "position": "KR",
+          "aliases": [
+            "Grahovac",
+            "Nikola",
+            "Nikola Grahovac"
+          ]
+        },
+        {
+          "player_id": "1339252",
+          "player_name": "Filip Vistorop",
+          "number": "4",
+          "position": "RM",
+          "aliases": [
+            "Filip",
+            "Filip Vistorop",
+            "Vistorop"
+          ]
+        },
+        {
+          "player_id": "1853680",
+          "player_name": "Josip Simic",
+          "number": "5",
+          "position": "KR",
+          "aliases": [
+            "Josip",
+            "Josip Simic",
+            "Simic"
+          ]
+        },
+        {
+          "player_id": "1977639",
+          "player_name": "Tristan Kirschner",
+          "number": "5",
+          "position": "RA",
+          "aliases": [
+            "Kirschner",
+            "Tristan",
+            "Tristan Kirschner"
+          ]
+        },
+        {
+          "player_id": "869960",
+          "player_name": "Dominik Mappes",
+          "number": "7",
+          "position": "RM",
+          "aliases": [
+            "Dominik",
+            "Dominik Mappes",
+            "Mappes"
+          ]
+        },
+        {
+          "player_id": "2077729",
+          "player_name": "Niklas Theiß",
+          "number": "9",
+          "position": "RR",
+          "aliases": [
+            "Niklas",
+            "Niklas Theiß",
+            "Theiß"
+          ]
+        },
+        {
+          "player_id": "1838192",
+          "player_name": "Anadin Suljakovic",
+          "number": "12",
+          "position": "TW",
+          "aliases": [
+            "Anadin",
+            "Anadin Suljakovic",
+            "Suljakovic"
+          ]
+        },
+        {
+          "player_id": "2735622",
+          "player_name": "Hendrik Pantel",
+          "number": "16",
+          "position": "TW",
+          "aliases": [
+            "Hendrik",
+            "Hendrik Pantel",
+            "Pantel"
+          ]
+        },
+        {
+          "player_id": "2740197",
+          "player_name": "Phil Spandau",
+          "number": "17",
+          "position": "LA",
+          "aliases": [
+            "Phi",
+            "Phi Spandau",
+            "Phil",
+            "Phil Spandau",
+            "Spandau"
+          ]
+        },
+        {
+          "player_id": "1724488",
+          "player_name": "Philipp Ahouansou",
+          "number": "19",
+          "position": "RL",
+          "aliases": [
+            "Ahouansou",
+            "Philipp",
+            "Philipp Ahouansou"
+          ]
+        },
+        {
+          "player_id": "1339456",
+          "player_name": "David Cyrill Akakpo",
+          "number": "20",
+          "position": "RA",
+          "aliases": [
+            "Akakpo",
+            "David Cyrill",
+            "David Cyrill Akakpo"
+          ]
+        },
+        {
+          "player_id": "320061",
+          "player_name": "Jona Schoch",
+          "number": "22",
+          "position": "RL",
+          "aliases": [
+            "Jona",
+            "Jona Schoch",
+            "Schoch"
+          ]
+        },
+        {
+          "player_id": "2267229",
+          "player_name": "Tizian Weimer",
+          "number": "24",
+          "position": "RA",
+          "aliases": [
+            "Tizian",
+            "Tizian Weimer",
+            "Weimer"
+          ]
+        },
+        {
+          "player_id": "872358",
+          "player_name": "Justin Müller",
+          "number": "25",
+          "position": "RM",
+          "aliases": [
+            "Justin",
+            "Justin Müller",
+            "Müller"
+          ]
+        },
+        {
+          "player_id": "2215172",
+          "player_name": "Georg Löwen",
+          "number": "33",
+          "position": "KR",
+          "aliases": [
+            "Georg",
+            "Georg Löwen",
+            "Löwen"
+          ]
+        },
+        {
+          "player_id": "2149986",
+          "player_name": "Lion Zacharias",
+          "number": "50",
+          "position": "LA",
+          "aliases": [
+            "Lion",
+            "Lion Zacharias",
+            "Zacharias"
+          ]
+        },
+        {
+          "player_id": "125108",
+          "player_name": "Andreas Palicka",
+          "number": "52",
+          "position": "TW",
+          "aliases": [
+            "Andreas",
+            "Andreas Palicka",
+            "Palicka"
+          ]
+        },
+        {
+          "player_id": "1290426",
+          "player_name": "Mostafa Hassan Hendawy Karim",
+          "number": "66",
+          "position": "TW",
+          "aliases": [
+            "Hendawy Karim",
+            "Mostafa Hassan",
+            "Mostafa Hassan Hendawy Karim"
+          ]
+        },
+        {
+          "player_id": "887176",
+          "player_name": "Stefan Cavor",
+          "number": "77",
+          "position": "RR",
+          "aliases": [
+            "Cavor",
+            "Stefan",
+            "Stefan Cavor"
+          ]
+        },
+        {
+          "player_id": "2764137",
+          "player_name": "Ahmed Nafea",
+          "number": "79",
+          "position": "LA",
+          "aliases": [
+            "Ahmed",
+            "Ahmed Nafea",
+            "Nafea"
+          ]
+        }
+      ]
+    },
+    "hsv_hamburg": {
+      "team_id": "hsv_hamburg",
+      "team_name": "HSV Hamburg",
+      "players": [
+        {
+          "player_id": "3057237",
+          "player_name": "Toma Gadza",
+          "number": "2",
+          "position": "RR",
+          "aliases": [
+            "Gadza",
+            "Toma",
+            "Toma Gadza"
+          ]
+        },
+        {
+          "player_id": "1515667",
+          "player_name": "Andreas Magaard",
+          "number": "4",
+          "position": "KR",
+          "aliases": [
+            "Andreas",
+            "Andreas Magaard",
+            "Magaard"
+          ]
+        },
+        {
+          "player_id": "1610064",
+          "player_name": "Oliver Norlyk",
+          "number": "5",
+          "position": "RR",
+          "aliases": [
+            "Norlyk",
+            "Oliver",
+            "Oliver Norlyk"
+          ]
+        },
+        {
+          "player_id": "1559134",
+          "player_name": "Elias Kofler",
+          "number": "6",
+          "position": "RM",
+          "aliases": [
+            "Elias",
+            "Elias Kofler",
+            "Kofler"
+          ]
+        },
+        {
+          "player_id": "2947027",
+          "player_name": "Shane Kerber",
+          "number": "6",
+          "position": "RA",
+          "aliases": [
+            "Kerber",
+            "Shane",
+            "Shane Kerber"
+          ]
+        },
+        {
+          "player_id": "1340052",
+          "player_name": "Jacob Arenth Lassen",
+          "number": "9",
+          "position": "RR",
+          "aliases": [
+            "Jacob Arenth",
+            "Jacob Arenth Lassen",
+            "Lassen"
+          ]
+        },
+        {
+          "player_id": "3032934",
+          "player_name": "Nicolaj Jørgensen",
+          "number": "11",
+          "position": "RM",
+          "aliases": [
+            "Jørgensen",
+            "Nicolaj",
+            "Nicolaj Jørgensen"
+          ]
+        },
+        {
+          "player_id": "2297821",
+          "player_name": "Mohamed Essam Moustafa El-Tayar",
+          "number": "12",
+          "position": "TW",
+          "aliases": [
+            "El-Tayar",
+            "Mohamed Essam Moustafa",
+            "Mohamed Essam Moustafa El-Tayar"
+          ]
+        },
+        {
+          "player_id": "1254358",
+          "player_name": "Niklas Weller",
+          "number": "13",
+          "position": "KR",
+          "aliases": [
+            "Niklas",
+            "Niklas Weller",
+            "Weller"
+          ]
+        },
+        {
+          "player_id": "1254476",
+          "player_name": "Dominik Axmann",
+          "number": "15",
+          "position": "RL",
+          "aliases": [
+            "Axmann",
+            "Dominik",
+            "Dominik Axmann"
+          ]
+        },
+        {
+          "player_id": "1387257",
+          "player_name": "Robin Paulsen Haug",
+          "number": "16",
+          "position": "TW",
+          "aliases": [
+            "Paulsen Haug",
+            "Robin",
+            "Robin Paulsen Haug"
+          ]
+        },
+        {
+          "player_id": "2177032",
+          "player_name": "Kaj Geenen",
+          "number": "17",
+          "position": "LA",
+          "aliases": [
+            "Geenen",
+            "Kaj",
+            "Kaj Geenen"
+          ]
+        },
+        {
+          "player_id": "2871093",
+          "player_name": "Maximilian Botta",
+          "number": "19",
+          "position": "KR",
+          "aliases": [
+            "Botta",
+            "Maximilian",
+            "Maximilian Botta"
+          ]
+        },
+        {
+          "player_id": "2819241",
+          "player_name": "Ben Levermann",
+          "number": "20",
+          "position": "RL",
+          "aliases": [
+            "Ben",
+            "Ben Levermann",
+            "Levermann"
+          ]
+        },
+        {
+          "player_id": "1515707",
+          "player_name": "Frederik Bo Andersen",
+          "number": "21",
+          "position": "RA",
+          "aliases": [
+            "Andersen",
+            "Frederik Bo",
+            "Frederik Bo Andersen"
+          ]
+        },
+        {
+          "player_id": "3027468",
+          "player_name": "Einar Olafsson",
+          "number": "23",
+          "position": "RM",
+          "aliases": [
+            "Einar",
+            "Einar Olafsson",
+            "Olafsson"
+          ]
+        },
+        {
+          "player_id": "2102838",
+          "player_name": "Moritz Sauter",
+          "number": "33",
+          "position": "RM",
+          "aliases": [
+            "Moritz",
+            "Moritz Sauter",
+            "Sauter"
+          ]
+        },
+        {
+          "player_id": "3063825",
+          "player_name": "Norwein Pein",
+          "number": "36",
+          "position": "TW",
+          "aliases": [
+            "Norwein",
+            "Norwein Pein",
+            "Pein"
+          ]
+        },
+        {
+          "player_id": "2367879",
+          "player_name": "Jan Christian Schmidt",
+          "number": "42",
+          "position": "KR",
+          "aliases": [
+            "Jan Christian",
+            "Jan Christian Schmidt",
+            "Schmidt"
+          ]
+        },
+        {
+          "player_id": "876092",
+          "player_name": "Casper Mortensen",
+          "number": "51",
+          "position": "LA",
+          "aliases": [
+            "Casper",
+            "Casper Mortensen",
+            "Mortensen"
+          ]
+        }
+      ]
+    },
+    "mt_melsungen": {
+      "team_id": "mt_melsungen",
+      "team_name": "MT Melsungen",
+      "players": [
+        {
+          "player_id": "896628",
+          "player_name": "Ruben Marchan",
+          "number": "2",
+          "position": "KR",
+          "aliases": [
+            "Marchan",
+            "Ruben",
+            "Ruben Marchan"
+          ]
+        },
+        {
+          "player_id": "1340268",
+          "player_name": "Nikolaj Enderleit",
+          "number": "4",
+          "position": "RR",
+          "aliases": [
+            "Enderleit",
+            "Nikolaj",
+            "Nikolaj Enderleit"
+          ]
+        },
+        {
+          "player_id": "1386361",
+          "player_name": "David Mandic",
+          "number": "7",
+          "position": "LA",
+          "aliases": [
+            "David",
+            "David Mandic",
+            "Mandic"
+          ]
+        },
+        {
+          "player_id": "1340188",
+          "player_name": "Adrian Sipos",
+          "number": "8",
+          "position": "KR",
+          "aliases": [
+            "Adrian",
+            "Adrian Sipos",
+            "Sipos"
+          ]
+        },
+        {
+          "player_id": "1290098",
+          "player_name": "Dainis Kristopans",
+          "number": "10",
+          "position": "RR",
+          "aliases": [
+            "Dainis",
+            "Dainis Kristopans",
+            "Kristopans"
+          ]
+        },
+        {
+          "player_id": "1117095",
+          "player_name": "Dimitri Ignatow",
+          "number": "11",
+          "position": "RA",
+          "aliases": [
+            "Dimitri",
+            "Dimitri Ignatow",
+            "Ignatow"
+          ]
+        },
+        {
+          "player_id": "905094",
+          "player_name": "Nebojsa Simic",
+          "number": "16",
+          "position": "TW",
+          "aliases": [
+            "Nebojsa",
+            "Nebojsa Simic",
+            "Simic"
+          ]
+        },
+        {
+          "player_id": "2342241",
+          "player_name": "Florian Drosten",
+          "number": "18",
+          "position": "LA",
+          "aliases": [
+            "Drosten",
+            "Florian",
+            "Florian Drosten"
+          ]
+        },
+        {
+          "player_id": "2809061",
+          "player_name": "Reynir Thor Stefansson",
+          "number": "19",
+          "position": "RL",
+          "aliases": [
+            "Reynir Thor",
+            "Reynir Thor Stefansson",
+            "Stefansson"
+          ]
+        },
+        {
+          "player_id": "1304432",
+          "player_name": "Uladzislau Kulesh",
+          "number": "20",
+          "position": "RL",
+          "aliases": [
+            "Kulesh",
+            "Uladzislau",
+            "Uladzislau Kulesh"
+          ]
+        },
+        {
+          "player_id": "1290560",
+          "player_name": "Arnar Freyr Arnarsson",
+          "number": "21",
+          "position": "KR",
+          "aliases": [
+            "Arnar Freyr",
+            "Arnar Freyr Arnarsson",
+            "Arnarsson"
+          ]
+        },
+        {
+          "player_id": "2187956",
+          "player_name": "Marti Soler",
+          "number": "23",
+          "position": "LA",
+          "aliases": [
+            "Marti",
+            "Marti Soler",
+            "Soler"
+          ]
+        },
+        {
+          "player_id": "1280052",
+          "player_name": "Alexandre Cavalcanti",
+          "number": "24",
+          "position": "RL",
+          "aliases": [
+            "Alexandre",
+            "Alexandre Cavalcanti",
+            "Cavalcanti"
+          ]
+        },
+        {
+          "player_id": "905500",
+          "player_name": "Olle Forsell Schefvert",
+          "number": "25",
+          "position": "RM",
+          "aliases": [
+            "Forsell Schefvert",
+            "Olle",
+            "Olle Forsell Schefvert"
+          ]
+        },
+        {
+          "player_id": "2422719",
+          "player_name": "Friedrich Schmitt",
+          "number": "29",
+          "position": "RL",
+          "aliases": [
+            "Friedrich",
+            "Friedrich Schmitt",
+            "Schmitt"
+          ]
+        },
+        {
+          "player_id": "1879310",
+          "player_name": "Kristóf Palasics",
+          "number": "32",
+          "position": "TW",
+          "aliases": [
+            "Kristóf",
+            "Kristóf Palasics",
+            "Palasics"
+          ]
+        },
+        {
+          "player_id": "895934",
+          "player_name": "Isaias Guardiola",
+          "number": "40",
+          "position": "RR",
+          "aliases": [
+            "Guardiola",
+            "Isaias",
+            "Isaias Guardiola"
+          ]
+        },
+        {
+          "player_id": "123456",
+          "player_name": "Isaías Guardiola",
+          "number": "40",
+          "position": "RR",
+          "aliases": [
+            "Guardiola",
+            "Isaías",
+            "Isaías Guardiola"
+          ]
+        },
+        {
+          "player_id": "2139632",
+          "player_name": "Bruno Eickhoff",
+          "number": "53",
+          "position": "KR",
+          "aliases": [
+            "Bruno",
+            "Bruno Eickhoff",
+            "Eickhoff"
+          ]
+        },
+        {
+          "player_id": "887172",
+          "player_name": "László Bartucz",
+          "number": "61",
+          "position": "TW",
+          "aliases": [
+            "Bartucz",
+            "László",
+            "László Bartucz"
+          ]
+        },
+        {
+          "player_id": "2206772",
+          "player_name": "Mohamed Amine Darmoul",
+          "number": "71",
+          "position": "RM",
+          "aliases": [
+            "Darmoul",
+            "Mohamed Amine",
+            "Mohamed Amine Darmoul"
+          ]
+        },
+        {
+          "player_id": "356272",
+          "player_name": "Timo Kastening",
+          "number": "73",
+          "position": "RA",
+          "aliases": [
+            "Kastening",
+            "Timo",
+            "Timo Kastening"
+          ]
+        },
+        {
+          "player_id": "1290626",
+          "player_name": "Sadou Ntanzi",
+          "number": "91",
+          "position": "RM",
+          "aliases": [
+            "Ntanzi",
+            "Sadou",
+            "Sadou Ntanzi"
+          ]
+        }
+      ]
+    },
+    "rhein_neckar_loewen": {
+      "team_id": "rhein_neckar_loewen",
+      "team_name": "Rhein-Neckar Löwen",
+      "players": [
+        {
+          "player_id": "2200820",
+          "player_name": "Mathias Rohde Larson",
+          "number": "4",
+          "position": "RM",
+          "aliases": [
+            "Mathias",
+            "Mathias Rohde Larson",
+            "Rohde Larson"
+          ]
+        },
+        {
+          "player_id": "2200816",
+          "player_name": "Robert Timmermeister",
+          "number": "7",
+          "position": "RL",
+          "aliases": [
+            "Robert",
+            "Robert Timmermeister",
+            "Timmermeister"
+          ]
+        },
+        {
+          "player_id": "994187",
+          "player_name": "Tim Nothdurft",
+          "number": "8",
+          "position": "LA",
+          "aliases": [
+            "Nothdurft",
+            "Tim",
+            "Tim Nothdurft"
+          ]
+        },
+        {
+          "player_id": "1560264",
+          "player_name": "Steven Plucnar Jacobsen",
+          "number": "9",
+          "position": "KR",
+          "aliases": [
+            "Jacobsen",
+            "Steven Plucnar",
+            "Steven Plucnar Jacobsen"
+          ]
+        },
+        {
+          "player_id": "1588362",
+          "player_name": "Lukas Sandell",
+          "number": "11",
+          "position": "RR",
+          "aliases": [
+            "Lukas",
+            "Lukas Sandell",
+            "Sandell"
+          ]
+        },
+        {
+          "player_id": "869608",
+          "player_name": "Sebastian Heymann",
+          "number": "13",
+          "position": "RL",
+          "aliases": [
+            "Heymann",
+            "Sebastian",
+            "Sebastian Heymann"
+          ]
+        },
+        {
+          "player_id": "2184912",
+          "player_name": "Gino Steenaerts",
+          "number": "14",
+          "position": "RA",
+          "aliases": [
+            "Gino",
+            "Gino Steenaerts",
+            "Steenaerts"
+          ]
+        },
+        {
+          "player_id": "2256155",
+          "player_name": "David Móré",
+          "number": "15",
+          "position": "LA",
+          "aliases": [
+            "David",
+            "David Móré",
+            "Móré"
+          ]
+        },
+        {
+          "player_id": "1837280",
+          "player_name": "Mike Jensen",
+          "number": "20",
+          "position": "TW",
+          "aliases": [
+            "Jensen",
+            "Mike",
+            "Mike Jensen"
+          ]
+        },
+        {
+          "player_id": "124688",
+          "player_name": "Patrick Groetzki",
+          "number": "24",
+          "position": "RA",
+          "aliases": [
+            "Groetzki",
+            "Patrick",
+            "Patrick Groetzki"
+          ]
+        },
+        {
+          "player_id": "1515725",
+          "player_name": "Haukur Thrastarson",
+          "number": "25",
+          "position": "RM",
+          "aliases": [
+            "Haukur",
+            "Haukur Thrastarson",
+            "Thrastarson"
+          ]
+        },
+        {
+          "player_id": "2062529",
+          "player_name": "David Späth",
+          "number": "29",
+          "position": "TW",
+          "aliases": [
+            "David",
+            "David Späth",
+            "Späth"
+          ]
+        },
+        {
+          "player_id": "2819235",
+          "player_name": "Elias Ciudad Benitez",
+          "number": "41",
+          "position": "KR",
+          "aliases": [
+            "Ciudad Benitez",
+            "Elias",
+            "Elias Ciudad Benitez"
+          ]
+        },
+        {
+          "player_id": "1293776",
+          "player_name": "Halil Jaganjac",
+          "number": "45",
+          "position": "RL",
+          "aliases": [
+            "Halil",
+            "Halil Jaganjac",
+            "Jaganjac"
+          ]
+        },
+        {
+          "player_id": "1293336",
+          "player_name": "Dani Baijens",
+          "number": "77",
+          "position": "RM",
+          "aliases": [
+            "Baijens",
+            "Dani",
+            "Dani Baijens"
+          ]
+        },
+        {
+          "player_id": "2062551",
+          "player_name": "Edwin Aspenbäck",
+          "number": "78",
+          "position": "RR",
+          "aliases": [
+            "Aspenbäck",
+            "Edwin",
+            "Edwin Aspenbäck"
+          ]
+        },
+        {
+          "player_id": "873920",
+          "player_name": "Jannik Kohlbacher",
+          "number": "80",
+          "position": "KR",
+          "aliases": [
+            "Jannik",
+            "Jannik Kohlbacher",
+            "Kohlbacher"
+          ]
+        }
+      ]
+    },
+    "sc_dhfk_leipzig": {
+      "team_id": "sc_dhfk_leipzig",
+      "team_name": "SC DHFK Leipzig",
+      "players": [
+        {
+          "player_id": "1027241",
+          "player_name": "Domenico Ebner",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Domenico",
+            "Domenico Ebner",
+            "Ebner"
+          ]
+        },
+        {
+          "player_id": "1650545",
+          "player_name": "Tomas Piroch",
+          "number": "7",
+          "position": "RR",
+          "aliases": [
+            "Piroch",
+            "Tomas",
+            "Tomas Piroch"
+          ]
+        },
+        {
+          "player_id": "868722",
+          "player_name": "Lucas Krzikalla",
+          "number": "8",
+          "position": "RA",
+          "aliases": [
+            "Krzikalla",
+            "Lucas",
+            "Lucas Krzikalla"
+          ]
+        },
+        {
+          "player_id": "2237748",
+          "player_name": "Nils Greilich",
+          "number": "9",
+          "position": "LA",
+          "aliases": [
+            "Greilich",
+            "Nils",
+            "Nils Greilich"
+          ]
+        },
+        {
+          "player_id": "868726",
+          "player_name": "Thomas Oehlrich",
+          "number": "10",
+          "position": "P",
+          "aliases": [
+            "Oehlrich",
+            "Thomas",
+            "Thomas Oehlrich"
+          ]
+        },
+        {
+          "player_id": "868728",
+          "player_name": "Lukas Binder",
+          "number": "11",
+          "position": "LA",
+          "aliases": [
+            "Binder",
+            "Lukas",
+            "Lukas Binder"
+          ]
+        },
+        {
+          "player_id": "1633198",
+          "player_name": "Matej Klima",
+          "number": "13",
+          "position": "RL",
+          "aliases": [
+            "Klima",
+            "Matej",
+            "Matej Klima"
+          ]
+        },
+        {
+          "player_id": "902002",
+          "player_name": "Marko Mamic",
+          "number": "14",
+          "position": "RL",
+          "aliases": [
+            "Mamic",
+            "Marko",
+            "Marko Mamic"
+          ]
+        },
+        {
+          "player_id": "905036",
+          "player_name": "Adam Lönn",
+          "number": "15",
+          "position": "RL",
+          "aliases": [
+            "Adam",
+            "Adam Lönn",
+            "Lönn"
+          ]
+        },
+        {
+          "player_id": "124259",
+          "player_name": "Tomas Mrkva",
+          "number": "16",
+          "position": "TW",
+          "aliases": [
+            "Mrkva",
+            "Tomas",
+            "Tomas Mrkva"
+          ]
+        },
+        {
+          "player_id": "2864621",
+          "player_name": "Leopold Huber",
+          "number": "16",
+          "position": "TW",
+          "aliases": [
+            "Huber",
+            "Leopold",
+            "Leopold Huber"
+          ]
+        },
+        {
+          "player_id": "2207736",
+          "player_name": "Ahmend Nasralla",
+          "number": "17",
+          "position": "CB",
+          "aliases": [
+            "Ahmed",
+            "Ahmed Khairy",
+            "Ahmed Nasralla",
+            "Ahmend",
+            "Ahmend Nasralla",
+            "Khairy",
+            "Nasralla"
+          ]
+        },
+        {
+          "player_id": "2313429",
+          "player_name": "Staffan Peter",
+          "number": "18",
+          "position": "RA",
+          "aliases": [
+            "Peter",
+            "Staffan",
+            "Staffan Peter"
+          ]
+        },
+        {
+          "player_id": "905484",
+          "player_name": "William Bogojevic",
+          "number": "20",
+          "position": "RL",
+          "aliases": [
+            "Bogojevic",
+            "William",
+            "William Bogojevic"
+          ]
+        },
+        {
+          "player_id": "592112",
+          "player_name": "Moritz Preuss",
+          "number": "24",
+          "position": "KR",
+          "aliases": [
+            "Moritz",
+            "Moritz Preuss",
+            "Preuss"
+          ]
+        },
+        {
+          "player_id": "2819285",
+          "player_name": "Caspar Gauer",
+          "number": "25",
+          "position": "CB",
+          "aliases": [
+            "Caspar",
+            "Caspar Gauer",
+            "Gauer"
+          ]
+        },
+        {
+          "player_id": "869388",
+          "player_name": "Franz Semper",
+          "number": "32",
+          "position": "RR",
+          "aliases": [
+            "Franz",
+            "Franz Semper",
+            "Semper"
+          ]
+        },
+        {
+          "player_id": "1643794",
+          "player_name": "Luka Rogan",
+          "number": "33",
+          "position": "KR",
+          "aliases": [
+            "Luka",
+            "Luka Rogan",
+            "Rogan"
+          ]
+        },
+        {
+          "player_id": "2819225",
+          "player_name": "Anton Voß",
+          "number": "34",
+          "position": "RA",
+          "aliases": [
+            "Anton",
+            "Anton Voß",
+            "Voß"
+          ]
+        },
+        {
+          "player_id": "2562933",
+          "player_name": "Jan Brix",
+          "number": "35",
+          "position": "LA",
+          "aliases": [
+            "Brix",
+            "Jan",
+            "Jan Brix"
+          ]
+        },
+        {
+          "player_id": "2073299",
+          "player_name": "Blær Hinriksson",
+          "number": "44",
+          "position": "RM",
+          "aliases": [
+            "Blær",
+            "Blær Hinriksson",
+            "Hinriksson"
+          ]
+        },
+        {
+          "player_id": "3005829",
+          "player_name": "Jeron Busch",
+          "number": "54",
+          "position": "RR",
+          "aliases": [
+            "Busch",
+            "Jeron",
+            "Jeron Busch"
+          ]
+        },
+        {
+          "player_id": "797330",
+          "player_name": "Dean Bombac",
+          "number": "67",
+          "position": "RM",
+          "aliases": [
+            "Bombac",
+            "Dean",
+            "Dean Bombac"
+          ]
+        },
+        {
+          "player_id": "2242235",
+          "player_name": "Tim Maximilian Hertzfeld",
+          "number": "72",
+          "position": "KR",
+          "aliases": [
+            "Hertzfeld",
+            "Tim Maximilian",
+            "Tim Maximilian Hertzfeld"
+          ]
+        },
+        {
+          "player_id": "2895735",
+          "player_name": "Tom Koschek",
+          "number": "76",
+          "position": "LA",
+          "aliases": [
+            "Koschek",
+            "Tom",
+            "Tom Koschek"
+          ]
+        }
+      ]
+    },
+    "sc_magdeburg": {
+      "team_id": "sc_magdeburg",
+      "team_name": "SC Magdeburg",
+      "players": [
+        {
+          "player_id": "903080",
+          "player_name": "Sergey Hernández Ferrer",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Hernández Ferrer",
+            "Sergey",
+            "Sergey Hernández Ferrer"
+          ]
+        },
+        {
+          "player_id": "174687",
+          "player_name": "Matthias Musche",
+          "number": "6",
+          "position": "LA",
+          "aliases": [
+            "Matthias",
+            "Matthias Musche",
+            "Musche"
+          ]
+        },
+        {
+          "player_id": "904750",
+          "player_name": "Felix Claar",
+          "number": "7",
+          "position": "RL",
+          "aliases": [
+            "Claar",
+            "Felix",
+            "Felix Claar"
+          ]
+        },
+        {
+          "player_id": "2091595",
+          "player_name": "Manuel Zehnder",
+          "number": "8",
+          "position": "RM",
+          "aliases": [
+            "Manuel",
+            "Manuel Zehnder",
+            "Zehnder"
+          ]
+        },
+        {
+          "player_id": "872478",
+          "player_name": "Tim Zechel",
+          "number": "9",
+          "position": "KR",
+          "aliases": [
+            "Tim",
+            "Tim Zechel",
+            "Zechel"
+          ]
+        },
+        {
+          "player_id": "1280318",
+          "player_name": "Gisli Thorgeir Kristjansson",
+          "number": "10",
+          "position": "RM",
+          "aliases": [
+            "Gisli Thorgeir",
+            "Gisli Thorgeir Kristjansson",
+            "Kristjansson"
+          ]
+        },
+        {
+          "player_id": "904800",
+          "player_name": "Daniel Pettersson",
+          "number": "11",
+          "position": "RA",
+          "aliases": [
+            "Daniel",
+            "Daniel Pettersson",
+            "Pettersson"
+          ]
+        },
+        {
+          "player_id": "2147788",
+          "player_name": "Matej Mandic",
+          "number": "12",
+          "position": "TW",
+          "aliases": [
+            "Mandic",
+            "Matej",
+            "Matej Mandic"
+          ]
+        },
+        {
+          "player_id": "1387007",
+          "player_name": "Omar Ingi Magnusson",
+          "number": "14",
+          "position": "RR",
+          "aliases": [
+            "Magnusson",
+            "Omar Ingi",
+            "Omar Ingi Magnusson"
+          ]
+        },
+        {
+          "player_id": "124891",
+          "player_name": "Tim Hornke",
+          "number": "17",
+          "position": "RA",
+          "aliases": [
+            "Hornke",
+            "Tim",
+            "Tim Hornke"
+          ]
+        },
+        {
+          "player_id": "1386989",
+          "player_name": "Elvar Örn Jonsson",
+          "number": "19",
+          "position": "RL",
+          "aliases": [
+            "Elvar Örn",
+            "Elvar Örn Jonsson",
+            "Jonsson"
+          ]
+        },
+        {
+          "player_id": "220939",
+          "player_name": "Philipp Weber",
+          "number": "20",
+          "position": "RL",
+          "aliases": [
+            "Philipp",
+            "Philipp Weber",
+            "Weber"
+          ]
+        },
+        {
+          "player_id": "905078",
+          "player_name": "Albin Lagergren",
+          "number": "21",
+          "position": "RR",
+          "aliases": [
+            "Albin",
+            "Albin Lagergren",
+            "Lagergren"
+          ]
+        },
+        {
+          "player_id": "875992",
+          "player_name": "Lukas Mertens",
+          "number": "22",
+          "position": "LA",
+          "aliases": [
+            "Lukas",
+            "Lukas Mertens",
+            "Mertens"
+          ]
+        },
+        {
+          "player_id": "1290402",
+          "player_name": "Magnus Saugstrup",
+          "number": "23",
+          "position": "KR",
+          "aliases": [
+            "Magnus",
+            "Magnus Saugstrup",
+            "Saugstrup"
+          ]
+        },
+        {
+          "player_id": "905126",
+          "player_name": "Christian O'Sullivan",
+          "number": "24",
+          "position": "RM",
+          "aliases": [
+            "Christian",
+            "Christian O'Sullivan",
+            "O'Sullivan"
+          ]
+        },
+        {
+          "player_id": "1290404",
+          "player_name": "Sebastian Barthold",
+          "number": "25",
+          "position": "LA",
+          "aliases": [
+            "Barthold",
+            "Sebastian",
+            "Sebastian Barthold"
+          ]
+        },
+        {
+          "player_id": "904802",
+          "player_name": "Oscar Bergendahl",
+          "number": "54",
+          "position": "KR",
+          "aliases": [
+            "Bergendahl",
+            "Oscar",
+            "Oscar Bergendahl"
+          ]
+        }
+      ]
+    },
+    "sg_flensburg_handewitt": {
+      "team_id": "sg_flensburg_handewitt",
+      "team_name": "SG Flensburg-Handewitt",
+      "players": [
+        {
+          "player_id": "1028491",
+          "player_name": "Benjamin Burić",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Benjamin",
+            "Benjamin Burić",
+            "Burić"
+          ]
+        },
+        {
+          "player_id": "1560268",
+          "player_name": "Simon Pytlick",
+          "number": "2",
+          "position": "RL",
+          "aliases": [
+            "Pytlick",
+            "Simon",
+            "Simon Pytlick"
+          ]
+        },
+        {
+          "player_id": "876390",
+          "player_name": "Johannes Golla",
+          "number": "4",
+          "position": "KR",
+          "aliases": [
+            "Golla",
+            "Johannes",
+            "Johannes Golla"
+          ]
+        },
+        {
+          "player_id": "1387503",
+          "player_name": "Niclas Kirkeløkke",
+          "number": "5",
+          "position": "RR",
+          "aliases": [
+            "Kirkeløkke",
+            "Niclas",
+            "Niclas Kirkeløkke"
+          ]
+        },
+        {
+          "player_id": "2411325",
+          "player_name": "Marko Grgic",
+          "number": "17",
+          "position": "RM",
+          "aliases": [
+            "Grgic",
+            "Marko",
+            "Marko Grgic"
+          ]
+        },
+        {
+          "player_id": "2091233",
+          "player_name": "Adin Faljić",
+          "number": "19",
+          "position": "KR",
+          "aliases": [
+            "Adin",
+            "Adin Faljić",
+            "Faljić"
+          ]
+        },
+        {
+          "player_id": "592178",
+          "player_name": "Kevin Møller",
+          "number": "20",
+          "position": "TW",
+          "aliases": [
+            "Kevin",
+            "Kevin Møller",
+            "Møller"
+          ]
+        },
+        {
+          "player_id": "356234",
+          "player_name": "Kent Robin Tønnesen",
+          "number": "23",
+          "position": "RR",
+          "aliases": [
+            "Kent Robin",
+            "Kent Robin Tønnesen",
+            "Tønnesen"
+          ]
+        },
+        {
+          "player_id": "1515763",
+          "player_name": "Lukas Jørgensen",
+          "number": "25",
+          "position": "KR",
+          "aliases": [
+            "Jørgensen",
+            "Lukas",
+            "Lukas Jørgensen"
+          ]
+        },
+        {
+          "player_id": "1611730",
+          "player_name": "Aksel Horgen",
+          "number": "27",
+          "position": "RA",
+          "aliases": [
+            "Aksel",
+            "Aksel Horgen",
+            "Horgen"
+          ]
+        },
+        {
+          "player_id": "1436958",
+          "player_name": "Patrick Volz",
+          "number": "28",
+          "position": "LA",
+          "aliases": [
+            "Patrick",
+            "Patrick Volz",
+            "Volz"
+          ]
+        },
+        {
+          "player_id": "1637708",
+          "player_name": "Emil Jakobsen",
+          "number": "31",
+          "position": "LA",
+          "aliases": [
+            "Emil",
+            "Emil Jakobsen",
+            "Jakobsen"
+          ]
+        },
+        {
+          "player_id": "2430421",
+          "player_name": "Thilo Knutzen",
+          "number": "34",
+          "position": "RM",
+          "aliases": [
+            "Knutzen",
+            "Thilo",
+            "Thilo Knutzen"
+          ]
+        },
+        {
+          "player_id": "797318",
+          "player_name": "Blaž Blagotinšek",
+          "number": "43",
+          "position": "KR",
+          "aliases": [
+            "Blagotinšek",
+            "Blaž",
+            "Blaž Blagotinšek"
+          ]
+        },
+        {
+          "player_id": "1521943",
+          "player_name": "Domen Novak",
+          "number": "63",
+          "position": "RA",
+          "aliases": [
+            "Domen",
+            "Domen Novak",
+            "Novak"
+          ]
+        },
+        {
+          "player_id": "1397085",
+          "player_name": "Lasse Møller",
+          "number": "64",
+          "position": "RL",
+          "aliases": [
+            "Lasse",
+            "Lasse Møller",
+            "Møller"
+          ]
+        },
+        {
+          "player_id": "1070758",
+          "player_name": "Luca Witzke",
+          "number": "77",
+          "position": "RM",
+          "aliases": [
+            "Luca",
+            "Luca Witzke",
+            "Witzke"
+          ]
+        }
+      ]
+    },
+    "tbv_lemgo_lippe": {
+      "team_id": "tbv_lemgo_lippe",
+      "team_name": "TBV Lemgo Lippe",
+      "players": [
+        {
+          "player_id": "1559140",
+          "player_name": "Constantin Möstl",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Constantin",
+            "Constantin Möstl",
+            "Möstl"
+          ]
+        },
+        {
+          "player_id": "1557564",
+          "player_name": "Lukas Hutecek",
+          "number": "2",
+          "position": "RL",
+          "aliases": [
+            "Hutecek",
+            "Lukas",
+            "Lukas Hutecek"
+          ]
+        },
+        {
+          "player_id": "257881",
+          "player_name": "Nicolai Theilinger",
+          "number": "3",
+          "position": "RR",
+          "aliases": [
+            "Nicolai",
+            "Nicolai Theilinger",
+            "Theilinger"
+          ]
+        },
+        {
+          "player_id": "1581488",
+          "player_name": "Samuel Zehnder",
+          "number": "4",
+          "position": "LA",
+          "aliases": [
+            "Samuel",
+            "Samuel Zehnder",
+            "Zehnder"
+          ]
+        },
+        {
+          "player_id": "2673853",
+          "player_name": "Jan Mudrow",
+          "number": "7",
+          "position": "RM",
+          "aliases": [
+            "Jan",
+            "Jan Mudrow",
+            "Mudrow"
+          ]
+        },
+        {
+          "player_id": "1112343",
+          "player_name": "Frederik Simak",
+          "number": "8",
+          "position": "RL",
+          "aliases": [
+            "Frederik",
+            "Frederik Simak",
+            "Simak"
+          ]
+        },
+        {
+          "player_id": "2941341",
+          "player_name": "Linus Borreck",
+          "number": "12",
+          "position": "TW",
+          "aliases": [
+            "Borreck",
+            "Linus",
+            "Linus Borreck"
+          ]
+        },
+        {
+          "player_id": "119021",
+          "player_name": "Bobby Schagen",
+          "number": "14",
+          "position": "RA",
+          "aliases": [
+            "Bobby",
+            "Bobby Schagen",
+            "Schagen"
+          ]
+        },
+        {
+          "player_id": "2062927",
+          "player_name": "Leve Carstensen",
+          "number": "21",
+          "position": "LA",
+          "aliases": [
+            "Carstensen",
+            "Leve",
+            "Leve Carstensen"
+          ]
+        },
+        {
+          "player_id": "1591856",
+          "player_name": "Adam Nyfjäll",
+          "number": "22",
+          "position": "KR",
+          "aliases": [
+            "Adam",
+            "Adam Nyfjäll",
+            "Nyfjäll"
+          ]
+        },
+        {
+          "player_id": "355978",
+          "player_name": "Tim Suton",
+          "number": "23",
+          "position": "RM",
+          "aliases": [
+            "Suton",
+            "Tim",
+            "Tim Suton"
+          ]
+        },
+        {
+          "player_id": "2184984",
+          "player_name": "Joël Willecke",
+          "number": "24",
+          "position": "KR",
+          "aliases": [
+            "Joël",
+            "Joël Willecke",
+            "Willecke"
+          ]
+        },
+        {
+          "player_id": "1834276",
+          "player_name": "Niels Gerardus Versteijnen",
+          "number": "25",
+          "position": "RR",
+          "aliases": [
+            "Niels Gerardus",
+            "Niels Gerardus Versteijnen",
+            "Versteijnen"
+          ]
+        },
+        {
+          "player_id": "1564292",
+          "player_name": "Hendrik Wagner",
+          "number": "28",
+          "position": "RL",
+          "aliases": [
+            "Hendrik",
+            "Hendrik Wagner",
+            "Wagner"
+          ]
+        },
+        {
+          "player_id": "2372869",
+          "player_name": "Jarnes Faust",
+          "number": "35",
+          "position": "RA",
+          "aliases": [
+            "Faust",
+            "Jarnes",
+            "Jarnes Faust"
+          ]
+        },
+        {
+          "player_id": "3067235",
+          "player_name": "Thore Rahmlow",
+          "number": "36",
+          "position": "LA",
+          "aliases": [
+            "Rahmlow",
+            "Thore",
+            "Thore Rahmlow"
+          ]
+        },
+        {
+          "player_id": "2382313",
+          "player_name": "Sadik Emre Herseklioglu",
+          "number": "37",
+          "position": "RM",
+          "aliases": [
+            "Herseklioglu",
+            "Sadik Emre",
+            "Sadik Emre Herseklioglu"
+          ]
+        },
+        {
+          "player_id": "2973025",
+          "player_name": "Moritz Sundermann",
+          "number": "39",
+          "position": "RL",
+          "aliases": [
+            "Moritz",
+            "Moritz Sundermann",
+            "Sundermann"
+          ]
+        },
+        {
+          "player_id": "3057671",
+          "player_name": "Benjamin Bröhl",
+          "number": "39",
+          "position": "KR",
+          "aliases": [
+            "Benjamin",
+            "Benjamin Bröhl",
+            "Bröhl"
+          ]
+        },
+        {
+          "player_id": "2407487",
+          "player_name": "Meeno Carstensen",
+          "number": "40",
+          "position": "KR",
+          "aliases": [
+            "Carstensen",
+            "Meeno",
+            "Meeno Carstensen"
+          ]
+        },
+        {
+          "player_id": "1291292",
+          "player_name": "Urh Kastelic",
+          "number": "99",
+          "position": "TW",
+          "aliases": [
+            "Kastelic",
+            "Urh",
+            "Urh Kastelic"
+          ]
+        }
+      ]
+    },
+    "thw_kiel": {
+      "team_id": "thw_kiel",
+      "team_name": "THW Kiel",
+      "players": [
+        {
+          "player_id": "1293830",
+          "player_name": "Gonzalo Perez de Vargas",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Gonzalo",
+            "Gonzalo Perez de Vargas",
+            "Perez de Vargas"
+          ]
+        },
+        {
+          "player_id": "124630",
+          "player_name": "Domagoj Duvnjak",
+          "number": "4",
+          "position": "RM",
+          "aliases": [
+            "Domagoj",
+            "Domagoj Duvnjak",
+            "Duvnjak"
+          ]
+        },
+        {
+          "player_id": "604492",
+          "player_name": "Harald Reinkind",
+          "number": "6",
+          "position": "RR",
+          "aliases": [
+            "Harald",
+            "Harald Reinkind",
+            "Reinkind"
+          ]
+        },
+        {
+          "player_id": "1387507",
+          "player_name": "Magnus Landin Jacobsen",
+          "number": "7",
+          "position": "LA",
+          "aliases": [
+            "Landin Jacobsen",
+            "Magnus",
+            "Magnus Landin Jacobsen"
+          ]
+        },
+        {
+          "player_id": "1397179",
+          "player_name": "Petter Øverby",
+          "number": "11",
+          "position": "KR",
+          "aliases": [
+            "Petter",
+            "Petter Øverby",
+            "Øverby"
+          ]
+        },
+        {
+          "player_id": "2827323",
+          "player_name": "Leon Nowottny",
+          "number": "12",
+          "position": "TW",
+          "aliases": [
+            "Leon",
+            "Leon Nowottny",
+            "Nowottny"
+          ]
+        },
+        {
+          "player_id": "3023112",
+          "player_name": "Jesse Bennett Dahmke",
+          "number": "15",
+          "position": "RR",
+          "aliases": [
+            "Dahmke",
+            "Jesse Bennett",
+            "Jesse Bennett Dahmke"
+          ]
+        },
+        {
+          "player_id": "2091597",
+          "player_name": "Lukas Laube",
+          "number": "20",
+          "position": "KR",
+          "aliases": [
+            "Laube",
+            "Lukas",
+            "Lukas Laube"
+          ]
+        },
+        {
+          "player_id": "1560210",
+          "player_name": "Eric Johansson",
+          "number": "21",
+          "position": "RL",
+          "aliases": [
+            "Eric",
+            "Eric Johansson",
+            "Johansson"
+          ]
+        },
+        {
+          "player_id": "2819273",
+          "player_name": "Rasmus Ankermann",
+          "number": "22",
+          "position": "RM",
+          "aliases": [
+            "Ankermann",
+            "Rasmus",
+            "Rasmus Ankermann"
+          ]
+        },
+        {
+          "player_id": "345575",
+          "player_name": "Rune Dahmke",
+          "number": "23",
+          "position": "LA",
+          "aliases": [
+            "Dahmke",
+            "Rune",
+            "Rune Dahmke"
+          ]
+        },
+        {
+          "player_id": "918114",
+          "player_name": "Lukas Zerbe",
+          "number": "24",
+          "position": "RA",
+          "aliases": [
+            "Lukas",
+            "Lukas Zerbe",
+            "Zerbe"
+          ]
+        },
+        {
+          "player_id": "125213",
+          "player_name": "Andreas Wolff",
+          "number": "33",
+          "position": "TW",
+          "aliases": [
+            "Andreas",
+            "Andreas Wolff",
+            "Wolff"
+          ]
+        },
+        {
+          "player_id": "1875608",
+          "player_name": "Emil Wernsdorf Madsen",
+          "number": "45",
+          "position": "RR",
+          "aliases": [
+            "Emil Wernsdorf",
+            "Emil Wernsdorf Madsen",
+            "Madsen"
+          ]
+        },
+        {
+          "player_id": "2764133",
+          "player_name": "Mohab Abdelhak",
+          "number": "48",
+          "position": "RR",
+          "aliases": [
+            "Abdelhak",
+            "Mohab",
+            "Mohab Abdelhak"
+          ]
+        },
+        {
+          "player_id": "1029445",
+          "player_name": "Nikola Bilyk",
+          "number": "53",
+          "position": "RL",
+          "aliases": [
+            "Bilyk",
+            "Nikola",
+            "Nikola Bilyk"
+          ]
+        },
+        {
+          "player_id": "176857",
+          "player_name": "Hendrik Pekeler",
+          "number": "61",
+          "position": "KR",
+          "aliases": [
+            "Hendrik",
+            "Hendrik Pekeler",
+            "Pekeler"
+          ]
+        },
+        {
+          "player_id": "1890154",
+          "player_name": "Elias Ellefsen á Skipagøtu",
+          "number": "71",
+          "position": "RM",
+          "aliases": [
+            "Elias",
+            "Elias Ellefsen á Skipagøtu",
+            "Ellefsen á Skipagøtu"
+          ]
+        },
+        {
+          "player_id": "2182844",
+          "player_name": "Bence Imre",
+          "number": "91",
+          "position": "RA",
+          "aliases": [
+            "Bence",
+            "Bence Imre",
+            "Imre"
+          ]
+        },
+        {
+          "player_id": "1560410",
+          "player_name": "Veron Nacinovic",
+          "number": "93",
+          "position": "KR",
+          "aliases": [
+            "Nacinovic",
+            "Veron",
+            "Veron Nacinovic"
+          ]
+        }
+      ]
+    },
+    "tsv_gwd_minden": {
+      "team_id": "tsv_gwd_minden",
+      "team_name": "TSV GWD Minden",
+      "players": [
+        {
+          "player_id": "125160",
+          "player_name": "Malte Semisch",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Malte",
+            "Malte Semisch",
+            "Semisch"
+          ]
+        },
+        {
+          "player_id": "2521147",
+          "player_name": "Mattis Welle",
+          "number": "3",
+          "position": "KM",
+          "aliases": [
+            "Mattis",
+            "Mattis Welle",
+            "Welle"
+          ]
+        },
+        {
+          "player_id": "3027462",
+          "player_name": "Daniel Astrup Pedersen",
+          "number": "3",
+          "position": "KR",
+          "aliases": [
+            "Astrup Pedersen",
+            "Daniel",
+            "Daniel Astrup Pedersen"
+          ]
+        },
+        {
+          "player_id": "2435205",
+          "player_name": "Jan Malte Diekmann",
+          "number": "4",
+          "position": "RA",
+          "aliases": [
+            "Diekmann",
+            "Jan Malte",
+            "Jan Malte Diekmann"
+          ]
+        },
+        {
+          "player_id": "1973895",
+          "player_name": "Florian Kranzmann",
+          "number": "5",
+          "position": "LA",
+          "aliases": [
+            "Florian",
+            "Florian Kranzmann",
+            "Kranzmann"
+          ]
+        },
+        {
+          "player_id": "2819509",
+          "player_name": "Nils Marvin Müller",
+          "number": "6",
+          "position": "RM",
+          "aliases": [
+            "Müller",
+            "Nils Marvin",
+            "Nils Marvin Müller"
+          ]
+        },
+        {
+          "player_id": "869850",
+          "player_name": "Nils Müller",
+          "number": "6",
+          "position": "RM",
+          "aliases": [
+            "Müller",
+            "Nils",
+            "Nils Müller"
+          ]
+        },
+        {
+          "player_id": "2417607",
+          "player_name": "Lasse Franz",
+          "number": "7",
+          "position": "RL",
+          "aliases": [
+            "Franz",
+            "Lasse",
+            "Lasse Franz"
+          ]
+        },
+        {
+          "player_id": "1317574",
+          "player_name": "Karolis Antanavičius",
+          "number": "8",
+          "position": "RL",
+          "aliases": [
+            "Antanavičius",
+            "Karolis",
+            "Karolis Antanavičius"
+          ]
+        },
+        {
+          "player_id": "2437053",
+          "player_name": "Morten Hempel Jensen",
+          "number": "9",
+          "position": "RL",
+          "aliases": [
+            "Hempel Jensen",
+            "Morten",
+            "Morten Hempel Jensen"
+          ]
+        },
+        {
+          "player_id": "913070",
+          "player_name": "Mats Korte",
+          "number": "11",
+          "position": "LA",
+          "aliases": [
+            "Korte",
+            "Mats",
+            "Mats Korte"
+          ]
+        },
+        {
+          "player_id": "3109770",
+          "player_name": "Arend Bartelheimer",
+          "number": "12",
+          "position": "TW",
+          "aliases": [
+            "Arend",
+            "Arend Bartelheimer",
+            "Bartelheimer"
+          ]
+        },
+        {
+          "player_id": "1554399",
+          "player_name": "Ian Weber",
+          "number": "13",
+          "position": "RM",
+          "aliases": [
+            "Ian",
+            "Ian Weber",
+            "Weber"
+          ]
+        },
+        {
+          "player_id": "1291598",
+          "player_name": "Tibor Ivanisevic",
+          "number": "16",
+          "position": "TW",
+          "aliases": [
+            "Ivanisevic",
+            "Tibor",
+            "Tibor Ivanisevic"
+          ]
+        },
+        {
+          "player_id": "873546",
+          "player_name": "Rene Gruszka",
+          "number": "18",
+          "position": "RA",
+          "aliases": [
+            "Gruszka",
+            "Rene",
+            "Rene Gruszka"
+          ]
+        },
+        {
+          "player_id": "1840196",
+          "player_name": "Jakub Sterba",
+          "number": "19",
+          "position": "RA",
+          "aliases": [
+            "Jakub",
+            "Jakub Sterba",
+            "Sterba"
+          ]
+        },
+        {
+          "player_id": "2101350",
+          "player_name": "Mika Laurin Sajenev",
+          "number": "21",
+          "position": "KR",
+          "aliases": [
+            "Mika Laurin",
+            "Mika Laurin Sajenev",
+            "Sajenev"
+          ]
+        },
+        {
+          "player_id": "1136103",
+          "player_name": "Philipp Vorlicek",
+          "number": "22",
+          "position": "RR",
+          "aliases": [
+            "Philipp",
+            "Philipp Vorlicek",
+            "Vorlicek"
+          ]
+        },
+        {
+          "player_id": "2112922",
+          "player_name": "Niclas Benedict Heitkamp",
+          "number": "23",
+          "position": "RM",
+          "aliases": [
+            "Heitkamp",
+            "Niclas Benedict",
+            "Niclas Benedict Heitkamp"
+          ]
+        },
+        {
+          "player_id": "930986",
+          "player_name": "Max Staar",
+          "number": "27",
+          "position": "RA",
+          "aliases": [
+            "Max",
+            "Max Staar",
+            "Staar"
+          ]
+        },
+        {
+          "player_id": "1431101",
+          "player_name": "Tom Bergner",
+          "number": "28",
+          "position": "KR",
+          "aliases": [
+            "Bergner",
+            "Tom",
+            "Tom Bergner"
+          ]
+        },
+        {
+          "player_id": "2132944",
+          "player_name": "Eimanatas Grimuta",
+          "number": "28",
+          "position": "KR",
+          "aliases": [
+            "Eimanatas",
+            "Eimanatas Grimuta",
+            "Grimuta"
+          ]
+        },
+        {
+          "player_id": "873914",
+          "player_name": "Michael Schulz",
+          "number": "33",
+          "position": "KR",
+          "aliases": [
+            "Michael",
+            "Michael Schulz",
+            "Schulz"
+          ]
+        },
+        {
+          "player_id": "975877",
+          "player_name": "Malte Donker",
+          "number": "39",
+          "position": "RR",
+          "aliases": [
+            "Donker",
+            "Malte",
+            "Malte Donker"
+          ]
+        },
+        {
+          "player_id": "876354",
+          "player_name": "Azat Valiullin",
+          "number": "55",
+          "position": "RL",
+          "aliases": [
+            "Azat",
+            "Azat Valiullin",
+            "Valiullin"
+          ]
+        },
+        {
+          "player_id": "2210402",
+          "player_name": "Keno Danzenbächer",
+          "number": "72",
+          "position": "TW",
+          "aliases": [
+            "Danzenbächer",
+            "Keno",
+            "Keno Danzenbächer"
+          ]
+        },
+        {
+          "player_id": "1336870",
+          "player_name": "Alexander Weck",
+          "number": "73",
+          "position": "RL",
+          "aliases": [
+            "Alexander",
+            "Alexander Weck",
+            "Weck"
+          ]
+        }
+      ]
+    },
+    "tsv_hannover_burgdorf": {
+      "team_id": "tsv_hannover_burgdorf",
+      "team_name": "TSV Hannover-Burgdorf",
+      "players": [
+        {
+          "player_id": "1254478",
+          "player_name": "Leif Tissier",
+          "number": "7",
+          "position": "RM",
+          "aliases": [
+            "Leif",
+            "Leif Tissier",
+            "Tissier"
+          ]
+        },
+        {
+          "player_id": "1543987",
+          "player_name": "Vilhelm Poulsen",
+          "number": "9",
+          "position": "RR",
+          "aliases": [
+            "Poulsen",
+            "Vilhelm",
+            "Vilhelm Poulsen"
+          ]
+        },
+        {
+          "player_id": "1968457",
+          "player_name": "Renars Uscins",
+          "number": "10",
+          "position": "RR",
+          "aliases": [
+            "Renars",
+            "Renars Uscins",
+            "Uscins"
+          ]
+        },
+        {
+          "player_id": "2060377",
+          "player_name": "Maxim Orlov",
+          "number": "11",
+          "position": "RL",
+          "aliases": [
+            "Maxim",
+            "Maxim Orlov",
+            "Orlov"
+          ]
+        },
+        {
+          "player_id": "1298982",
+          "player_name": "Simon Gade",
+          "number": "16",
+          "position": "TW",
+          "aliases": [
+            "Gade",
+            "Simon",
+            "Simon Gade"
+          ]
+        },
+        {
+          "player_id": "1291322",
+          "player_name": "August Pedersen",
+          "number": "17",
+          "position": "LA",
+          "aliases": [
+            "August",
+            "August Pedersen",
+            "Pedersen"
+          ]
+        },
+        {
+          "player_id": "259941",
+          "player_name": "Marius Steinhauser",
+          "number": "19",
+          "position": "RA",
+          "aliases": [
+            "Marius",
+            "Marius Steinhauser",
+            "Steinhauser"
+          ]
+        },
+        {
+          "player_id": "3058431",
+          "player_name": "Bendix Dietzsch",
+          "number": "20",
+          "position": "LA",
+          "aliases": [
+            "Bendix",
+            "Bendix Dietzsch",
+            "Dietzsch"
+          ]
+        },
+        {
+          "player_id": "925808",
+          "player_name": "Marian Michalczik",
+          "number": "22",
+          "position": "RM",
+          "aliases": [
+            "Marian",
+            "Marian Michalczik",
+            "Michalczik"
+          ]
+        },
+        {
+          "player_id": "905504",
+          "player_name": "Jonathan Edvardsson",
+          "number": "26",
+          "position": "RM",
+          "aliases": [
+            "Edvardsson",
+            "Jonathan",
+            "Jonathan Edvardsson"
+          ]
+        },
+        {
+          "player_id": "2085187",
+          "player_name": "Sindre Aho",
+          "number": "27",
+          "position": "RM",
+          "aliases": [
+            "Aho",
+            "Sindre",
+            "Sindre Aho"
+          ]
+        },
+        {
+          "player_id": "925204",
+          "player_name": "Joel Birlehm",
+          "number": "35",
+          "position": "TW",
+          "aliases": [
+            "Birlehm",
+            "Joel",
+            "Joel Birlehm"
+          ]
+        },
+        {
+          "player_id": "906726",
+          "player_name": "Lukas Stutzke",
+          "number": "39",
+          "position": "RL",
+          "aliases": [
+            "Lukas",
+            "Lukas Stutzke",
+            "Stutzke"
+          ]
+        },
+        {
+          "player_id": "1872214",
+          "player_name": "Thomas Alfred Solstad",
+          "number": "44",
+          "position": "KR",
+          "aliases": [
+            "Solstad",
+            "Thomas Alfred",
+            "Thomas Alfred Solstad"
+          ]
+        },
+        {
+          "player_id": "2436221",
+          "player_name": "Johannes Thiel",
+          "number": "46",
+          "position": "RR",
+          "aliases": [
+            "Johannes",
+            "Johannes Thiel",
+            "Thiel"
+          ]
+        },
+        {
+          "player_id": "2104590",
+          "player_name": "Justus Fischer",
+          "number": "54",
+          "position": "KR",
+          "aliases": [
+            "Fischer",
+            "Justus",
+            "Justus Fischer"
+          ]
+        },
+        {
+          "player_id": "1104103",
+          "player_name": "Hannes Feise",
+          "number": "56",
+          "position": "LA",
+          "aliases": [
+            "Feise",
+            "Hannes",
+            "Hannes Feise"
+          ]
+        },
+        {
+          "player_id": "2280543",
+          "player_name": "Daniel Weber",
+          "number": "58",
+          "position": "RA",
+          "aliases": [
+            "Daniel",
+            "Daniel Weber",
+            "Weber"
+          ]
+        },
+        {
+          "player_id": "2206164",
+          "player_name": "Luis Rodriguez",
+          "number": "80",
+          "position": "KR",
+          "aliases": [
+            "Luis",
+            "Luis Rodriguez",
+            "Rodriguez"
+          ]
+        },
+        {
+          "player_id": "3032150",
+          "player_name": "Bela Wellmann",
+          "number": "86",
+          "position": "RA",
+          "aliases": [
+            "Bela",
+            "Bela Wellmann",
+            "Wellmann"
+          ]
+        },
+        {
+          "player_id": "2221668",
+          "player_name": "Fabrice-Joel Wolf",
+          "number": "92",
+          "position": "KR",
+          "aliases": [
+            "Fabrice-Joel",
+            "Fabrice-Joel Wolf",
+            "Wolf"
+          ]
+        }
+      ]
+    },
+    "tvb_stuttgart": {
+      "team_id": "tvb_stuttgart",
+      "team_name": "TVB Stuttgart",
+      "players": [
+        {
+          "player_id": "1382551",
+          "player_name": "Mateusz Kornecki",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Kornecki",
+            "Mateusz",
+            "Mateusz Kornecki"
+          ]
+        },
+        {
+          "player_id": "1261948",
+          "player_name": "Max Häfner",
+          "number": "3",
+          "position": "RM",
+          "aliases": [
+            "Häfner",
+            "Max",
+            "Max Häfner"
+          ]
+        },
+        {
+          "player_id": "1521683",
+          "player_name": "Antonio Serradilla",
+          "number": "5",
+          "position": "RL",
+          "aliases": [
+            "Antonio",
+            "Antonio Serradilla",
+            "Serradilla"
+          ]
+        },
+        {
+          "player_id": "1949358",
+          "player_name": "Kasper Thorsen Lien",
+          "number": "7",
+          "position": "RA",
+          "aliases": [
+            "Kasper Thorsen",
+            "Kasper Thorsen Lien",
+            "Lien"
+          ]
+        },
+        {
+          "player_id": "1560432",
+          "player_name": "Gianfranco Pribetic",
+          "number": "9",
+          "position": "KR",
+          "aliases": [
+            "Gianfranco",
+            "Gianfranco Pribetic",
+            "Pribetic"
+          ]
+        },
+        {
+          "player_id": "1840218",
+          "player_name": "Ivan Snajder",
+          "number": "10",
+          "position": "LA",
+          "aliases": [
+            "Ivan",
+            "Ivan Snajder",
+            "Snajder"
+          ]
+        },
+        {
+          "player_id": "2187826",
+          "player_name": "Achilleas Toskas",
+          "number": "13",
+          "position": "RR",
+          "aliases": [
+            "Achilleas",
+            "Achilleas Toskas",
+            "Toskas"
+          ]
+        },
+        {
+          "player_id": "1290244",
+          "player_name": "Simone Mengon",
+          "number": "15",
+          "position": "RL",
+          "aliases": [
+            "Mengon",
+            "Simone",
+            "Simone Mengon"
+          ]
+        },
+        {
+          "player_id": "1291492",
+          "player_name": "Miljan Vujovic",
+          "number": "16",
+          "position": "TW",
+          "aliases": [
+            "Miljan",
+            "Miljan Vujovic",
+            "Vujovic"
+          ]
+        },
+        {
+          "player_id": "1261946",
+          "player_name": "Samuel Röthlisberger",
+          "number": "17",
+          "position": "KR",
+          "aliases": [
+            "Röthlisberger",
+            "Samuel",
+            "Samuel Röthlisberger"
+          ]
+        },
+        {
+          "player_id": "3052039",
+          "player_name": "Linus Schmid",
+          "number": "18",
+          "position": "RL",
+          "aliases": [
+            "Linus",
+            "Linus Schmid",
+            "Schmid"
+          ]
+        },
+        {
+          "player_id": "3060365",
+          "player_name": "Max Heydecke",
+          "number": "19",
+          "position": "KR",
+          "aliases": [
+            "Heydecke",
+            "Max",
+            "Max Heydecke"
+          ]
+        },
+        {
+          "player_id": "2215446",
+          "player_name": "Jorick Pol",
+          "number": "21",
+          "position": "TW",
+          "aliases": [
+            "Jorick",
+            "Jorick Pol",
+            "Pol"
+          ]
+        },
+        {
+          "player_id": "1339454",
+          "player_name": "Torben Matzken",
+          "number": "22",
+          "position": "RM",
+          "aliases": [
+            "Matzken",
+            "Torben",
+            "Torben Matzken"
+          ]
+        },
+        {
+          "player_id": "260105",
+          "player_name": "Patrick Zieker",
+          "number": "25",
+          "position": "LA",
+          "aliases": [
+            "Patrick",
+            "Patrick Zieker",
+            "Zieker"
+          ]
+        },
+        {
+          "player_id": "1290226",
+          "player_name": "Marco Mengon",
+          "number": "30",
+          "position": "RL",
+          "aliases": [
+            "Marco",
+            "Marco Mengon",
+            "Mengon"
+          ]
+        },
+        {
+          "player_id": "124190",
+          "player_name": "Kai Häfner",
+          "number": "34",
+          "position": "RR",
+          "aliases": [
+            "Häfner",
+            "Kai",
+            "Kai Häfner"
+          ]
+        },
+        {
+          "player_id": "1290170",
+          "player_name": "Jonas Truchanovicius",
+          "number": "37",
+          "position": "RL",
+          "aliases": [
+            "Jonas",
+            "Jonas Truchanovicius",
+            "Truchanovicius"
+          ]
+        },
+        {
+          "player_id": "1298956",
+          "player_name": "Lenny Rubin",
+          "number": "44",
+          "position": "RL",
+          "aliases": [
+            "Lenny",
+            "Lenny Rubin",
+            "Rubin"
+          ]
+        },
+        {
+          "player_id": "1930146",
+          "player_name": "Jakob Nigg",
+          "number": "57",
+          "position": "RA",
+          "aliases": [
+            "Jakob",
+            "Jakob Nigg",
+            "Nigg"
+          ]
+        },
+        {
+          "player_id": "257897",
+          "player_name": "Daniel Rebmann",
+          "number": "94",
+          "position": "TW",
+          "aliases": [
+            "Daniel",
+            "Daniel Rebmann",
+            "Rebmann"
+          ]
+        }
+      ]
+    },
+    "thsv_eisenach": {
+      "team_id": "thsv_eisenach",
+      "team_name": "ThSV Eisenach",
+      "players": [
+        {
+          "player_id": "1869448",
+          "player_name": "Matija Spikic",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Matija",
+            "Matija Spikic",
+            "Spikic"
+          ]
+        },
+        {
+          "player_id": "1560176",
+          "player_name": "Oskar Joelsson",
+          "number": "3",
+          "position": "RL",
+          "aliases": [
+            "Joelsson",
+            "Oskar",
+            "Oskar Joelsson"
+          ]
+        },
+        {
+          "player_id": "2229824",
+          "player_name": "Timothy Reichmuth",
+          "number": "5",
+          "position": "LA",
+          "aliases": [
+            "Reichmuth",
+            "Timothy",
+            "Timothy Reichmuth"
+          ]
+        },
+        {
+          "player_id": "2060379",
+          "player_name": "Max Beneke",
+          "number": "9",
+          "position": "RR",
+          "aliases": [
+            "Beneke",
+            "Max",
+            "Max Beneke"
+          ]
+        },
+        {
+          "player_id": "1412553",
+          "player_name": "Fynn Hangstein",
+          "number": "10",
+          "position": "RL",
+          "aliases": [
+            "Fynn",
+            "Fynn Hangstein",
+            "Hangstein"
+          ]
+        },
+        {
+          "player_id": "2184752",
+          "player_name": "Gian Attenhofer",
+          "number": "11",
+          "position": "RA",
+          "aliases": [
+            "Attenhofer",
+            "Gian",
+            "Gian Attenhofer"
+          ]
+        },
+        {
+          "player_id": "118998",
+          "player_name": "Silvio Heinevetter",
+          "number": "12",
+          "position": "TW",
+          "aliases": [
+            "Heinevetter",
+            "Silvio",
+            "Silvio Heinevetter"
+          ]
+        },
+        {
+          "player_id": "874088",
+          "player_name": "Peter Walz",
+          "number": "14",
+          "position": "KR",
+          "aliases": [
+            "Peter",
+            "Peter Walz",
+            "Walz"
+          ]
+        },
+        {
+          "player_id": "1257172",
+          "player_name": "Moritz Ende",
+          "number": "21",
+          "position": "RA",
+          "aliases": [
+            "Ende",
+            "Moritz",
+            "Moritz Ende"
+          ]
+        },
+        {
+          "player_id": "1887206",
+          "player_name": "Felix Aellen",
+          "number": "22",
+          "position": "RM",
+          "aliases": [
+            "Aellen",
+            "Felix",
+            "Felix Aellen"
+          ]
+        },
+        {
+          "player_id": "1263576",
+          "player_name": "Philipp Meyer",
+          "number": "27",
+          "position": "KR",
+          "aliases": [
+            "Meyer",
+            "Philipp",
+            "Philipp Meyer"
+          ]
+        },
+        {
+          "player_id": "1611014",
+          "player_name": "Dominik Solak",
+          "number": "30",
+          "position": "RL",
+          "aliases": [
+            "Dominik",
+            "Dominik Solak",
+            "Solak"
+          ]
+        },
+        {
+          "player_id": "2183682",
+          "player_name": "Vukasin Antonijevic",
+          "number": "41",
+          "position": "RM",
+          "aliases": [
+            "Antonijevic",
+            "Vukasin",
+            "Vukasin Antonijevic"
+          ]
+        },
+        {
+          "player_id": "2060627",
+          "player_name": "Stephan Seitz",
+          "number": "44",
+          "position": "RR",
+          "aliases": [
+            "Seitz",
+            "Stephan",
+            "Stephan Seitz"
+          ]
+        },
+        {
+          "player_id": "1336684",
+          "player_name": "Justin Kurch",
+          "number": "52",
+          "position": "KR",
+          "aliases": [
+            "Justin",
+            "Justin Kurch",
+            "Kurch"
+          ]
+        },
+        {
+          "player_id": "1262014",
+          "player_name": "Vincent Büchner",
+          "number": "74",
+          "position": "LA",
+          "aliases": [
+            "Büchner",
+            "Vincent",
+            "Vincent Büchner"
+          ]
+        },
+        {
+          "player_id": "3026650",
+          "player_name": "Marec Stupka",
+          "number": "94",
+          "position": "RA",
+          "aliases": [
+            "Marec",
+            "Marec Stupka",
+            "Stupka"
+          ]
+        },
+        {
+          "player_id": "384680",
+          "player_name": "Alexander Saul",
+          "number": "95",
+          "position": "RR",
+          "aliases": [
+            "Alexander",
+            "Alexander Saul",
+            "Saul"
+          ]
+        },
+        {
+          "player_id": "1854144",
+          "player_name": "Tillman Leu",
+          "number": "99",
+          "position": "KR",
+          "aliases": [
+            "Leu",
+            "Tillman",
+            "Tillman Leu"
+          ]
+        }
+      ]
+    },
+    "vfl_gummersbach": {
+      "team_id": "vfl_gummersbach",
+      "team_name": "VfL Gummersbach",
+      "players": [
+        {
+          "player_id": "2147794",
+          "player_name": "Dominik Kuzmanović",
+          "number": "1",
+          "position": "TW",
+          "aliases": [
+            "Dominik",
+            "Dominik Kuzmanović",
+            "Kuzmanović"
+          ]
+        },
+        {
+          "player_id": "2183578",
+          "player_name": "João Gomes",
+          "number": "3",
+          "position": "RR",
+          "aliases": [
+            "Gomes",
+            "João",
+            "João Gomes"
+          ]
+        },
+        {
+          "player_id": "1341914",
+          "player_name": "Ellidi Snaer Vidarsson",
+          "number": "4",
+          "position": "KR",
+          "aliases": [
+            "Ellidi Snaer",
+            "Ellidi Snaer Vidarsson",
+            "Vidarsson"
+          ]
+        },
+        {
+          "player_id": "1290976",
+          "player_name": "Tilen Kodrin",
+          "number": "5",
+          "position": "LA",
+          "aliases": [
+            "Kodrin",
+            "Tilen",
+            "Tilen Kodrin"
+          ]
+        },
+        {
+          "player_id": "887574",
+          "player_name": "Milos Vujovic",
+          "number": "6",
+          "position": "LA",
+          "aliases": [
+            "Milos",
+            "Milos Vujovic",
+            "Vujovic"
+          ]
+        },
+        {
+          "player_id": "1554855",
+          "player_name": "Julian Köster",
+          "number": "7",
+          "position": "RL",
+          "aliases": [
+            "Julian",
+            "Julian Köster",
+            "Köster"
+          ]
+        },
+        {
+          "player_id": "345523",
+          "player_name": "Lukas Blohme",
+          "number": "8",
+          "position": "RA",
+          "aliases": [
+            "Blohme",
+            "Lukas",
+            "Lukas Blohme"
+          ]
+        },
+        {
+          "player_id": "2028365",
+          "player_name": "Mathis Häseler",
+          "number": "11",
+          "position": "RA",
+          "aliases": [
+            "Häseler",
+            "Mathis",
+            "Mathis Häseler"
+          ]
+        },
+        {
+          "player_id": "1397299",
+          "player_name": "Teitur Örn Einarsson",
+          "number": "14",
+          "position": "RR",
+          "aliases": [
+            "Einarsson",
+            "Teitur Örn",
+            "Teitur Örn Einarsson"
+          ]
+        },
+        {
+          "player_id": "1639730",
+          "player_name": "Miro Schluroff",
+          "number": "15",
+          "position": "RL",
+          "aliases": [
+            "Miro",
+            "Miro Schluroff",
+            "Schluroff"
+          ]
+        },
+        {
+          "player_id": "1949342",
+          "player_name": "Bertram Obling",
+          "number": "16",
+          "position": "TW",
+          "aliases": [
+            "Bertram",
+            "Bertram Obling",
+            "Obling"
+          ]
+        },
+        {
+          "player_id": "1560130",
+          "player_name": "Ludwig Hallbäck",
+          "number": "20",
+          "position": "RM",
+          "aliases": [
+            "Hallbäck",
+            "Ludwig",
+            "Ludwig Hallbäck"
+          ]
+        },
+        {
+          "player_id": "119029",
+          "player_name": "Kentin Mahé",
+          "number": "22",
+          "position": "RM",
+          "aliases": [
+            "Kentin",
+            "Kentin Mahé",
+            "Mahé"
+          ]
+        },
+        {
+          "player_id": "1958589",
+          "player_name": "Ole Pregler",
+          "number": "23",
+          "position": "RM",
+          "aliases": [
+            "Ole",
+            "Ole Pregler",
+            "Pregler"
+          ]
+        },
+        {
+          "player_id": "1591822",
+          "player_name": "Kristjan Horzen",
+          "number": "27",
+          "position": "KR",
+          "aliases": [
+            "Horzen",
+            "Kristjan",
+            "Kristjan Horzen"
+          ]
+        },
+        {
+          "player_id": "1731477",
+          "player_name": "Tom Kiesler",
+          "number": "30",
+          "position": "RL",
+          "aliases": [
+            "Kiesler",
+            "Tom",
+            "Tom Kiesler"
+          ]
+        },
+        {
+          "player_id": "1028401",
+          "player_name": "Kay Smits",
+          "number": "31",
+          "position": "RR",
+          "aliases": [
+            "Kay",
+            "Kay Smits",
+            "Smits"
+          ]
+        },
+        {
+          "player_id": "1387567",
+          "player_name": "Stepan Zeman",
+          "number": "66",
+          "position": "KR",
+          "aliases": [
+            "Stepan",
+            "Stepan Zeman",
+            "Zeman"
+          ]
+        }
+      ]
+    }
+  }
+}
