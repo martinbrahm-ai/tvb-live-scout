@@ -1,244 +1,399 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TVB Live Scout</title>
-
   <style>
+    :root {
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --border: #d1d5db;
+      --input: #f3f4f6;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #1f6feb;
+      --primary-hover: #1558b0;
+      --success: #0f9d58;
+      --error: #d93025;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial;
-      background: #f5f6f8;
-      padding: 20px;
+      margin: 0;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
 
-    .container {
-      max-width: 900px;
-      margin: auto;
-      background: white;
-      padding: 25px;
-      border-radius: 10px;
+    .wrap {
+      max-width: 1280px;
+      margin: 0 auto;
     }
 
-    h2 {
-      margin-bottom: 20px;
+    h1 {
+      font-size: 48px;
+      line-height: 1.1;
+      margin: 0 0 28px 0;
+      font-weight: 700;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 15px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 26px 24px;
     }
 
-    label {
-      font-size: 14px;
-      margin-bottom: 5px;
+    .field label {
       display: block;
+      font-size: 15px;
+      margin-bottom: 10px;
+      color: #374151;
     }
 
-    select, input, textarea {
+    .field input[type="text"],
+    .field input[type="number"],
+    .field select,
+    .field textarea {
       width: 100%;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      border: 1px solid transparent;
+      background: var(--input);
+      border-radius: 14px;
+      padding: 16px 18px;
+      font-size: 18px;
+      color: var(--text);
+      outline: none;
     }
 
-    textarea {
-      margin-top: 10px;
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: #9ca3af;
+      background: #eef1f5;
+    }
+
+    .field textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .checkbox-field {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-top: 34px;
+    }
+
+    .checkbox-field input[type="checkbox"] {
+      width: 24px;
+      height: 24px;
+      margin: 0;
+    }
+
+    .checkbox-field label {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .actions {
+      margin-top: 26px;
     }
 
     button {
-      margin-top: 20px;
       width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      background: #2b6cb0;
-      color: white;
-      font-size: 16px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px;
+      font-size: 22px;
+      color: var(--text);
       cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
     }
 
     button:hover {
-      background: #1e4e86;
+      background: #f9fafb;
+      border-color: #bfc5cf;
+    }
+
+    button.primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    button.primary:hover {
+      background: var(--primary-hover);
+      border-color: var(--primary-hover);
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #eef2ff;
+      color: #243b53;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    .status.success {
+      background: #eaf7ef;
+      color: var(--success);
+    }
+
+    .status.error {
+      background: #fdecea;
+      color: var(--error);
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 960px) {
+      h1 {
+        font-size: 36px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .checkbox-field {
+        padding-top: 0;
+      }
     }
   </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Manuelle Erfassung</h1>
+
+    <div class="card">
+      <div class="grid">
+        <div class="field">
+          <label for="match_id">Spiel-ID</label>
+          <input id="match_id" type="text" value="62090160" />
+        </div>
+
+        <div class="field">
+          <label for="match_minute">Minute</label>
+          <input id="match_minute" type="number" value="3" min="0" />
+        </div>
+
+        <div class="field">
+          <label for="match_second">Sekunde</label>
+          <input id="match_second" type="number" value="25" min="0" max="59" />
+        </div>
+
+        <div class="field">
+          <label for="context">Kontext</label>
+          <select id="context">
+            <option value="tvb_attack">TVB Angriff</option>
+            <option value="tvb_defense">TVB Abwehr</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="action">Aktion</label>
+          <select id="action">
+            <option value="duel">Zweikampf</option>
+            <option value="shot">Wurf</option>
+            <option value="turnover">Ballverlust</option>
+            <option value="block">Block</option>
+            <option value="save">Parade</option>
+            <option value="foul">Foul</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="result">Ergebnis</label>
+          <select id="result">
+            <option value="won">Gewonnen</option>
+            <option value="lost">Verloren</option>
+            <option value="success">Erfolgreich</option>
+            <option value="failed">Nicht erfolgreich</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="follow">Folgeaktion</label>
+          <select id="follow">
+            <option value="goal">Tor</option>
+            <option value="none">Keine</option>
+            <option value="shot">Wurf</option>
+            <option value="foul">Foul</option>
+            <option value="turnover">Ballverlust</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="numbers">Zahlensituation</label>
+          <select id="numbers">
+            <option value="equal">Gleichzahl</option>
+            <option value="overload">Überzahl</option>
+            <option value="underload">Unterzahl</option>
+          </select>
+        </div>
+
+        <div class="checkbox-field">
+          <input type="checkbox" id="onevone" />
+          <label for="onevone">1:1</label>
+        </div>
+
+        <div class="field">
+          <label for="player_tvb">TVB Spieler</label>
+          <input id="player_tvb" type="text" value="1803" placeholder="z. B. 1803" />
+        </div>
+
+        <div class="field">
+          <label for="player_opponent">Gegenspieler</label>
+          <input id="player_opponent" type="text" value="" placeholder="optional" />
+        </div>
+
+        <div class="field">
+          <label for="system">TVB System</label>
+          <select id="system">
+            <option value="6:0">6:0</option>
+            <option value="5:1">5:1</option>
+            <option value="3:2:1">3:2:1</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="zone">Zone</label>
+          <input id="zone" type="text" value="0/1" />
+        </div>
+
+        <div class="field">
+          <label for="shot_from">Wurf von Zone</label>
+          <input id="shot_from" type="text" value="0/1" />
+        </div>
+
+        <div class="field">
+          <label for="target">Ziel im Tor</label>
+          <select id="target">
+            <option value="center_high">center_high</option>
+            <option value="left_high">left_high</option>
+            <option value="right_high">right_high</option>
+            <option value="left_low">left_low</option>
+            <option value="right_low">right_low</option>
+            <option value="center_low">center_low</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label for="notes">Notizen / Rohtext</label>
+          <textarea id="notes">Minute 3,25 Hefner gegen Fischer gewonnen, Tor.</textarea>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="sendBtn" class="primary" type="button">Senden</button>
+        <div id="status" class="status">Seite geladen. Initialisiere Firebase ...</div>
+        <div class="hint">Wenn das Senden nicht funktioniert, F12 öffnen und die Konsole prüfen.</div>
+      </div>
+    </div>
+  </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-    // 👉 HIER DEINE FIREBASE CONFIG EINTRAGEN
+    const statusEl = document.getElementById("status");
+    const sendBtn = document.getElementById("sendBtn");
+
+    function setStatus(message, type = "") {
+      statusEl.textContent = message;
+      statusEl.className = "status" + (type ? " " + type : "");
+      console.log(message);
+    }
+
     const firebaseConfig = {
-    "type": "service_account",
-    "project_id": "udoagentendaten",
-    "private_key_id": "e4cbd0a2a55d49245e4e9f60dce572831bf4e40e",
-    "private_key": "-----BEGIN PRIVATE KEY-----\n" + \
-        "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCs55/eFTVS7eSE\n" + \
-        "MyYQCk0f+1LcZnUV+k9MVcVBovWLor9FPOMSsV0yvv+1pZY308StdPcgqbpc6fj5\n" + \
-        "rW47/+yVQeSDmYSN+BTSaAIXy1mNiAp4yHsau1Qu/fpvjH6iZNacsBN4aF9R1VHC\n" + \
-        "r4ETfhKvH+a7+s0xrRbZHXOs4pqqSJ6XWuwz5KMJaBnERCLPEPc44VbDXSl0d6u9\n" + \
-        "UiD82hinFj0OrJHxS/Bjsya+BG5PZ8kZrE3W7sPptdmxuFuy73WUW2SxQ4JbURKK\n" + \
-        "aOk1B7xfhfTc1AjH+4t+DIcKWjnYErOQApa/EP7/wVDQAq0UuJJXANXQlm/ZTm58\n" + \
-        "rmCWnUjRAgMBAAECggEAKFIfetexRrSJTLbs0mLEl4exTApslYJ4yZFa3bKV1klO\n" + \
-        "l2PahDpuRG48DW0e+cfdnqGfG7PY7N/3GqpyAXXuAuSJ2JKNUdofaO2uR0Q5jwLB\n" + \
-        "hmciJhq3R/ocU7UMtuwTDBkXgUW9rMS1O1RYImaNDt++m+mhvkriACGZHyD89mZ0\n" + \
-        "xOICzuAP8ug+s8NU10iGsZd7OyfEbEtsFlxHfBhms2FBj/A8eFKXlyETJ2LfoLym\n" + \
-        "+KmKntO5TrLqdAAQxMQgNBt+yOmjkNTf9TlJjjPQgyXxqq0yEeMurLjmsN+BHwKW\n" + \
-        "zWni6nYsFnHWE5ycU3UutuHdyXmPbrBopl4wtCARrQKBgQDX3S3QN05z9dMPYMTH\n" + \
-        "B+ADwM/LhSwanCC2tiCx5dLMvNKJGzjDDxeO6qAZLDzCdJLsLndyXuBBEhnfa3iH\n" + \
-        "R7HpPR3qeoHic4c+WIZC7kUNjDbLqD3P2N+QvM/n9TpB+IC9KWHP81YMshyBxs0l\n" + \
-        "jBCtUNsBTN1cECuv23//DTFA/wKBgQDNDaX4aQQFUVJhLHAFhM1iuYs5OJ0bTne/\n" + \
-        "nSwTipwc1S0XLbKdvqAOKPHqXl8uO0bn/FVzBccvRCZRkDpsVVDLkg6CqoeXp/6d\n" + \
-        "GbF9drHR3k6HDIE88+mZ1lU86Sr9gnmX7WAYyMwj5EAC7ASaE1v+ni7/jtbtsMhv\n" + \
-        "sAZhGJOmLwKBgQCC00qbwZkrkFWtIUHBOlWbELUfLIPRUMRG19Sy3I3Ihbu3Wqcp\n" + \
-        "GLF3bV1ARF5Cn/IXcAX2a+fPqA/EJ1cx7dK2f9Lss/iZ7NiPgYlFcTCqiEsBXOKx\n" + \
-        "YEgGaVg7xZTcPKaRfk4IgPqq0RuTz4+vbNcCo1lHzXTvAeHoP8iwJCewswKBgGmc\n" + \
-        "L/FDVTjP65f05TVSct34Jkawa+pWfcKI1tyxtTn8aZ7YgHhSZ+kjGYXWWTtceGaf\nRftZ7H7hoMK9f/mv708JyMNvxSpM8gxD4XB3I5qt3tAblqyoC5aaF4ippuSuwKWJ\nMsdRFCMgOf/HQ49/jRAUtKwXC4ecV39+r6pumA0tAoGBAMaNGWgg8Q7flvC5psm4\nTjLpuMrObSNlxJYpzoKP/iH4WVdy+JlYdd9SmcXCRMjbfncO8cjrissxIldljgZV\nIvBf5TyiV8yP8u3+K03OUMKgWKMo5nu5+1bsgqBydOn/yZfl32gbwe5au/ALauKM\ni4nf6iGGIh9ixOZQcoyRWa7G\n" + \
-        "-----END PRIVATE KEY-----\n",
-    "client_email": "firebase-adminsdk-fbsvc@udoagentendaten.iam.gserviceaccount.com",
-    "client_id": "104104033246729548488",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40udoagentendaten.iam.gserviceaccount.com"
+      apiKey: "AIzaSyAJwAR1krrLK-fU-uCtLz8dqRvtdoTyPWY",
+      authDomain: "udoagentendaten.firebaseapp.com",
+      projectId: "udoagentendaten",
+      storageBucket: "udoagentendaten.firebasestorage.app",
+      messagingSenderId: "115120028998",
+      appId: "1:115120028998:web:fb24fc6ab5059288da7947",
+      measurementId: "G-J5M3ZWZ1V9"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    let db = null;
 
-    window.submitEvent = async function() {
+    try {
+      const app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+      setStatus("Firebase initialisiert. Bereit zum Senden.");
+    } catch (err) {
+      console.error(err);
+      setStatus("Firebase Init Fehler: " + err.message, "error");
+    }
+
+    function getValue(id) {
+      return document.getElementById(id).value.trim();
+    }
+
+    sendBtn.addEventListener("click", async () => {
+      if (!db) {
+        setStatus("Abbruch: Firestore wurde nicht initialisiert.", "error");
+        return;
+      }
+
+      sendBtn.disabled = true;
+      setStatus("Senden gestartet ...");
+
       const payload = {
-        match_id: "62090160",
-
-        team_context: document.getElementById("context").value,
-        action_type: document.getElementById("action").value,
-        result: document.getElementById("result").value,
-        follow_action: document.getElementById("follow").value,
-
-        numerical_situation: document.getElementById("numbers").value,
+        match_id: getValue("match_id"),
+        match_minute: Number(getValue("match_minute") || 0),
+        match_second: Number(getValue("match_second") || 0),
+        team_context: getValue("context"),
+        action_type: getValue("action"),
+        result: getValue("result"),
+        follow_action: getValue("follow"),
+        numerical_situation: getValue("numbers"),
         is_one_v_one: document.getElementById("onevone").checked,
-
-        player_tvb: document.getElementById("player_tvb").value,
-        player_opponent: document.getElementById("player_opponent").value,
-
-        tvb_system_label: document.getElementById("system").value,
-
-        zone: document.getElementById("zone").value,
-        shot_from_zone: document.getElementById("shot_from").value,
-        shot_target_zone: document.getElementById("target").value,
-
-        notes: document.getElementById("notes").value,
-
+        player_tvb: getValue("player_tvb") || null,
+        player_opponent: getValue("player_opponent") || null,
+        tvb_system_label: getValue("system"),
+        zone: getValue("zone"),
+        shot_from_zone: getValue("shot_from"),
+        shot_target_zone: getValue("target"),
+        notes: getValue("notes"),
         source: "manual_ui",
         created_at: serverTimestamp()
       };
 
-      await addDoc(collection(db, "scout_events"), payload);
+      console.log("Payload:", payload);
 
-      alert("Gespeichert!");
-
-      document.getElementById("notes").value = "";
-    }
+      try {
+        const docRef = await addDoc(collection(db, "scout_events"), payload);
+        setStatus("Gespeichert. Dokument-ID: " + docRef.id, "success");
+      } catch (err) {
+        console.error(err);
+        setStatus("Firestore Fehler: " + err.message, "error");
+      } finally {
+        sendBtn.disabled = false;
+      }
+    });
   </script>
-</head>
-
-<body>
-
-<div class="container">
-  <h2>Manuelle Erfassung</h2>
-
-  <div class="grid">
-
-    <div>
-      <label>Kontext</label>
-      <select id="context">
-        <option value="tvb_attack">TVB Angriff</option>
-        <option value="tvb_defense">TVB Abwehr</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Aktion</label>
-      <select id="action">
-        <option value="duel">Zweikampf</option>
-        <option value="shot">Wurf</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Ergebnis</label>
-      <select id="result">
-        <option value="won">Gewonnen</option>
-        <option value="lost">Verloren</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Folgeaktion</label>
-      <select id="follow">
-        <option value="goal">Tor</option>
-        <option value="none">Keine</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Zahlensituation</label>
-      <select id="numbers">
-        <option value="equal">Gleichzahl</option>
-        <option value="overload">Überzahl</option>
-      </select>
-    </div>
-
-    <div>
-      <label>1:1</label>
-      <input type="checkbox" id="onevone">
-    </div>
-
-    <div>
-      <label>TVB Spieler</label>
-      <input id="player_tvb">
-    </div>
-
-    <div>
-      <label>Gegenspieler</label>
-      <input id="player_opponent">
-    </div>
-
-    <div>
-      <label>TVB System</label>
-      <select id="system">
-        <option value="6:0">6:0</option>
-        <option value="5:1">5:1</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Zone</label>
-      <input id="zone" value="0/1">
-    </div>
-
-    <div>
-      <label>Wurf von Zone</label>
-      <input id="shot_from" value="0/1">
-    </div>
-
-    <div>
-      <label>Ziel im Tor</label>
-      <select id="target">
-        <option value="center_high">center_high</option>
-        <option value="left_low">left_low</option>
-        <option value="right_low">right_low</option>
-      </select>
-    </div>
-
-  </div>
-
-  <label>Notizen / Rohtext</label>
-  <textarea id="notes" rows="3"></textarea>
-
-  <button onclick="submitEvent()">Senden</button>
-
-</div>
-
 </body>
 </html>
