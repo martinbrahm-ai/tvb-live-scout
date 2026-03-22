@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TVB Live Scout</title>
+  <title>TVB Live Scout V2</title>
   <style>
     :root{
       --bg:#f3f4f6;
@@ -16,180 +16,84 @@
       --primary-hover:#1558b0;
       --ok:#0f9d58;
       --err:#d93025;
+      --warn:#b45309;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Arial,sans-serif;
-      background:var(--bg);
-      color:var(--text);
-    }
+    body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
     .topbar{
-      background:#fff;
-      border-bottom:1px solid var(--border);
-      padding:14px 20px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:20px;
+      background:#fff;border-bottom:1px solid var(--border);
+      padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:20px
     }
-    .topbar-left{
-      display:flex;
-      align-items:center;
-      gap:16px;
-      min-width:0;
-    }
-    .logo-tvb{height:42px; width:auto; object-fit:contain}
-    .logo-capaneo{height:24px; width:auto; object-fit:contain}
+    .topbar-left{display:flex;align-items:center;gap:16px;min-width:0}
+    .logo-tvb{height:42px;width:auto;object-fit:contain}
+    .logo-capaneo{height:24px;width:auto;object-fit:contain}
     .match-title{
-      font-size:24px;
-      font-weight:700;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      font-size:24px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
     }
-    .page{
-      max-width:1400px;
-      margin:28px auto;
-      padding:0 18px;
-    }
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:24px;
-    }
+    .page{max-width:1460px;margin:24px auto;padding:0 16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px}
     .toolbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:20px;
-      flex-wrap:wrap;
+      display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap
     }
-    .toolbar h1{
-      font-size:24px;
-      margin:0;
-    }
-    .toolbar-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+    .toolbar h1{font-size:24px;margin:0}
+    .toolbar-actions{display:flex;gap:10px;flex-wrap:wrap}
     .btn{
-      border:1px solid var(--border);
-      background:#fff;
-      color:var(--text);
-      border-radius:14px;
-      padding:12px 16px;
-      font-size:16px;
-      cursor:pointer;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
+      border:1px solid var(--border);background:#fff;color:var(--text);border-radius:14px;
+      padding:12px 16px;font-size:16px;cursor:pointer;text-decoration:none;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px
     }
     .btn:hover{background:#f9fafb}
-    .btn.primary{
-      background:var(--primary);
-      color:#fff;
-      border-color:var(--primary);
+    .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .btn.primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+    .btn.recording{background:#fee2e2;border-color:#fca5a5;color:#991b1b}
+    .btn.timer-on{background:#ecfdf3;border-color:#86efac;color:#166534}
+    .meta-row{
+      display:grid;grid-template-columns:2.3fr 1fr 1fr 1.2fr;gap:18px;margin-bottom:18px
     }
-    .btn.primary:hover{
-      background:var(--primary-hover);
-      border-color:var(--primary-hover);
+    .timer-box{
+      display:flex;gap:8px;align-items:end;flex-wrap:wrap
     }
-    .btn.recording{
-      background:#fee2e2;
-      border-color:#fca5a5;
-      color:#991b1b;
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+    .field label{display:block;font-size:14px;margin-bottom:7px;color:#374151}
+    .field input[type="text"], .field input[type="number"], .field select, .field textarea{
+      width:100%;border:1px solid transparent;background:var(--input);border-radius:14px;
+      padding:14px 15px;font-size:17px;color:var(--text);outline:none
     }
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:22px 22px;
+    .field input:focus, .field select:focus, .field textarea:focus{
+      border-color:#aab4c3;background:#e8edf3
     }
-    .field label{
-      display:block;
-      font-size:15px;
-      margin-bottom:8px;
-      color:#374151;
-    }
-    .field input[type="text"],
-    .field input[type="number"],
-    .field select,
-    .field textarea{
-      width:100%;
-      border:1px solid transparent;
-      background:var(--input);
-      border-radius:14px;
-      padding:15px 16px;
-      font-size:18px;
-      color:var(--text);
-      outline:none;
-    }
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus{
-      border-color:#aab4c3;
-      background:#e8edf3;
-    }
-    .field textarea{
-      min-height:120px;
-      resize:vertical;
-    }
+    .field textarea{min-height:112px;resize:vertical}
     .full{grid-column:1 / -1}
-    .checkbox-wrap{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding-top:34px;
-    }
-    .checkbox-wrap input{
-      width:22px;
-      height:22px;
-      margin:0;
-    }
+    .checkbox-wrap{display:flex;align-items:center;gap:12px;padding-top:31px}
+    .checkbox-wrap input{width:22px;height:22px;margin:0}
     .status{
-      margin-top:16px;
-      padding:12px 14px;
-      border-radius:12px;
-      background:#eef2ff;
-      color:#243b53;
-      font-size:14px;
-      white-space:pre-wrap;
+      margin-top:16px;padding:12px 14px;border-radius:12px;background:#eef2ff;
+      color:#243b53;font-size:14px;white-space:pre-wrap
     }
     .status.ok{background:#eaf7ef;color:var(--ok)}
     .status.err{background:#fdecea;color:var(--err)}
-    .hint{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:13px;
-    }
+    .status.warn{background:#fff7ed;color:var(--warn)}
+    .hint{margin-top:10px;color:var(--muted);font-size:13px}
     .voice-box{
-      margin-top:18px;
-      padding:14px;
-      border-radius:14px;
-      background:#f8fafc;
-      border:1px dashed var(--border);
+      margin-top:18px;padding:14px;border-radius:14px;background:#f8fafc;border:1px dashed var(--border)
     }
     .voice-box strong{display:block;margin-bottom:8px}
-    .meta-row{
-      display:grid;
-      grid-template-columns:2fr 1fr 1fr;
-      gap:22px;
-      margin-bottom:18px;
+    .subgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .pill{
+      display:inline-block;padding:6px 10px;border-radius:999px;background:#f3f4f6;
+      font-size:12px;color:#374151;border:1px solid var(--border)
     }
-    .loading{
-      opacity:0.7;
+    @media (max-width: 1100px){
+      .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .meta-row{grid-template-columns:1fr}
+      .subgrid{grid-template-columns:1fr}
     }
-    @media (max-width: 960px){
-      .grid,.meta-row{grid-template-columns:1fr}
-      .checkbox-wrap{padding-top:0}
+    @media (max-width: 760px){
+      .grid,.subgrid{grid-template-columns:1fr}
       .match-title{font-size:18px;white-space:normal}
       .logo-tvb{height:34px}
       .logo-capaneo{height:20px}
+      .checkbox-wrap{padding-top:0}
     }
   </style>
 </head>
@@ -205,7 +109,7 @@
   <div class="page">
     <div class="card">
       <div class="toolbar">
-        <h1>Manuelle Erfassung</h1>
+        <h1>Manuelle Erfassung V2</h1>
         <div class="toolbar-actions">
           <button id="voiceBtn" class="btn" type="button">🎤 Spracheingabe starten</button>
           <button id="clearBtn" class="btn" type="button">Felder leeren</button>
@@ -216,19 +120,28 @@
       <div class="meta-row">
         <div class="field">
           <label for="matchSelect">Spiel auswählen</label>
-          <select id="matchSelect" class="loading">
+          <select id="matchSelect">
             <option>Lade Spiele ...</option>
           </select>
         </div>
 
         <div class="field">
           <label for="match_minute">Minute</label>
-          <input id="match_minute" type="number" min="0" value="0" />
+          <input id="match_minute" type="number" min="0" value="0">
         </div>
 
         <div class="field">
           <label for="match_second">Sekunde</label>
-          <input id="match_second" type="number" min="0" max="59" value="0" />
+          <input id="match_second" type="number" min="0" max="59" value="0">
+        </div>
+
+        <div class="field">
+          <label>Stoppuhr</label>
+          <div class="timer-box">
+            <button id="timerStartBtn" class="btn" type="button">Start</button>
+            <button id="timerStopBtn" class="btn" type="button">Stop</button>
+            <button id="timerResetBtn" class="btn" type="button">Reset</button>
+          </div>
         </div>
       </div>
 
@@ -307,8 +220,9 @@
         </div>
 
         <div class="field">
-          <label for="system">TVB System</label>
+          <label for="system">TVB System / Taktik</label>
           <select id="system">
+            <option value="">bitte wählen</option>
             <option value="6:0">6:0</option>
             <option value="5:1">5:1</option>
             <option value="3:2:1">3:2:1</option>
@@ -317,7 +231,7 @@
         </div>
 
         <div class="field">
-          <label for="opponent_system">Gegner System</label>
+          <label for="opponent_system">Gegner System / Taktik</label>
           <select id="opponent_system">
             <option value="">bitte wählen</option>
             <option value="6:0">6:0</option>
@@ -373,29 +287,55 @@
           <label for="target">Ziel im Tor</label>
           <select id="target">
             <option value="">bitte wählen</option>
-            <option value="left_high">left_high</option>
-            <option value="center_high">center_high</option>
-            <option value="right_high">right_high</option>
-            <option value="left_low">left_low</option>
-            <option value="center_low">center_low</option>
-            <option value="right_low">right_low</option>
+            <option value="left_high">oben links</option>
+            <option value="center_high">oben Mitte</option>
+            <option value="right_high">oben rechts</option>
+            <option value="left_low">unten links</option>
+            <option value="center_low">unten Mitte</option>
+            <option value="right_low">unten rechts</option>
           </select>
+        </div>
+
+        <div class="field">
+          <label for="goalkeeper_name">Torhüter</label>
+          <input id="goalkeeper_name" type="text" placeholder="z. B. Kornecky">
+        </div>
+
+        <div class="field">
+          <label for="event_type">Event-Typ</label>
+          <select id="event_type">
+            <option value="">automatisch</option>
+            <option value="attack">Angriff</option>
+            <option value="defense">Abwehr</option>
+            <option value="goalkeeper">Torhüter</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <div class="checkbox-wrap">
+            <input type="checkbox" id="is_goalkeeper_event">
+            <label for="is_goalkeeper_event" style="margin:0">Torhüter-Event</label>
+          </div>
         </div>
 
         <div class="field full">
           <label for="notes">Notizen / Rohtext</label>
-          <textarea id="notes" placeholder="z. B. Minute 3,25 Häfner gegen Fischer gewonnen, Tor."></textarea>
+          <textarea id="notes" placeholder="z. B. TVB in Abwehr, 6 0 Formation, Fischer vom Kreis, Wurf, Tor unten links, Torhüter Kornecky"></textarea>
         </div>
       </div>
 
       <div class="voice-box">
         <strong>Spracheingabe</strong>
-        <div>Empfohlenes Format: „Minute 3 25, TVB Angriff, Zweikampf gewonnen, Tor, Zone 0/1, Kai Häfner gegen Fischer.“</div>
-        <div id="voiceTranscript" class="hint">Noch keine Spracheingabe.</div>
+        <div class="subgrid">
+          <div><span class="pill">Beispiel 1</span><div class="hint">Minute 3 25, TVB Angriff, Zweikampf gewonnen, Tor.</div></div>
+          <div><span class="pill">Beispiel 2</span><div class="hint">TVB in Abwehr, 6 0 Formation, Fischer vom Kreis, Wurf, Tor unten links, Torhüter Kornecky.</div></div>
+          <div><span class="pill">Regel</span><div class="hint">Kurze Sätze. Danach prüfen. Dann senden.</div></div>
+        </div>
+        <div id="voiceTranscript" class="hint" style="margin-top:10px">Noch keine Spracheingabe.</div>
       </div>
 
       <button id="sendBtn" class="btn primary" type="button" style="margin-top:18px;width:100%">Senden</button>
-      <div id="status" class="status">Seite geladen. Initialisiere Firebase ...</div>
+      <div id="status" class="status">Seite geladen. Initialisiere ...</div>
       <div class="hint">Gespeichert wird nach: <code>matches/{selectedMatchId}/scout_events</code></div>
     </div>
   </div>
@@ -417,30 +357,61 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const statusEl = document.getElementById("status");
-    const headerEl = document.getElementById("matchHeader");
-    const transcriptEl = document.getElementById("voiceTranscript");
-    const sendBtn = document.getElementById("sendBtn");
-    const voiceBtn = document.getElementById("voiceBtn");
-    const matchSelect = document.getElementById("matchSelect");
-    const tvbPlayerSelect = document.getElementById("player_tvb");
-    const oppPlayerSelect = document.getElementById("player_opponent");
+    const els = {
+      status: document.getElementById("status"),
+      header: document.getElementById("matchHeader"),
+      transcript: document.getElementById("voiceTranscript"),
+      sendBtn: document.getElementById("sendBtn"),
+      voiceBtn: document.getElementById("voiceBtn"),
+      clearBtn: document.getElementById("clearBtn"),
+      matchSelect: document.getElementById("matchSelect"),
+      guideLink: document.getElementById("guideLink"),
+      timerStartBtn: document.getElementById("timerStartBtn"),
+      timerStopBtn: document.getElementById("timerStopBtn"),
+      timerResetBtn: document.getElementById("timerResetBtn"),
+      match_minute: document.getElementById("match_minute"),
+      match_second: document.getElementById("match_second"),
+      player_tvb: document.getElementById("player_tvb"),
+      player_opponent: document.getElementById("player_opponent"),
+      notes: document.getElementById("notes"),
+      context: document.getElementById("context"),
+      action: document.getElementById("action"),
+      result: document.getElementById("result"),
+      follow: document.getElementById("follow"),
+      numbers: document.getElementById("numbers"),
+      onevone: document.getElementById("onevone"),
+      system: document.getElementById("system"),
+      opponent_system: document.getElementById("opponent_system"),
+      zone: document.getElementById("zone"),
+      shot_from: document.getElementById("shot_from"),
+      target: document.getElementById("target"),
+      goalkeeper_name: document.getElementById("goalkeeper_name"),
+      event_type: document.getElementById("event_type"),
+      is_goalkeeper_event: document.getElementById("is_goalkeeper_event")
+    };
 
     let selectedMatchId = null;
-    let matchesCache = [];
     let selectedMatchData = null;
+    let matchesCache = [];
     let lookupData = null;
     let selectedTVBPlayers = [];
     let selectedOpponentPlayers = [];
+    let recognition = null;
+    let isRecording = false;
 
-    function setStatus(message, type="") {
-      statusEl.textContent = message;
-      statusEl.className = "status" + (type ? " " + type : "");
+    let timerSeconds = 0;
+    let timerInterval = null;
+    let timerRunning = false;
+
+    function setStatus(message, type = "") {
+      els.status.textContent = message;
+      els.status.className = "status" + (type ? " " + type : "");
       console.log(message);
     }
 
     function getValue(id) {
-      return document.getElementById(id).value.trim();
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : "";
     }
 
     function setValue(id, value) {
@@ -452,6 +423,18 @@
       } else {
         el.value = value;
       }
+    }
+
+    function normalizeText(value) {
+      return (value || "")
+        .toLowerCase()
+        .replace(/ä/g, "ae")
+        .replace(/ö/g, "oe")
+        .replace(/ü/g, "ue")
+        .replace(/ß/g, "ss")
+        .replace(/[^\p{L}\p{N}\s/:]/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim();
     }
 
     function parsePossibleDate(value) {
@@ -487,8 +470,7 @@
         parsePossibleDate(data.updated_at);
 
       if (!ts) return "";
-      const d = new Date(ts);
-      return d.toLocaleDateString("de-DE");
+      return new Date(ts).toLocaleDateString("de-DE");
     }
 
     function buildMatchLabel(id, data) {
@@ -499,8 +481,9 @@
     }
 
     function updateGuideLink() {
-      const href = selectedMatchId ? `guide.html?match_id=${encodeURIComponent(selectedMatchId)}` : "guide.html";
-      document.getElementById("guideLink").href = href;
+      els.guideLink.href = selectedMatchId
+        ? `guide.html?match_id=${encodeURIComponent(selectedMatchId)}`
+        : "guide.html";
     }
 
     function updateHeaderFromData(id, data) {
@@ -508,42 +491,13 @@
       const dateText = formatDateForLabel(data);
       const homeText = data.team_home_name || data.home || data.home_team || data.heim || "Heim";
       const awayText = data.team_away_name || data.away || data.away_team || data.gast || "Gast";
-      headerEl.textContent = dateText
+      els.header.textContent = dateText
         ? `Du scoutest für das Spiel: ${id} | ${dateText} | ${homeText} vs ${awayText}`
         : `Du scoutest für das Spiel: ${id} | ${homeText} vs ${awayText}`;
     }
 
-    function normalizeText(value) {
-      return (value || "")
-        .toLowerCase()
-        .replace(/ä/g, "ae")
-        .replace(/ö/g, "oe")
-        .replace(/ü/g, "ue")
-        .replace(/ß/g, "ss")
-        .replace(/[^\p{L}\p{N}\s]/gu, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-
-    async function loadLookupJson() {
-      try {
-        const res = await fetch("assets/league_team_lookup.json", { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        lookupData = await res.json();
-        setStatus("Lookup-Datei geladen.");
-      } catch (err) {
-        console.error(err);
-        setStatus("Lookup-Datei konnte nicht geladen werden: " + err.message, "err");
-      }
-    }
-
-    function getTeamPlayers(teamId) {
-      if (!lookupData || !lookupData.teams || !lookupData.teams[teamId]) return [];
-      return Array.isArray(lookupData.teams[teamId].players) ? lookupData.teams[teamId].players : [];
-    }
-
     function buildPlayerOptionLabel(player) {
-      const name = player.player_name || player.name || "Unbekannt";
+      const name = player.player_name || "Unbekannt";
       const id = player.player_id || "";
       const number = player.number ?? "";
       return number !== "" ? `${name} (${id}) #${number}` : `${name} (${id})`;
@@ -558,17 +512,69 @@
 
       for (const p of players) {
         const opt = document.createElement("option");
-        opt.value = String(p.player_id || p.id || "");
+        opt.value = String(p.player_id || "");
         opt.textContent = buildPlayerOptionLabel(p);
         opt.dataset.playerName = p.player_name || "";
         selectEl.appendChild(opt);
       }
     }
 
+    async function loadLookupJson() {
+      const res = await fetch("assets/league_team_lookup.json", { cache: "no-store" });
+      if (!res.ok) throw new Error(`Lookup HTTP ${res.status}`);
+      lookupData = await res.json();
+    }
+
+    function getTeamPlayers(teamId) {
+      if (!lookupData || !lookupData.teams || !lookupData.teams[teamId]) return [];
+      return Array.isArray(lookupData.teams[teamId].players) ? lookupData.teams[teamId].players : [];
+    }
+
+    async function loadMatches() {
+      const snap = await getDocs(collection(db, "matches"));
+      const items = [];
+
+      snap.forEach(docSnap => {
+        const data = docSnap.data();
+        items.push({
+          id: docSnap.id,
+          data,
+          sortTs: getSortTimestamp(data)
+        });
+      });
+
+      items.sort((a, b) => b.sortTs - a.sortTs);
+      matchesCache = items;
+
+      els.matchSelect.innerHTML = "";
+      if (items.length === 0) {
+        const option = document.createElement("option");
+        option.value = "";
+        option.textContent = "Keine Spiele gefunden";
+        els.matchSelect.appendChild(option);
+        selectedMatchId = null;
+        els.header.textContent = "Keine Spiele verfügbar";
+        return;
+      }
+
+      for (const item of items) {
+        const option = document.createElement("option");
+        option.value = item.id;
+        option.textContent = buildMatchLabel(item.id, item.data);
+        els.matchSelect.appendChild(option);
+      }
+
+      selectedMatchId = items[0].id;
+      els.matchSelect.value = selectedMatchId;
+      updateHeaderFromData(items[0].id, items[0].data);
+      updateGuideLink();
+      await loadPlayersForMatch();
+    }
+
     async function loadPlayersForMatch() {
       if (!selectedMatchData || !lookupData) {
-        fillPlayerSelect(tvbPlayerSelect, [], "Spieler nicht verfügbar");
-        fillPlayerSelect(oppPlayerSelect, [], "Gegner nicht verfügbar");
+        fillPlayerSelect(els.player_tvb, [], "Spieler nicht verfügbar");
+        fillPlayerSelect(els.player_opponent, [], "Gegner nicht verfügbar");
         return;
       }
 
@@ -595,96 +601,64 @@
       selectedTVBPlayers.sort((a, b) => String(a.number ?? "").localeCompare(String(b.number ?? ""), "de", { numeric: true }));
       selectedOpponentPlayers.sort((a, b) => String(a.number ?? "").localeCompare(String(b.number ?? ""), "de", { numeric: true }));
 
-      fillPlayerSelect(tvbPlayerSelect, selectedTVBPlayers, "bitte wählen");
-      fillPlayerSelect(oppPlayerSelect, selectedOpponentPlayers, "bitte wählen");
+      fillPlayerSelect(els.player_tvb, selectedTVBPlayers, "bitte wählen");
+      fillPlayerSelect(els.player_opponent, selectedOpponentPlayers, "bitte wählen");
     }
 
-    async function loadMatches() {
-      setStatus("Lade Spiele aus Firestore ...");
-      try {
-        const snap = await getDocs(collection(db, "matches"));
-        const items = [];
-
-        snap.forEach(docSnap => {
-          const data = docSnap.data();
-          items.push({
-            id: docSnap.id,
-            data,
-            sortTs: getSortTimestamp(data)
-          });
-        });
-
-        items.sort((a, b) => b.sortTs - a.sortTs);
-        matchesCache = items;
-
-        matchSelect.innerHTML = "";
-        matchSelect.classList.remove("loading");
-
-        if (items.length === 0) {
-          const option = document.createElement("option");
-          option.value = "";
-          option.textContent = "Keine Spiele gefunden";
-          matchSelect.appendChild(option);
-          headerEl.textContent = "Keine Spiele verfügbar";
-          selectedMatchId = null;
-          setStatus("Keine Spiele in Firestore gefunden.", "err");
-          return;
-        }
-
-        for (const item of items) {
-          const option = document.createElement("option");
-          option.value = item.id;
-          option.textContent = buildMatchLabel(item.id, item.data);
-          matchSelect.appendChild(option);
-        }
-
-        selectedMatchId = items[0].id;
-        matchSelect.value = selectedMatchId;
-        updateHeaderFromData(items[0].id, items[0].data);
-        updateGuideLink();
-        await loadPlayersForMatch();
-        setStatus("Spiele geladen. Neuestes Spiel ist vorausgewählt.", "ok");
-      } catch (err) {
-        console.error(err);
-        setStatus("Fehler beim Laden der Spiele: " + err.message, "err");
-        headerEl.textContent = "Spiele konnten nicht geladen werden";
-        matchSelect.innerHTML = `<option value="">Fehler beim Laden</option>`;
-      }
+    function updateTimerFields() {
+      const minutes = Math.floor(timerSeconds / 60);
+      const seconds = timerSeconds % 60;
+      els.match_minute.value = String(minutes);
+      els.match_second.value = String(seconds);
     }
 
-    matchSelect.addEventListener("change", async () => {
-      selectedMatchId = matchSelect.value;
-      updateGuideLink();
+    function startTimer() {
+      if (timerRunning) return;
+      timerRunning = true;
+      els.timerStartBtn.classList.add("timer-on");
+      timerInterval = setInterval(() => {
+        timerSeconds += 1;
+        updateTimerFields();
+      }, 1000);
+      setStatus("Stoppuhr läuft.");
+    }
 
-      const cached = matchesCache.find(m => m.id === selectedMatchId);
-      if (cached) {
-        updateHeaderFromData(cached.id, cached.data);
-        await loadPlayersForMatch();
-        setStatus("Spiel gewechselt: " + buildMatchLabel(cached.id, cached.data), "ok");
-      }
-    });
+    function stopTimer() {
+      if (!timerRunning) return;
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerRunning = false;
+      els.timerStartBtn.classList.remove("timer-on");
+      setStatus("Stoppuhr gestoppt.");
+    }
+
+    function resetTimer() {
+      stopTimer();
+      timerSeconds = 0;
+      updateTimerFields();
+      setStatus("Stoppuhr zurückgesetzt.");
+    }
 
     function clearFields() {
-      setValue("match_minute", "0");
-      setValue("match_second", "0");
-      setValue("context", "tvb_attack");
-      setValue("action", "duel");
-      setValue("result", "won");
-      setValue("follow", "none");
-      setValue("numbers", "equal");
-      document.getElementById("onevone").checked = false;
-      setValue("player_tvb", "");
-      setValue("player_opponent", "");
-      setValue("system", "6:0");
-      setValue("opponent_system", "");
-      setValue("zone", "");
-      setValue("shot_from", "");
-      setValue("target", "");
-      setValue("notes", "");
-      transcriptEl.textContent = "Noch keine Spracheingabe.";
+      els.context.value = "tvb_attack";
+      els.action.value = "duel";
+      els.result.value = "won";
+      els.follow.value = "none";
+      els.numbers.value = "equal";
+      els.onevone.checked = false;
+      els.player_tvb.value = "";
+      els.player_opponent.value = "";
+      els.system.value = "";
+      els.opponent_system.value = "";
+      els.zone.value = "";
+      els.shot_from.value = "";
+      els.target.value = "";
+      els.goalkeeper_name.value = "";
+      els.event_type.value = "";
+      els.is_goalkeeper_event.checked = false;
+      els.notes.value = "";
+      els.transcript.textContent = "Noch keine Spracheingabe.";
     }
-
-    document.getElementById("clearBtn").addEventListener("click", clearFields);
 
     function findPlayerByAlias(players, text) {
       const normText = normalizeText(text);
@@ -700,7 +674,6 @@
         for (const raw of candidates) {
           const alias = normalizeText(raw);
           if (!alias) continue;
-
           if (normText.includes(alias)) {
             if (!best || alias.length > best.aliasLength) {
               best = { player, aliasLength: alias.length, rawAlias: raw };
@@ -712,74 +685,134 @@
       return best ? best.player : null;
     }
 
-    function parseVoiceText(text) {
-      const t = text.toLowerCase();
+    function detectTarget(text) {
+      const t = normalizeText(text);
+      if (t.includes("unten links")) return "left_low";
+      if (t.includes("unten rechts")) return "right_low";
+      if (t.includes("oben links")) return "left_high";
+      if (t.includes("oben rechts")) return "right_high";
+      if (t.includes("mitte oben") || t.includes("oben mitte")) return "center_high";
+      if (t.includes("mitte unten") || t.includes("unten mitte")) return "center_low";
+      return "";
+    }
 
-      if (t.includes("abwehr")) setValue("context", "tvb_defense");
-      if (t.includes("angriff")) setValue("context", "tvb_attack");
+    function detectZoneHints(text) {
+      const t = normalizeText(text);
+      if (t.includes("kreis")) return "KM";
+      if (t.includes("linksaussen") || t.includes("links aussen") || t.includes("linksaußen")) return "LA";
+      if (t.includes("rechtsaussen") || t.includes("rechts aussen") || t.includes("rechtsaußen")) return "RA";
+      if (t.includes("rueckraum mitte") || t.includes("rückraum mitte")) return "RM";
+      if (t.includes("rueckraum links") || t.includes("rückraum links")) return "RL";
+      if (t.includes("rueckraum rechts") || t.includes("rückraum rechts")) return "RR";
+      return "";
+    }
 
-      if (t.includes("zweikampf")) setValue("action", "duel");
-      if (t.includes("wurf")) setValue("action", "shot");
-      if (t.includes("ballverlust")) setValue("action", "turnover");
-      if (t.includes("foul")) setValue("action", "foul");
-      if (t.includes("block")) setValue("action", "block");
-      if (t.includes("parade")) setValue("action", "save");
-      if (t.includes("ballgewinn")) setValue("action", "steal");
+    function detectGoalkeeper(text) {
+      const t = normalizeText(text);
+      const known = ["kornecky", "spaeth", "späth", "mrkva", "dahmke"];
+      for (const gk of known) {
+        if (t.includes(normalizeText(gk))) return gk;
+      }
+      const match = t.match(/torhueter\s+([a-zA-ZäöüÄÖÜß]+)/i) || t.match(/torhüter\s+([a-zA-ZäöüÄÖÜß]+)/i);
+      return match ? match[1] : "";
+    }
 
-      if (t.includes("gewonnen")) setValue("result", "won");
-      if (t.includes("verloren")) setValue("result", "lost");
-      if (t.includes("erfolgreich")) setValue("result", "success");
-      if (t.includes("nicht erfolgreich")) setValue("result", "failed");
+    function applyParserRules(text) {
+      const t = normalizeText(text);
 
-      if (t.includes("tor")) setValue("follow", "goal");
-      if (t.includes("keine folgeaktion")) setValue("follow", "none");
-
-      if (t.includes("gleichzahl")) setValue("numbers", "equal");
-      if (t.includes("überzahl")) setValue("numbers", "overload");
-      if (t.includes("unterzahl")) setValue("numbers", "underload");
-
-      if (t.includes("eins gegen eins") || t.includes("1 gegen 1") || t.includes("1:1")) {
-        document.getElementById("onevone").checked = true;
+      if (t.includes("abwehr")) {
+        els.context.value = "tvb_defense";
+        if (!els.event_type.value) els.event_type.value = "defense";
+      }
+      if (t.includes("angriff")) {
+        els.context.value = "tvb_attack";
+        if (!els.event_type.value) els.event_type.value = "attack";
       }
 
-      if (t.includes("6 0") || t.includes("6:0")) setValue("system", "6:0");
-      if (t.includes("5 1") || t.includes("5:1")) setValue("system", "5:1");
-      if (t.includes("3 2 1") || t.includes("3:2:1")) setValue("system", "3:2:1");
-      if (t.includes("7 6") || t.includes("7:6")) setValue("system", "7:6");
+      if (t.includes("6 0") || t.includes("6:0") || t.includes("6 null")) els.system.value = "6:0";
+      if (t.includes("5 1") || t.includes("5:1")) els.system.value = "5:1";
+      if (t.includes("3 2 1") || t.includes("3:2:1")) els.system.value = "3:2:1";
+      if (t.includes("7 6") || t.includes("7:6")) els.system.value = "7:6";
+      if (t.includes("formation") || t.includes("taktik")) {
+        // bewusst kein weiterer Parse-Schritt, nur als Signal dass Systemfelder relevant sind
+      }
+
+      if (t.includes("zweikampf")) els.action.value = "duel";
+      if (t.includes("wurf")) els.action.value = "shot";
+      if (t.includes("ballverlust")) els.action.value = "turnover";
+      if (t.includes("foul")) els.action.value = "foul";
+      if (t.includes("block")) els.action.value = "block";
+      if (t.includes("parade")) els.action.value = "save";
+      if (t.includes("ballgewinn")) els.action.value = "steal";
+
+      if (t.includes("gewonnen")) els.result.value = "won";
+      if (t.includes("verloren")) els.result.value = "lost";
+      if (t.includes("nicht erfolgreich")) els.result.value = "failed";
+      if (t.includes("erfolgreich")) els.result.value = "success";
+
+      if (t.includes("tor")) {
+        els.follow.value = "goal";
+        els.result.value = "success";
+        if (els.action.value !== "shot") els.action.value = "shot";
+      }
+
+      if (t.includes("gleichzahl")) els.numbers.value = "equal";
+      if (t.includes("ueberzahl") || t.includes("überzahl")) els.numbers.value = "overload";
+      if (t.includes("unterzahl")) els.numbers.value = "underload";
+
+      if (t.includes("1 gegen 1") || t.includes("eins gegen eins") || t.includes("1:1")) {
+        els.onevone.checked = true;
+      }
 
       const minuteMatch = t.match(/minute\s+(\d{1,2})/);
-      if (minuteMatch) setValue("match_minute", minuteMatch[1]);
+      if (minuteMatch) els.match_minute.value = minuteMatch[1];
 
       const secondWordMatch = t.match(/sekunde\s+(\d{1,2})/);
       if (secondWordMatch) {
-        setValue("match_second", secondWordMatch[1]);
+        els.match_second.value = secondWordMatch[1];
       } else {
         const minuteSecondMatch = t.match(/minute\s+\d{1,2}\s+(\d{1,2})/);
-        if (minuteSecondMatch) setValue("match_second", minuteSecondMatch[1]);
+        if (minuteSecondMatch) els.match_second.value = minuteSecondMatch[1];
+      }
+
+      const target = detectTarget(text);
+      if (target) els.target.value = target;
+
+      const zoneHint = detectZoneHints(text);
+      if (zoneHint) {
+        els.zone.value = zoneHint;
+        if (els.action.value === "shot" || t.includes("wurf")) {
+          els.shot_from.value = zoneHint;
+        }
       }
 
       const zoneMatch = t.match(/zone\s+([a-z0-9/:]+)/);
-      if (zoneMatch) setValue("zone", zoneMatch[1]);
+      if (zoneMatch) els.zone.value = zoneMatch[1];
 
       const tvbPlayer = findPlayerByAlias(selectedTVBPlayers, text);
-      if (tvbPlayer) {
-        setValue("player_tvb", String(tvbPlayer.player_id));
-      }
+      if (tvbPlayer) els.player_tvb.value = String(tvbPlayer.player_id);
 
       const oppPlayer = findPlayerByAlias(selectedOpponentPlayers, text);
-      if (oppPlayer) {
-        setValue("player_opponent", String(oppPlayer.player_id));
+      if (oppPlayer) els.player_opponent.value = String(oppPlayer.player_id);
+
+      const gk = detectGoalkeeper(text);
+      if (gk) {
+        els.goalkeeper_name.value = gk;
+        els.is_goalkeeper_event.checked = true;
+        if (!els.event_type.value) els.event_type.value = "goalkeeper";
       }
 
-      const notesEl = document.getElementById("notes");
-      notesEl.value = text;
+      els.notes.value = text;
     }
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition = null;
-    let isRecording = false;
+    function setupSpeech() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        els.voiceBtn.disabled = true;
+        setStatus("Browser unterstützt diese Spracheingabe nicht. Bitte Chrome oder Edge nutzen.", "warn");
+        return;
+      }
 
-    if (SpeechRecognition) {
       recognition = new SpeechRecognition();
       recognition.lang = "de-DE";
       recognition.interimResults = false;
@@ -787,16 +820,16 @@
 
       recognition.onstart = () => {
         isRecording = true;
-        voiceBtn.classList.add("recording");
-        voiceBtn.textContent = "⏺ Aufnahme läuft ...";
+        els.voiceBtn.classList.add("recording");
+        els.voiceBtn.textContent = "⏺ Aufnahme läuft ...";
         setStatus("Spracheingabe läuft.");
       };
 
       recognition.onresult = (event) => {
         const text = event.results[0][0].transcript;
-        transcriptEl.textContent = "Erkannt: " + text;
-        parseVoiceText(text);
-        setStatus("Spracheingabe erkannt. Felder wurden soweit möglich vorbelegt.", "ok");
+        els.transcript.textContent = "Erkannt: " + text;
+        applyParserRules(text);
+        setStatus("Spracheingabe erkannt. Felder wurden vorbelegt.", "ok");
       };
 
       recognition.onerror = (event) => {
@@ -805,33 +838,30 @@
 
       recognition.onend = () => {
         isRecording = false;
-        voiceBtn.classList.remove("recording");
-        voiceBtn.textContent = "🎤 Spracheingabe starten";
+        els.voiceBtn.classList.remove("recording");
+        els.voiceBtn.textContent = "🎤 Spracheingabe starten";
       };
 
-      voiceBtn.addEventListener("click", () => {
+      els.voiceBtn.addEventListener("click", () => {
         if (isRecording) {
           recognition.stop();
           return;
         }
         recognition.start();
       });
-    } else {
-      voiceBtn.disabled = true;
-      setStatus("Browser unterstützt diese Spracheingabe nicht. Bitte Chrome oder Edge nutzen.", "err");
     }
 
-    sendBtn.addEventListener("click", async () => {
+    async function saveEvent() {
       if (!selectedMatchId) {
         setStatus("Bitte zuerst ein Spiel auswählen.", "err");
         return;
       }
 
-      sendBtn.disabled = true;
+      els.sendBtn.disabled = true;
       setStatus("Sende Event ...");
 
-      const selectedTVBOption = tvbPlayerSelect.options[tvbPlayerSelect.selectedIndex];
-      const selectedOppOption = oppPlayerSelect.options[oppPlayerSelect.selectedIndex];
+      const selectedTVBOption = els.player_tvb.options[els.player_tvb.selectedIndex];
+      const selectedOppOption = els.player_opponent.options[els.player_opponent.selectedIndex];
 
       const payload = {
         match_id: selectedMatchId,
@@ -842,7 +872,7 @@
         result: getValue("result"),
         follow_action: getValue("follow"),
         numerical_situation: getValue("numbers"),
-        is_one_v_one: document.getElementById("onevone").checked,
+        is_one_v_one: els.onevone.checked,
 
         player_tvb: getValue("player_tvb") || null,
         player_tvb_name: selectedTVBOption?.dataset?.playerName || null,
@@ -857,6 +887,11 @@
         zone: getValue("zone") || null,
         shot_from_zone: getValue("shot_from") || null,
         shot_target_zone: getValue("target") || null,
+
+        goalkeeper_name: getValue("goalkeeper_name") || null,
+        is_goalkeeper_event: els.is_goalkeeper_event.checked,
+        event_type: getValue("event_type") || null,
+
         notes: getValue("notes"),
         source: "manual_ui",
         confidence: 1.0,
@@ -866,19 +901,64 @@
       try {
         const ref = await addDoc(collection(db, "matches", selectedMatchId, "scout_events"), payload);
         setStatus("Gespeichert in Match " + selectedMatchId + ". Dokument-ID: " + ref.id, "ok");
+
+        setTimeout(() => {
+          clearFields();
+        }, 250);
       } catch (err) {
         console.error(err);
         setStatus("Firestore Fehler: " + err.message, "err");
       } finally {
-        sendBtn.disabled = false;
+        els.sendBtn.disabled = false;
       }
-    });
+    }
+
+    function bindEvents() {
+      els.clearBtn.addEventListener("click", clearFields);
+      els.sendBtn.addEventListener("click", saveEvent);
+
+      els.matchSelect.addEventListener("change", async () => {
+        selectedMatchId = els.matchSelect.value;
+        const cached = matchesCache.find(m => m.id === selectedMatchId);
+        if (cached) {
+          updateHeaderFromData(cached.id, cached.data);
+          updateGuideLink();
+          await loadPlayersForMatch();
+          clearFields();
+          setStatus("Spiel gewechselt: " + buildMatchLabel(cached.id, cached.data), "ok");
+        }
+      });
+
+      els.timerStartBtn.addEventListener("click", startTimer);
+      els.timerStopBtn.addEventListener("click", stopTimer);
+      els.timerResetBtn.addEventListener("click", resetTimer);
+
+      els.match_minute.addEventListener("change", () => {
+        const m = Number(els.match_minute.value || 0);
+        const s = Number(els.match_second.value || 0);
+        timerSeconds = m * 60 + s;
+      });
+
+      els.match_second.addEventListener("change", () => {
+        const m = Number(els.match_minute.value || 0);
+        const s = Number(els.match_second.value || 0);
+        timerSeconds = m * 60 + s;
+      });
+    }
 
     async function initPage() {
-      setStatus("Initialisiere Seite ...");
-      await loadLookupJson();
-      await loadMatches();
-      updateGuideLink();
+      try {
+        setStatus("Initialisiere Seite ...");
+        bindEvents();
+        setupSpeech();
+        await loadLookupJson();
+        await loadMatches();
+        updateGuideLink();
+        setStatus("Seite bereit.", "ok");
+      } catch (err) {
+        console.error(err);
+        setStatus("Initialisierungsfehler: " + err.message, "err");
+      }
     }
 
     initPage();
