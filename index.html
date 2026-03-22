@@ -177,9 +177,12 @@
     .voice-box strong{display:block;margin-bottom:8px}
     .meta-row{
       display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
+      grid-template-columns:2fr 1fr 1fr;
       gap:22px;
       margin-bottom:18px;
+    }
+    .loading{
+      opacity:0.7;
     }
     @media (max-width: 960px){
       .grid,.meta-row{grid-template-columns:1fr}
@@ -194,7 +197,7 @@
   <div class="topbar">
     <div class="topbar-left">
       <img src="assets/tvb.jpg" alt="TVB" class="logo-tvb">
-      <div id="matchHeader" class="match-title">Du scoutest für Spiel ...</div>
+      <div id="matchHeader" class="match-title">Du scoutest für das Spiel: wird geladen ...</div>
     </div>
     <img src="assets/capaneo.png" alt="Capaneo" class="logo-capaneo">
   </div>
@@ -212,13 +215,17 @@
 
       <div class="meta-row">
         <div class="field">
-          <label for="match_id">Spiel-ID</label>
-          <input id="match_id" type="text" readonly />
+          <label for="matchSelect">Spiel auswählen</label>
+          <select id="matchSelect" class="loading">
+            <option>Lade Spiele ...</option>
+          </select>
         </div>
+
         <div class="field">
           <label for="match_minute">Minute</label>
           <input id="match_minute" type="number" min="0" value="0" />
         </div>
+
         <div class="field">
           <label for="match_second">Sekunde</label>
           <input id="match_second" type="number" min="0" max="59" value="0" />
@@ -390,13 +397,13 @@
 
       <button id="sendBtn" class="btn primary" type="button" style="margin-top:18px;width:100%">Senden</button>
       <div id="status" class="status">Seite geladen. Initialisiere Firebase ...</div>
-      <div class="hint">Gespeichert wird nach: <code>matches/{match_id}/scout_events</code></div>
+      <div class="hint">Gespeichert wird nach: <code>matches/{selectedMatchId}/scout_events</code></div>
     </div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAJwAR1krrLK-fU-uCtLz8dqRvtdoTyPWY",
@@ -416,6 +423,10 @@
     const transcriptEl = document.getElementById("voiceTranscript");
     const sendBtn = document.getElementById("sendBtn");
     const voiceBtn = document.getElementById("voiceBtn");
+    const matchSelect = document.getElementById("matchSelect");
+
+    let selectedMatchId = null;
+    let matchesCache = [];
 
     function setStatus(message, type="") {
       statusEl.textContent = message;
@@ -438,30 +449,149 @@
       }
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const matchId = params.get("match_id") || "62090160";
-    document.getElementById("match_id").value = matchId;
-    document.getElementById("guideLink").href = `guide.html?match_id=${encodeURIComponent(matchId)}`;
-    headerEl.textContent = `Du scoutest für das Spiel: ${matchId}`;
+    function parsePossibleDate(value) {
+      if (!value) return 0;
 
-    async function loadMatch() {
+      if (typeof value === "string") {
+        const parsed = Date.parse(value);
+        return Number.isNaN(parsed) ? 0 : parsed;
+      }
+
+      if (typeof value === "object") {
+        if (typeof value.toDate === "function") {
+          try {
+            return value.toDate().getTime();
+          } catch {
+            return 0;
+          }
+        }
+        if (typeof value.seconds === "number") {
+          return value.seconds * 1000;
+        }
+      }
+
+      return 0;
+    }
+
+    function getSortTimestamp(data) {
+      return (
+        parsePossibleDate(data.updated_at) ||
+        parsePossibleDate(data.start_time) ||
+        parsePossibleDate(data.match_date) ||
+        parsePossibleDate(data.date) ||
+        0
+      );
+    }
+
+    function formatDateForLabel(data) {
+      const ts =
+        parsePossibleDate(data.start_time) ||
+        parsePossibleDate(data.match_date) ||
+        parsePossibleDate(data.date) ||
+        parsePossibleDate(data.updated_at);
+
+      if (!ts) return "";
+      const d = new Date(ts);
+      return d.toLocaleDateString("de-DE");
+    }
+
+    function buildMatchLabel(id, data) {
+      const home = data.team_home_name || data.home || data.home_team || data.heim || "Heim";
+      const away = data.team_away_name || data.away || data.away_team || data.gast || "Gast";
+      const dt = formatDateForLabel(data);
+      return dt ? `${dt} | ${home} vs ${away} (${id})` : `${home} vs ${away} (${id})`;
+    }
+
+    function updateGuideLink() {
+      const href = selectedMatchId ? `guide.html?match_id=${encodeURIComponent(selectedMatchId)}` : "guide.html";
+      document.getElementById("guideLink").href = href;
+    }
+
+    function updateHeaderFromData(id, data) {
+      const dateText = formatDateForLabel(data);
+      const homeText = data.team_home_name || data.home || data.home_team || data.heim || "Heim";
+      const awayText = data.team_away_name || data.away || data.away_team || data.gast || "Gast";
+      headerEl.textContent = dateText
+        ? `Du scoutest für das Spiel: ${id} | ${dateText} | ${homeText} vs ${awayText}`
+        : `Du scoutest für das Spiel: ${id} | ${homeText} vs ${awayText}`;
+    }
+
+    async function loadMatches() {
+      setStatus("Lade Spiele aus Firestore ...");
       try {
-        const snap = await getDoc(doc(db, "matches", matchId));
-        if (!snap.exists()) {
-          setStatus("Matchdaten nicht gefunden. Erfassung läuft trotzdem.");
+        const snap = await getDocs(collection(db, "matches"));
+        const items = [];
+
+        snap.forEach(docSnap => {
+          const data = docSnap.data();
+          items.push({
+            id: docSnap.id,
+            data,
+            sortTs: getSortTimestamp(data)
+          });
+        });
+
+        items.sort((a, b) => b.sortTs - a.sortTs);
+        matchesCache = items;
+
+        matchSelect.innerHTML = "";
+        matchSelect.classList.remove("loading");
+
+        if (items.length === 0) {
+          const option = document.createElement("option");
+          option.value = "";
+          option.textContent = "Keine Spiele gefunden";
+          matchSelect.appendChild(option);
+          headerEl.textContent = "Keine Spiele verfügbar";
+          selectedMatchId = null;
+          setStatus("Keine Spiele in Firestore gefunden.", "err");
           return;
         }
-        const data = snap.data();
-        const dateText = data.date || data.match_date || data.datum || "";
-        const homeText = data.home || data.home_team || data.heim || "Heim";
-        const awayText = data.away || data.away_team || data.gast || "Gast";
-        headerEl.textContent = `Du scoutest für das Spiel: ${matchId} | ${dateText} | ${homeText} vs ${awayText}`;
-        setStatus("Firebase initialisiert. Matchdaten geladen.");
+
+        for (const item of items) {
+          const option = document.createElement("option");
+          option.value = item.id;
+          option.textContent = buildMatchLabel(item.id, item.data);
+          matchSelect.appendChild(option);
+        }
+
+        selectedMatchId = items[0].id;
+        matchSelect.value = selectedMatchId;
+        updateHeaderFromData(items[0].id, items[0].data);
+        updateGuideLink();
+        setStatus("Spiele geladen. Neuestes Spiel ist vorausgewählt.", "ok");
       } catch (err) {
         console.error(err);
-        setStatus("Matchdaten konnten nicht geladen werden. Erfassung läuft trotzdem.", "err");
+        setStatus("Fehler beim Laden der Spiele: " + err.message, "err");
+        headerEl.textContent = "Spiele konnten nicht geladen werden";
       }
     }
+
+    matchSelect.addEventListener("change", async () => {
+      selectedMatchId = matchSelect.value;
+      updateGuideLink();
+
+      const cached = matchesCache.find(m => m.id === selectedMatchId);
+      if (cached) {
+        updateHeaderFromData(cached.id, cached.data);
+        setStatus("Spiel gewechselt: " + buildMatchLabel(cached.id, cached.data), "ok");
+        return;
+      }
+
+      try {
+        const snap = await getDoc(doc(db, "matches", selectedMatchId));
+        if (snap.exists()) {
+          updateHeaderFromData(selectedMatchId, snap.data());
+          setStatus("Spiel gewechselt.", "ok");
+        } else {
+          headerEl.textContent = `Du scoutest für das Spiel: ${selectedMatchId}`;
+          setStatus("Spiel gewechselt, aber Matchdaten nicht gefunden.", "err");
+        }
+      } catch (err) {
+        console.error(err);
+        setStatus("Fehler beim Wechseln des Spiels: " + err.message, "err");
+      }
+    });
 
     function clearFields() {
       setValue("match_minute", "0");
@@ -527,7 +657,7 @@
 
       const zoneMatch = t.match(/zone\s+([a-z0-9/:]+)/);
       if (zoneMatch) {
-        setValue("zone", zoneMatch[1].toUpperCase() === "LA" ? "LA" : zoneMatch[1]);
+        setValue("zone", zoneMatch[1]);
       }
 
       const notesEl = document.getElementById("notes");
@@ -582,11 +712,16 @@
     }
 
     sendBtn.addEventListener("click", async () => {
+      if (!selectedMatchId) {
+        setStatus("Bitte zuerst ein Spiel auswählen.", "err");
+        return;
+      }
+
       sendBtn.disabled = true;
       setStatus("Sende Event ...");
 
       const payload = {
-        match_id: matchId,
+        match_id: selectedMatchId,
         match_minute: Number(getValue("match_minute") || 0),
         match_second: Number(getValue("match_second") || 0),
         team_context: getValue("context"),
@@ -609,8 +744,8 @@
       };
 
       try {
-        const ref = await addDoc(collection(db, "matches", matchId, "scout_events"), payload);
-        setStatus("Gespeichert. Dokument-ID: " + ref.id, "ok");
+        const ref = await addDoc(collection(db, "matches", selectedMatchId, "scout_events"), payload);
+        setStatus("Gespeichert in Match " + selectedMatchId + ". Dokument-ID: " + ref.id, "ok");
       } catch (err) {
         console.error(err);
         setStatus("Firestore Fehler: " + err.message, "err");
@@ -619,7 +754,7 @@
       }
     });
 
-    loadMatch();
+    loadMatches();
   </script>
 </body>
 </html>
