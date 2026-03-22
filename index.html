@@ -295,16 +295,15 @@
         <div class="field">
           <label for="player_tvb">TVB Spieler</label>
           <select id="player_tvb">
-            <option value="">bitte wählen</option>
-            <option value="1803">Kai Häfner (1803)</option>
-            <option value="1804">Spieler 1804</option>
-            <option value="1805">Spieler 1805</option>
+            <option value="">Lade Spieler ...</option>
           </select>
         </div>
 
         <div class="field">
           <label for="player_opponent">Gegenspieler</label>
-          <input id="player_opponent" type="text" placeholder="z. B. Fischer" />
+          <select id="player_opponent">
+            <option value="">Lade Gegner ...</option>
+          </select>
         </div>
 
         <div class="field">
@@ -403,7 +402,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, getDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAJwAR1krrLK-fU-uCtLz8dqRvtdoTyPWY",
@@ -424,9 +423,15 @@
     const sendBtn = document.getElementById("sendBtn");
     const voiceBtn = document.getElementById("voiceBtn");
     const matchSelect = document.getElementById("matchSelect");
+    const tvbPlayerSelect = document.getElementById("player_tvb");
+    const oppPlayerSelect = document.getElementById("player_opponent");
 
     let selectedMatchId = null;
     let matchesCache = [];
+    let selectedMatchData = null;
+    let lookupData = null;
+    let selectedTVBPlayers = [];
+    let selectedOpponentPlayers = [];
 
     function setStatus(message, type="") {
       statusEl.textContent = message;
@@ -451,25 +456,16 @@
 
     function parsePossibleDate(value) {
       if (!value) return 0;
-
       if (typeof value === "string") {
         const parsed = Date.parse(value);
         return Number.isNaN(parsed) ? 0 : parsed;
       }
-
       if (typeof value === "object") {
         if (typeof value.toDate === "function") {
-          try {
-            return value.toDate().getTime();
-          } catch {
-            return 0;
-          }
+          try { return value.toDate().getTime(); } catch { return 0; }
         }
-        if (typeof value.seconds === "number") {
-          return value.seconds * 1000;
-        }
+        if (typeof value.seconds === "number") return value.seconds * 1000;
       }
-
       return 0;
     }
 
@@ -508,12 +504,99 @@
     }
 
     function updateHeaderFromData(id, data) {
+      selectedMatchData = data;
       const dateText = formatDateForLabel(data);
       const homeText = data.team_home_name || data.home || data.home_team || data.heim || "Heim";
       const awayText = data.team_away_name || data.away || data.away_team || data.gast || "Gast";
       headerEl.textContent = dateText
         ? `Du scoutest für das Spiel: ${id} | ${dateText} | ${homeText} vs ${awayText}`
         : `Du scoutest für das Spiel: ${id} | ${homeText} vs ${awayText}`;
+    }
+
+    function normalizeText(value) {
+      return (value || "")
+        .toLowerCase()
+        .replace(/ä/g, "ae")
+        .replace(/ö/g, "oe")
+        .replace(/ü/g, "ue")
+        .replace(/ß/g, "ss")
+        .replace(/[^\p{L}\p{N}\s]/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    async function loadLookupJson() {
+      try {
+        const res = await fetch("assets/league_team_lookup.json", { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        lookupData = await res.json();
+        setStatus("Lookup-Datei geladen.");
+      } catch (err) {
+        console.error(err);
+        setStatus("Lookup-Datei konnte nicht geladen werden: " + err.message, "err");
+      }
+    }
+
+    function getTeamPlayers(teamId) {
+      if (!lookupData || !lookupData.teams || !lookupData.teams[teamId]) return [];
+      return Array.isArray(lookupData.teams[teamId].players) ? lookupData.teams[teamId].players : [];
+    }
+
+    function buildPlayerOptionLabel(player) {
+      const name = player.player_name || player.name || "Unbekannt";
+      const id = player.player_id || "";
+      const number = player.number ?? "";
+      return number !== "" ? `${name} (${id}) #${number}` : `${name} (${id})`;
+    }
+
+    function fillPlayerSelect(selectEl, players, emptyText) {
+      selectEl.innerHTML = "";
+      const first = document.createElement("option");
+      first.value = "";
+      first.textContent = emptyText;
+      selectEl.appendChild(first);
+
+      for (const p of players) {
+        const opt = document.createElement("option");
+        opt.value = String(p.player_id || p.id || "");
+        opt.textContent = buildPlayerOptionLabel(p);
+        opt.dataset.playerName = p.player_name || "";
+        selectEl.appendChild(opt);
+      }
+    }
+
+    async function loadPlayersForMatch() {
+      if (!selectedMatchData || !lookupData) {
+        fillPlayerSelect(tvbPlayerSelect, [], "Spieler nicht verfügbar");
+        fillPlayerSelect(oppPlayerSelect, [], "Gegner nicht verfügbar");
+        return;
+      }
+
+      const homeId = selectedMatchData.team_home_id || "";
+      const awayId = selectedMatchData.team_away_id || "";
+
+      let tvbTeamId = "";
+      let opponentTeamId = "";
+
+      if (homeId === "tvb_stuttgart") {
+        tvbTeamId = homeId;
+        opponentTeamId = awayId;
+      } else if (awayId === "tvb_stuttgart") {
+        tvbTeamId = awayId;
+        opponentTeamId = homeId;
+      } else {
+        tvbTeamId = "tvb_stuttgart";
+        opponentTeamId = awayId || homeId || "";
+      }
+
+      selectedTVBPlayers = getTeamPlayers(tvbTeamId);
+      selectedOpponentPlayers = getTeamPlayers(opponentTeamId);
+
+      selectedTVBPlayers.sort((a, b) => String(a.number ?? "").localeCompare(String(b.number ?? ""), "de", { numeric: true }));
+      selectedOpponentPlayers.sort((a, b) => String(a.number ?? "").localeCompare(String(b.number ?? ""), "de", { numeric: true }));
+
+      fillPlayerSelect(tvbPlayerSelect, selectedTVBPlayers, "bitte wählen");
+      fillPlayerSelect(oppPlayerSelect, selectedOpponentPlayers, "bitte wählen");
     }
 
     async function loadMatches() {
@@ -559,11 +642,13 @@
         matchSelect.value = selectedMatchId;
         updateHeaderFromData(items[0].id, items[0].data);
         updateGuideLink();
+        await loadPlayersForMatch();
         setStatus("Spiele geladen. Neuestes Spiel ist vorausgewählt.", "ok");
       } catch (err) {
         console.error(err);
         setStatus("Fehler beim Laden der Spiele: " + err.message, "err");
         headerEl.textContent = "Spiele konnten nicht geladen werden";
+        matchSelect.innerHTML = `<option value="">Fehler beim Laden</option>`;
       }
     }
 
@@ -574,22 +659,8 @@
       const cached = matchesCache.find(m => m.id === selectedMatchId);
       if (cached) {
         updateHeaderFromData(cached.id, cached.data);
+        await loadPlayersForMatch();
         setStatus("Spiel gewechselt: " + buildMatchLabel(cached.id, cached.data), "ok");
-        return;
-      }
-
-      try {
-        const snap = await getDoc(doc(db, "matches", selectedMatchId));
-        if (snap.exists()) {
-          updateHeaderFromData(selectedMatchId, snap.data());
-          setStatus("Spiel gewechselt.", "ok");
-        } else {
-          headerEl.textContent = `Du scoutest für das Spiel: ${selectedMatchId}`;
-          setStatus("Spiel gewechselt, aber Matchdaten nicht gefunden.", "err");
-        }
-      } catch (err) {
-        console.error(err);
-        setStatus("Fehler beim Wechseln des Spiels: " + err.message, "err");
       }
     });
 
@@ -615,6 +686,32 @@
 
     document.getElementById("clearBtn").addEventListener("click", clearFields);
 
+    function findPlayerByAlias(players, text) {
+      const normText = normalizeText(text);
+      let best = null;
+
+      for (const player of players) {
+        const candidates = new Set();
+        if (player.player_name) candidates.add(player.player_name);
+        if (Array.isArray(player.aliases)) {
+          for (const alias of player.aliases) candidates.add(alias);
+        }
+
+        for (const raw of candidates) {
+          const alias = normalizeText(raw);
+          if (!alias) continue;
+
+          if (normText.includes(alias)) {
+            if (!best || alias.length > best.aliasLength) {
+              best = { player, aliasLength: alias.length, rawAlias: raw };
+            }
+          }
+        }
+      }
+
+      return best ? best.player : null;
+    }
+
     function parseVoiceText(text) {
       const t = text.toLowerCase();
 
@@ -627,6 +724,7 @@
       if (t.includes("foul")) setValue("action", "foul");
       if (t.includes("block")) setValue("action", "block");
       if (t.includes("parade")) setValue("action", "save");
+      if (t.includes("ballgewinn")) setValue("action", "steal");
 
       if (t.includes("gewonnen")) setValue("result", "won");
       if (t.includes("verloren")) setValue("result", "lost");
@@ -652,16 +750,29 @@
       const minuteMatch = t.match(/minute\s+(\d{1,2})/);
       if (minuteMatch) setValue("match_minute", minuteMatch[1]);
 
-      const secondMatch = t.match(/(?:sekunde|sekunden)\s+(\d{1,2})/);
-      if (secondMatch) setValue("match_second", secondMatch[1]);
+      const secondWordMatch = t.match(/sekunde\s+(\d{1,2})/);
+      if (secondWordMatch) {
+        setValue("match_second", secondWordMatch[1]);
+      } else {
+        const minuteSecondMatch = t.match(/minute\s+\d{1,2}\s+(\d{1,2})/);
+        if (minuteSecondMatch) setValue("match_second", minuteSecondMatch[1]);
+      }
 
       const zoneMatch = t.match(/zone\s+([a-z0-9/:]+)/);
-      if (zoneMatch) {
-        setValue("zone", zoneMatch[1]);
+      if (zoneMatch) setValue("zone", zoneMatch[1]);
+
+      const tvbPlayer = findPlayerByAlias(selectedTVBPlayers, text);
+      if (tvbPlayer) {
+        setValue("player_tvb", String(tvbPlayer.player_id));
+      }
+
+      const oppPlayer = findPlayerByAlias(selectedOpponentPlayers, text);
+      if (oppPlayer) {
+        setValue("player_opponent", String(oppPlayer.player_id));
       }
 
       const notesEl = document.getElementById("notes");
-      if (!notesEl.value.trim()) notesEl.value = text;
+      notesEl.value = text;
     }
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -684,7 +795,6 @@
       recognition.onresult = (event) => {
         const text = event.results[0][0].transcript;
         transcriptEl.textContent = "Erkannt: " + text;
-        document.getElementById("notes").value = text;
         parseVoiceText(text);
         setStatus("Spracheingabe erkannt. Felder wurden soweit möglich vorbelegt.", "ok");
       };
@@ -720,6 +830,9 @@
       sendBtn.disabled = true;
       setStatus("Sende Event ...");
 
+      const selectedTVBOption = tvbPlayerSelect.options[tvbPlayerSelect.selectedIndex];
+      const selectedOppOption = oppPlayerSelect.options[oppPlayerSelect.selectedIndex];
+
       const payload = {
         match_id: selectedMatchId,
         match_minute: Number(getValue("match_minute") || 0),
@@ -730,8 +843,15 @@
         follow_action: getValue("follow"),
         numerical_situation: getValue("numbers"),
         is_one_v_one: document.getElementById("onevone").checked,
+
         player_tvb: getValue("player_tvb") || null,
+        player_tvb_name: selectedTVBOption?.dataset?.playerName || null,
+        player_tvb_raw: selectedTVBOption?.textContent || null,
+
         player_opponent: getValue("player_opponent") || null,
+        player_opponent_name: selectedOppOption?.dataset?.playerName || null,
+        player_opponent_raw: selectedOppOption?.textContent || null,
+
         tvb_system_label: getValue("system") || null,
         opponent_system_label: getValue("opponent_system") || null,
         zone: getValue("zone") || null,
@@ -754,7 +874,14 @@
       }
     });
 
-    loadMatches();
+    async function initPage() {
+      setStatus("Initialisiere Seite ...");
+      await loadLookupJson();
+      await loadMatches();
+      updateGuideLink();
+    }
+
+    initPage();
   </script>
 </body>
 </html>
