@@ -1,268 +1,625 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TVB Live Scout</title>
-
   <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: #f3f4f6;
+    :root{
+      --bg:#f3f4f6;
+      --card:#ffffff;
+      --border:#d7dbe2;
+      --input:#eef1f5;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --primary:#1f6feb;
+      --primary-hover:#1558b0;
+      --ok:#0f9d58;
+      --err:#d93025;
     }
-
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 15px 20px;
-      background: white;
-      border-bottom: 1px solid #ddd;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
     }
-
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    .topbar{
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      padding:14px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
     }
-
-    .header-left img {
-      height: 40px;
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      min-width:0;
     }
-
-    .header-right img {
-      height: 25px;
+    .logo-tvb{height:42px; width:auto; object-fit:contain}
+    .logo-capaneo{height:24px; width:auto; object-fit:contain}
+    .match-title{
+      font-size:24px;
+      font-weight:700;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-
-    .title {
-      font-size: 18px;
-      font-weight: bold;
+    .page{
+      max-width:1400px;
+      margin:28px auto;
+      padding:0 18px;
     }
-
-    .container {
-      max-width: 1200px;
-      margin: 20px auto;
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:24px;
     }
-
-    h2 {
-      margin-bottom: 20px;
+    .toolbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:20px;
+      flex-wrap:wrap;
     }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+    .toolbar h1{
+      font-size:24px;
+      margin:0;
     }
-
-    label {
-      font-size: 14px;
-      margin-bottom: 5px;
-      display: block;
+    .toolbar-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
     }
-
-    select, input, textarea {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      background: #eef1f5;
-      font-size: 16px;
+    .btn{
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--text);
+      border-radius:14px;
+      padding:12px 16px;
+      font-size:16px;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
     }
-
-    textarea {
-      grid-column: span 3;
-      height: 100px;
+    .btn:hover{background:#f9fafb}
+    .btn.primary{
+      background:var(--primary);
+      color:#fff;
+      border-color:var(--primary);
     }
-
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 15px;
-      border-radius: 12px;
-      border: none;
-      background: #2b6cb0;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
+    .btn.primary:hover{
+      background:var(--primary-hover);
+      border-color:var(--primary-hover);
     }
-
-    #status {
-      margin-top: 10px;
-      font-size: 14px;
+    .btn.recording{
+      background:#fee2e2;
+      border-color:#fca5a5;
+      color:#991b1b;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:22px 22px;
+    }
+    .field label{
+      display:block;
+      font-size:15px;
+      margin-bottom:8px;
+      color:#374151;
+    }
+    .field input[type="text"],
+    .field input[type="number"],
+    .field select,
+    .field textarea{
+      width:100%;
+      border:1px solid transparent;
+      background:var(--input);
+      border-radius:14px;
+      padding:15px 16px;
+      font-size:18px;
+      color:var(--text);
+      outline:none;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+      border-color:#aab4c3;
+      background:#e8edf3;
+    }
+    .field textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+    .full{grid-column:1 / -1}
+    .checkbox-wrap{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding-top:34px;
+    }
+    .checkbox-wrap input{
+      width:22px;
+      height:22px;
+      margin:0;
+    }
+    .status{
+      margin-top:16px;
+      padding:12px 14px;
+      border-radius:12px;
+      background:#eef2ff;
+      color:#243b53;
+      font-size:14px;
+      white-space:pre-wrap;
+    }
+    .status.ok{background:#eaf7ef;color:var(--ok)}
+    .status.err{background:#fdecea;color:var(--err)}
+    .hint{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .voice-box{
+      margin-top:18px;
+      padding:14px;
+      border-radius:14px;
+      background:#f8fafc;
+      border:1px dashed var(--border);
+    }
+    .voice-box strong{display:block;margin-bottom:8px}
+    .meta-row{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:22px;
+      margin-bottom:18px;
+    }
+    @media (max-width: 960px){
+      .grid,.meta-row{grid-template-columns:1fr}
+      .checkbox-wrap{padding-top:0}
+      .match-title{font-size:18px;white-space:normal}
+      .logo-tvb{height:34px}
+      .logo-capaneo{height:20px}
     }
   </style>
 </head>
-
 <body>
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="assets/tvb.jpg" alt="TVB" class="logo-tvb">
+      <div id="matchHeader" class="match-title">Du scoutest für Spiel ...</div>
+    </div>
+    <img src="assets/capaneo.png" alt="Capaneo" class="logo-capaneo">
+  </div>
 
-<div class="header">
-  <div class="header-left">
-    <!-- TVB LOGO -->
-    <img src="https://upload.wikimedia.org/wikipedia/de/thumb/5/5b/TVB_Stuttgart_Logo.svg/512px-TVB_Stuttgart_Logo.svg.png">
-    
-    <div class="title" id="matchHeader">
-      Lade Spiel...
+  <div class="page">
+    <div class="card">
+      <div class="toolbar">
+        <h1>Manuelle Erfassung</h1>
+        <div class="toolbar-actions">
+          <button id="voiceBtn" class="btn" type="button">🎤 Spracheingabe starten</button>
+          <button id="clearBtn" class="btn" type="button">Felder leeren</button>
+          <a id="guideLink" class="btn" href="guide.html" target="_blank" rel="noopener">Anleitung öffnen</a>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        <div class="field">
+          <label for="match_id">Spiel-ID</label>
+          <input id="match_id" type="text" readonly />
+        </div>
+        <div class="field">
+          <label for="match_minute">Minute</label>
+          <input id="match_minute" type="number" min="0" value="0" />
+        </div>
+        <div class="field">
+          <label for="match_second">Sekunde</label>
+          <input id="match_second" type="number" min="0" max="59" value="0" />
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label for="context">Kontext</label>
+          <select id="context">
+            <option value="tvb_attack">TVB Angriff</option>
+            <option value="tvb_defense">TVB Abwehr</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="action">Aktion</label>
+          <select id="action">
+            <option value="duel">Zweikampf</option>
+            <option value="shot">Wurf</option>
+            <option value="turnover">Ballverlust</option>
+            <option value="foul">Foul</option>
+            <option value="block">Block</option>
+            <option value="save">Parade</option>
+            <option value="steal">Ballgewinn</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="result">Ergebnis</label>
+          <select id="result">
+            <option value="won">Gewonnen</option>
+            <option value="lost">Verloren</option>
+            <option value="success">Erfolgreich</option>
+            <option value="failed">Nicht erfolgreich</option>
+            <option value="none">Kein Ergebnis</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="follow">Folgeaktion</label>
+          <select id="follow">
+            <option value="none">Keine</option>
+            <option value="goal">Tor</option>
+            <option value="shot">Wurf</option>
+            <option value="foul">Foul</option>
+            <option value="turnover">Ballverlust</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="numbers">Zahlensituation</label>
+          <select id="numbers">
+            <option value="equal">Gleichzahl</option>
+            <option value="overload">Überzahl</option>
+            <option value="underload">Unterzahl</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <div class="checkbox-wrap">
+            <input type="checkbox" id="onevone">
+            <label for="onevone" style="margin:0">1:1</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="player_tvb">TVB Spieler</label>
+          <select id="player_tvb">
+            <option value="">bitte wählen</option>
+            <option value="1803">Kai Häfner (1803)</option>
+            <option value="1804">Spieler 1804</option>
+            <option value="1805">Spieler 1805</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="player_opponent">Gegenspieler</label>
+          <input id="player_opponent" type="text" placeholder="z. B. Fischer" />
+        </div>
+
+        <div class="field">
+          <label for="system">TVB System</label>
+          <select id="system">
+            <option value="6:0">6:0</option>
+            <option value="5:1">5:1</option>
+            <option value="3:2:1">3:2:1</option>
+            <option value="7:6">7:6</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="opponent_system">Gegner System</label>
+          <select id="opponent_system">
+            <option value="">bitte wählen</option>
+            <option value="6:0">6:0</option>
+            <option value="5:1">5:1</option>
+            <option value="3:2:1">3:2:1</option>
+            <option value="7:6">7:6</option>
+            <option value="System A">System A</option>
+            <option value="System B">System B</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="zone">Zone</label>
+          <select id="zone">
+            <option value="">bitte wählen</option>
+            <option value="0/1">0/1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6m">6m</option>
+            <option value="7m">7m</option>
+            <option value="LA">LA</option>
+            <option value="RA">RA</option>
+            <option value="RM">RM</option>
+            <option value="RL">RL</option>
+            <option value="RR">RR</option>
+            <option value="KM">KM</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="shot_from">Wurf von Zone</label>
+          <select id="shot_from">
+            <option value="">bitte wählen</option>
+            <option value="0/1">0/1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6m">6m</option>
+            <option value="7m">7m</option>
+            <option value="LA">LA</option>
+            <option value="RA">RA</option>
+            <option value="RM">RM</option>
+            <option value="RL">RL</option>
+            <option value="RR">RR</option>
+            <option value="KM">KM</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="target">Ziel im Tor</label>
+          <select id="target">
+            <option value="">bitte wählen</option>
+            <option value="left_high">left_high</option>
+            <option value="center_high">center_high</option>
+            <option value="right_high">right_high</option>
+            <option value="left_low">left_low</option>
+            <option value="center_low">center_low</option>
+            <option value="right_low">right_low</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label for="notes">Notizen / Rohtext</label>
+          <textarea id="notes" placeholder="z. B. Minute 3,25 Häfner gegen Fischer gewonnen, Tor."></textarea>
+        </div>
+      </div>
+
+      <div class="voice-box">
+        <strong>Spracheingabe</strong>
+        <div>Empfohlenes Format: „Minute 3 25, TVB Angriff, Zweikampf gewonnen, Tor, Zone 0/1, Kai Häfner gegen Fischer.“</div>
+        <div id="voiceTranscript" class="hint">Noch keine Spracheingabe.</div>
+      </div>
+
+      <button id="sendBtn" class="btn primary" type="button" style="margin-top:18px;width:100%">Senden</button>
+      <div id="status" class="status">Seite geladen. Initialisiere Firebase ...</div>
+      <div class="hint">Gespeichert wird nach: <code>matches/{match_id}/scout_events</code></div>
     </div>
   </div>
 
-  <div class="header-right">
-    <!-- CAPANEO LOGO -->
-    <img src="https://www.capaneo.com/wp-content/uploads/2021/05/logo-capaneo.png">
-  </div>
-</div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-<div class="container">
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJwAR1krrLK-fU-uCtLz8dqRvtdoTyPWY",
+      authDomain: "udoagentendaten.firebaseapp.com",
+      projectId: "udoagentendaten",
+      storageBucket: "udoagentendaten.firebasestorage.app",
+      messagingSenderId: "115120028998",
+      appId: "1:115120028998:web:fb24fc6ab5059288da7947",
+      measurementId: "G-J5M3ZWZ1V9"
+    };
 
-  <div class="grid">
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-    <div>
-      <label>Kontext</label>
-      <select id="context">
-        <option value="tvb_attack">TVB Angriff</option>
-        <option value="tvb_defense">TVB Abwehr</option>
-      </select>
-    </div>
+    const statusEl = document.getElementById("status");
+    const headerEl = document.getElementById("matchHeader");
+    const transcriptEl = document.getElementById("voiceTranscript");
+    const sendBtn = document.getElementById("sendBtn");
+    const voiceBtn = document.getElementById("voiceBtn");
 
-    <div>
-      <label>Aktion</label>
-      <select id="action">
-        <option value="duel">Zweikampf</option>
-        <option value="shot">Wurf</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Ergebnis</label>
-      <select id="result">
-        <option value="won">Gewonnen</option>
-        <option value="lost">Verloren</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Folgeaktion</label>
-      <select id="follow">
-        <option value="goal">Tor</option>
-        <option value="none">Keine</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Zahlensituation</label>
-      <select id="numbers">
-        <option value="equal">Gleichzahl</option>
-      </select>
-    </div>
-
-    <div>
-      <label>1:1</label>
-      <input type="checkbox" id="onevone">
-    </div>
-
-    <div>
-      <label>Zone</label>
-      <input id="zone" value="0/1">
-    </div>
-
-    <div>
-      <label>Wurf von Zone</label>
-      <input id="shot_from" value="0/1">
-    </div>
-
-    <div>
-      <label>Ziel im Tor</label>
-      <input id="target" value="center_high">
-    </div>
-
-    <textarea id="notes">Minute 3,25 Hefner gegen Fischer gewonnen, Tor.</textarea>
-
-  </div>
-
-  <button id="sendBtn">Senden</button>
-  <div id="status">Initialisiere...</div>
-
-</div>
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-import { getFirestore, collection, addDoc, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAJwAR1krrLK-fU-uCtLz8dqRvtdoTyPWY",
-  authDomain: "udoagentendaten.firebaseapp.com",
-  projectId: "udoagentendaten",
-  storageBucket: "udoagentendaten.firebasestorage.app",
-  messagingSenderId: "115120028998",
-  appId: "1:115120028998:web:fb24fc6ab5059288da7947"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-const status = document.getElementById("status");
-
-// 👉 MATCH ID aus URL holen
-const params = new URLSearchParams(window.location.search);
-const matchId = params.get("match_id") || "62090160";
-
-// 👉 Match laden (optional)
-async function loadMatch() {
-  try {
-    const ref = doc(db, "matches", matchId);
-    const snap = await getDoc(ref);
-
-    if (snap.exists()) {
-      const data = snap.data();
-      document.getElementById("matchHeader").innerText =
-        `Du scoutest für Spiel ${matchId} | ${data.date || ""} | ${data.home || ""} vs ${data.away || ""}`;
-    } else {
-      document.getElementById("matchHeader").innerText =
-        `Du scoutest für Spiel ${matchId}`;
+    function setStatus(message, type="") {
+      statusEl.textContent = message;
+      statusEl.className = "status" + (type ? " " + type : "");
+      console.log(message);
     }
 
-  } catch (err) {
-    console.error(err);
-  }
-}
+    function getValue(id) {
+      return document.getElementById(id).value.trim();
+    }
 
-loadMatch();
+    function setValue(id, value) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.tagName === "SELECT") {
+        const exists = Array.from(el.options).some(o => o.value === value);
+        if (exists) el.value = value;
+      } else {
+        el.value = value;
+      }
+    }
 
-document.getElementById("sendBtn").addEventListener("click", async () => {
+    const params = new URLSearchParams(window.location.search);
+    const matchId = params.get("match_id") || "62090160";
+    document.getElementById("match_id").value = matchId;
+    document.getElementById("guideLink").href = `guide.html?match_id=${encodeURIComponent(matchId)}`;
+    headerEl.textContent = `Du scoutest für das Spiel: ${matchId}`;
 
-  status.innerText = "Sende...";
+    async function loadMatch() {
+      try {
+        const snap = await getDoc(doc(db, "matches", matchId));
+        if (!snap.exists()) {
+          setStatus("Matchdaten nicht gefunden. Erfassung läuft trotzdem.");
+          return;
+        }
+        const data = snap.data();
+        const dateText = data.date || data.match_date || data.datum || "";
+        const homeText = data.home || data.home_team || data.heim || "Heim";
+        const awayText = data.away || data.away_team || data.gast || "Gast";
+        headerEl.textContent = `Du scoutest für das Spiel: ${matchId} | ${dateText} | ${homeText} vs ${awayText}`;
+        setStatus("Firebase initialisiert. Matchdaten geladen.");
+      } catch (err) {
+        console.error(err);
+        setStatus("Matchdaten konnten nicht geladen werden. Erfassung läuft trotzdem.", "err");
+      }
+    }
 
-  const payload = {
-    match_id: matchId,
-    team_context: document.getElementById("context").value,
-    action_type: document.getElementById("action").value,
-    result: document.getElementById("result").value,
-    follow_action: document.getElementById("follow").value,
-    numerical_situation: document.getElementById("numbers").value,
-    is_one_v_one: document.getElementById("onevone").checked,
-    zone: document.getElementById("zone").value,
-    shot_from_zone: document.getElementById("shot_from").value,
-    shot_target_zone: document.getElementById("target").value,
-    notes: document.getElementById("notes").value,
-    source: "manual_ui",
-    created_at: serverTimestamp()
-  };
+    function clearFields() {
+      setValue("match_minute", "0");
+      setValue("match_second", "0");
+      setValue("context", "tvb_attack");
+      setValue("action", "duel");
+      setValue("result", "won");
+      setValue("follow", "none");
+      setValue("numbers", "equal");
+      document.getElementById("onevone").checked = false;
+      setValue("player_tvb", "");
+      setValue("player_opponent", "");
+      setValue("system", "6:0");
+      setValue("opponent_system", "");
+      setValue("zone", "");
+      setValue("shot_from", "");
+      setValue("target", "");
+      setValue("notes", "");
+      transcriptEl.textContent = "Noch keine Spracheingabe.";
+    }
 
-  try {
-    await addDoc(collection(db, "matches", matchId, "scout_events"), payload);
-    status.innerText = "✅ Gespeichert";
-  } catch (err) {
-    console.error(err);
-    status.innerText = "❌ Fehler: " + err.message;
-  }
+    document.getElementById("clearBtn").addEventListener("click", clearFields);
 
-});
+    function parseVoiceText(text) {
+      const t = text.toLowerCase();
 
-</script>
+      if (t.includes("abwehr")) setValue("context", "tvb_defense");
+      if (t.includes("angriff")) setValue("context", "tvb_attack");
 
+      if (t.includes("zweikampf")) setValue("action", "duel");
+      if (t.includes("wurf")) setValue("action", "shot");
+      if (t.includes("ballverlust")) setValue("action", "turnover");
+      if (t.includes("foul")) setValue("action", "foul");
+      if (t.includes("block")) setValue("action", "block");
+      if (t.includes("parade")) setValue("action", "save");
+
+      if (t.includes("gewonnen")) setValue("result", "won");
+      if (t.includes("verloren")) setValue("result", "lost");
+      if (t.includes("erfolgreich")) setValue("result", "success");
+      if (t.includes("nicht erfolgreich")) setValue("result", "failed");
+
+      if (t.includes("tor")) setValue("follow", "goal");
+      if (t.includes("keine folgeaktion")) setValue("follow", "none");
+
+      if (t.includes("gleichzahl")) setValue("numbers", "equal");
+      if (t.includes("überzahl")) setValue("numbers", "overload");
+      if (t.includes("unterzahl")) setValue("numbers", "underload");
+
+      if (t.includes("eins gegen eins") || t.includes("1 gegen 1") || t.includes("1:1")) {
+        document.getElementById("onevone").checked = true;
+      }
+
+      if (t.includes("6 0") || t.includes("6:0")) setValue("system", "6:0");
+      if (t.includes("5 1") || t.includes("5:1")) setValue("system", "5:1");
+      if (t.includes("3 2 1") || t.includes("3:2:1")) setValue("system", "3:2:1");
+      if (t.includes("7 6") || t.includes("7:6")) setValue("system", "7:6");
+
+      const minuteMatch = t.match(/minute\s+(\d{1,2})/);
+      if (minuteMatch) setValue("match_minute", minuteMatch[1]);
+
+      const secondMatch = t.match(/(?:sekunde|sekunden)\s+(\d{1,2})/);
+      if (secondMatch) setValue("match_second", secondMatch[1]);
+
+      const zoneMatch = t.match(/zone\s+([a-z0-9/:]+)/);
+      if (zoneMatch) {
+        setValue("zone", zoneMatch[1].toUpperCase() === "LA" ? "LA" : zoneMatch[1]);
+      }
+
+      const notesEl = document.getElementById("notes");
+      if (!notesEl.value.trim()) notesEl.value = text;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+    let isRecording = false;
+
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.lang = "de-DE";
+      recognition.interimResults = false;
+      recognition.continuous = false;
+
+      recognition.onstart = () => {
+        isRecording = true;
+        voiceBtn.classList.add("recording");
+        voiceBtn.textContent = "⏺ Aufnahme läuft ...";
+        setStatus("Spracheingabe läuft.");
+      };
+
+      recognition.onresult = (event) => {
+        const text = event.results[0][0].transcript;
+        transcriptEl.textContent = "Erkannt: " + text;
+        document.getElementById("notes").value = text;
+        parseVoiceText(text);
+        setStatus("Spracheingabe erkannt. Felder wurden soweit möglich vorbelegt.", "ok");
+      };
+
+      recognition.onerror = (event) => {
+        setStatus("Sprachfehler: " + event.error, "err");
+      };
+
+      recognition.onend = () => {
+        isRecording = false;
+        voiceBtn.classList.remove("recording");
+        voiceBtn.textContent = "🎤 Spracheingabe starten";
+      };
+
+      voiceBtn.addEventListener("click", () => {
+        if (isRecording) {
+          recognition.stop();
+          return;
+        }
+        recognition.start();
+      });
+    } else {
+      voiceBtn.disabled = true;
+      setStatus("Browser unterstützt diese Spracheingabe nicht. Bitte Chrome oder Edge nutzen.", "err");
+    }
+
+    sendBtn.addEventListener("click", async () => {
+      sendBtn.disabled = true;
+      setStatus("Sende Event ...");
+
+      const payload = {
+        match_id: matchId,
+        match_minute: Number(getValue("match_minute") || 0),
+        match_second: Number(getValue("match_second") || 0),
+        team_context: getValue("context"),
+        action_type: getValue("action"),
+        result: getValue("result"),
+        follow_action: getValue("follow"),
+        numerical_situation: getValue("numbers"),
+        is_one_v_one: document.getElementById("onevone").checked,
+        player_tvb: getValue("player_tvb") || null,
+        player_opponent: getValue("player_opponent") || null,
+        tvb_system_label: getValue("system") || null,
+        opponent_system_label: getValue("opponent_system") || null,
+        zone: getValue("zone") || null,
+        shot_from_zone: getValue("shot_from") || null,
+        shot_target_zone: getValue("target") || null,
+        notes: getValue("notes"),
+        source: "manual_ui",
+        confidence: 1.0,
+        created_at: serverTimestamp()
+      };
+
+      try {
+        const ref = await addDoc(collection(db, "matches", matchId, "scout_events"), payload);
+        setStatus("Gespeichert. Dokument-ID: " + ref.id, "ok");
+      } catch (err) {
+        console.error(err);
+        setStatus("Firestore Fehler: " + err.message, "err");
+      } finally {
+        sendBtn.disabled = false;
+      }
+    });
+
+    loadMatch();
+  </script>
 </body>
 </html>
