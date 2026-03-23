@@ -12,15 +12,13 @@
       --panel-2: #122034;
       --text: #f5f7fb;
       --muted: #9fb0c5;
-      --line: #f4f4f4;
       --border: rgba(255,255,255,0.12);
-      --zone: rgba(67, 116, 180, 0.12);
+      --zone: rgba(67, 116, 180, 0.10);
       --zone-hover: rgba(0, 194, 168, 0.22);
       --zone-active: rgba(0, 194, 168, 0.45);
       --inactive: rgba(100, 130, 160, 0.08);
       --accent: #2f8cff;
       --danger: #ff6b6b;
-      --goal: #d92f2f;
     }
 
     * { box-sizing: border-box; }
@@ -47,9 +45,7 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.24);
     }
 
-    .field-card {
-      padding: 14px;
-    }
+    .field-card { padding: 14px; }
 
     .side-card {
       padding: 16px;
@@ -152,7 +148,7 @@
       border-radius: 10px;
       border: 1px solid var(--border);
       background: rgba(255,255,255,0.06);
-      color: var(--text);
+      color: #ffffff;
       padding: 0 12px;
       font-size: 14px;
       outline: none;
@@ -161,6 +157,11 @@
     input:focus, select:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(47,140,255,0.15);
+    }
+
+    select option {
+      color: #111111;
+      background: #ffffff;
     }
 
     .button-row {
@@ -219,375 +220,299 @@
     }
 
     @media (max-width: 1180px) {
-      .page {
-        grid-template-columns: 1fr;
-      }
+      .page { grid-template-columns: 1fr; }
     }
   </style>
 
   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import {
-    getFirestore,
-    collection,
-    addDoc,
-    serverTimestamp,
-    getDocs,
-    doc,
-    getDoc
-  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      serverTimestamp,
+      getDocs,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAJwAR1krrLK-fU-uCtLz8dqRvtdoTyPWY",
-    authDomain: "udoagentendaten.firebaseapp.com",
-    projectId: "udoagentendaten",
-    storageBucket: "udoagentendaten.firebasestorage.app",
-    messagingSenderId: "115120028998",
-    appId: "1:115120028998:web:fb24fc6ab5059288da7947",
-    measurementId: "G-J5M3ZWZ1V9"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  const state = {
-    zoneId: null,
-    positionCode: null,
-    positionLabel: null,
-    directionCode: null,
-    points: null,
-    outcomeCode: null,
-    resultCode: null,
-    twoMinCode: 0,
-    eventPayload: null,
-    matches: []
-  };
-
-  const labels = {
-    direction: {
-      1: "zur_hand",
-      2: "gegen_hand"
-    },
-    outcome: {
-      1: "gewonnen",
-      2: "verloren",
-      3: "fehler"
-    },
-    result: {
-      0: "spiel_geht_weiter",
-      1: "tor",
-      2: "foul_bei_spieler",
-      4: "7m"
-    },
-    twoMin: {
-      0: "nein",
-      1: "ja"
-    }
-  };
-
-  function updateMeta() {
-    document.getElementById("metaZone").textContent = state.zoneId ?? "–";
-    document.getElementById("metaPosition").textContent =
-      state.positionLabel ? `${state.positionLabel} (${state.positionCode})` : "–";
-    document.getElementById("metaDirection").textContent =
-      state.directionCode ? `${labels.direction[state.directionCode]} (${state.directionCode})` : "–";
-    document.getElementById("metaPoints").textContent =
-      Number.isFinite(state.points) ? String(state.points) : "–";
-  }
-
-  function bindToggleGroup(groupId, stateKey) {
-    const buttons = document.querySelectorAll(`#${groupId} button`);
-    buttons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        buttons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        state[stateKey] = Number(btn.dataset.value);
-        updateMeta();
-      });
-    });
-  }
-
-  function activateZones() {
-    const zones = document.querySelectorAll(".zone:not(.inactive)");
-    zones.forEach(zone => {
-      zone.addEventListener("click", () => {
-        zones.forEach(z => z.classList.remove("active"));
-        zone.classList.add("active");
-
-        state.zoneId = zone.dataset.zoneId;
-        state.positionCode = Number(zone.dataset.positionCode);
-        state.positionLabel = zone.dataset.positionLabel;
-        state.points = Number(zone.dataset.points);
-
-        updateMeta();
-      });
-    });
-  }
-
-  function renderMatchOptions(matches) {
-    const select = document.getElementById("matchSelect");
-    select.innerHTML = "";
-
-    if (!matches.length) {
-      const opt = document.createElement("option");
-      opt.value = "";
-      opt.textContent = "Keine Spiele gefunden";
-      select.appendChild(opt);
-      return;
-    }
-
-    matches.forEach(match => {
-      const opt = document.createElement("option");
-      opt.value = match.id;
-      opt.textContent = match.label;
-      select.appendChild(opt);
-    });
-  }
-
-  async function loadMatchById(matchId) {
-    if (!matchId) return false;
-
-    try {
-      const snap = await getDoc(doc(db, "matches", matchId));
-      if (!snap.exists()) {
-        console.warn("Match nicht gefunden:", matchId);
-        return false;
-      }
-
-      const data = snap.data() || {};
-
-      const home =
-        data.home_team_name ||
-        data.team_name ||
-        data.homeTeam ||
-        data.home ||
-        "TVB Stuttgart";
-
-      const away =
-        data.away_team_name ||
-        data.opponent_name ||
-        data.awayTeam ||
-        data.away ||
-        "Gegner";
-
-      document.getElementById("matchId").value = matchId;
-      document.getElementById("matchLabel").textContent = `${home} vs. ${away}`;
-
-const tsRaw =
-  data.start_time ||
-  data.match_date ||
-  data.date ||
-  data.created_at ||
-  null;
-
-let ts = null;
-
-if (tsRaw?.toDate) {
-  ts = tsRaw.toDate();
-} else if (typeof tsRaw === "string" || typeof tsRaw === "number") {
-  const parsed = new Date(tsRaw);
-  if (!isNaN(parsed.getTime())) ts = parsed;
-}
-
-if (ts) {
-  const y = ts.getFullYear();
-  const m = String(ts.getMonth() + 1).padStart(2, "0");
-  const d = String(ts.getDate()).padStart(2, "0");
-  const hh = String(ts.getHours()).padStart(2, "0");
-  const mm = String(ts.getMinutes()).padStart(2, "0");
-  const ss = String(ts.getSeconds()).padStart(2, "0");
-  document.getElementById("timestamp").value = `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
-} else {
-  document.getElementById("timestamp").value = "";
-}
-
-      return true;
-    } catch (err) {
-      console.error("Fehler beim direkten Match-Load:", err);
-      return false;
-    }
-  }
-
-  async function loadMatches() {
-    const select = document.getElementById("matchSelect");
-    select.innerHTML = `<option value="">Lade Spiele...</option>`;
-
-    try {
-      const snap = await getDocs(collection(db, "matches"));
-
-      if (snap.empty) {
-        console.warn("Collection matches leer. Nutze Fallback per Match-ID.");
-        select.innerHTML = `<option value="">Keine Spiele gefunden</option>`;
-
-        const fallbackMatchId = document.getElementById("matchId").value.trim() || "62090160";
-        await loadMatchById(fallbackMatchId);
-        return;
-      }
-
-      state.matches = snap.docs.map(d => {
-        const data = d.data() || {};
-
-        const home =
-          data.home_team_name ||
-          data.team_name ||
-          data.homeTeam ||
-          data.home ||
-          "TVB Stuttgart";
-
-        const away =
-          data.away_team_name ||
-          data.opponent_name ||
-          data.awayTeam ||
-          data.away ||
-          "Gegner";
-
-        let dateStr = "ohne Datum";
-        const ts = data.date?.toDate ? data.date.toDate() : new Date(data.date);
-        if (ts) dateStr = ts.toLocaleDateString("de-DE");
-
-        return {
-          id: d.id,
-          data,
-          label: `${dateStr} | ${home} vs. ${away}`
-        };
-      });
-
-      renderMatchOptions(state.matches);
-
-      if (state.matches.length) {
-        select.value = state.matches[0].id;
-        await applySelectedMatch();
-      }
-    } catch (err) {
-      console.error("Fehler beim Laden der Spiele:", err);
-      select.innerHTML = `<option value="">Fehler beim Laden</option>`;
-
-      const fallbackMatchId = document.getElementById("matchId").value.trim() || "62090160";
-      await loadMatchById(fallbackMatchId);
-    }
-  }
-
-  async function applySelectedMatch() {
-    const matchId = document.getElementById("matchSelect").value;
-    if (!matchId) return;
-    await loadMatchById(matchId);
-  }
-
-  function buildEvent() {
-    const matchId = document.getElementById("matchId").value.trim();
-    const timestamp = document.getElementById("timestamp").value.trim();
-    const playerNumberRaw = document.getElementById("playerNumber").value.trim();
-    const opponentRaw = document.getElementById("opponentNumber").value.trim();
-
-    if (!matchId) return alert("Bitte Spiel wählen.");
-    if (!timestamp) return alert("Bitte Timestamp setzen.");
-    if (!playerNumberRaw) return alert("Bitte Spielernummer setzen.");
-    if (!state.zoneId) return alert("Bitte Zone anklicken.");
-    if (!state.directionCode) return alert("Bitte Richtung wählen.");
-    if (!state.outcomeCode) return alert("Bitte Ausgang wählen.");
-    if (state.resultCode === null) return alert("Bitte Ergebnis wählen.");
-
-    const playerNumber = Number(playerNumberRaw);
-    const opponentNumber = opponentRaw === "" ? 0 : Number(opponentRaw);
-
-    const scoutSequence = [
-      playerNumber,
-      opponentNumber,
-      state.positionCode,
-      state.directionCode,
-      state.outcomeCode,
-      state.resultCode,
-      state.twoMinCode ?? 0
-    ].join(",");
-
-    const payload = {
-      event_type: "duel",
-      match_id: matchId,
-      timestamp,
-      team_player_number: playerNumber,
-      opponent_player_number: opponentNumber,
-      position_code: state.positionCode,
-      position_label: state.positionLabel,
-      direction_code: state.directionCode,
-      direction_label: labels.direction[state.directionCode],
-      zone_id: state.zoneId,
-      points: state.points,
-      outcome_code: state.outcomeCode,
-      outcome_label: labels.outcome[state.outcomeCode],
-      result_code: state.resultCode,
-      result_label: labels.result[state.resultCode],
-      two_min_code: state.twoMinCode ?? 0,
-      two_min_label: labels.twoMin[state.twoMinCode ?? 0],
-      scout_sequence: scoutSequence,
-      source: "arena_scout",
-      created_at: serverTimestamp()
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJwAR1krrLK-fU-uCtLz8dqRvtdoTyPWY",
+      authDomain: "udoagentendaten.firebaseapp.com",
+      projectId: "udoagentendaten",
+      storageBucket: "udoagentendaten.firebasestorage.app",
+      messagingSenderId: "115120028998",
+      appId: "1:115120028998:web:fb24fc6ab5059288da7947",
+      measurementId: "G-J5M3ZWZ1V9"
     };
 
-    state.eventPayload = payload;
-    document.getElementById("sequenceBox").textContent = scoutSequence;
-    document.getElementById("jsonBox").textContent = JSON.stringify(
-      { ...payload, created_at: "serverTimestamp()" },
-      null,
-      2
-    );
-    document.getElementById("saveStatus").textContent = "Event gebaut. Bereit für Save.";
-    return payload;
-  }
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  async function saveEvent() {
-    const payload = state.eventPayload || buildEvent();
-    if (!payload) return;
+    const state = {
+      zoneId: null,
+      positionCode: null,
+      positionLabel: null,
+      directionCode: null,
+      points: null,
+      outcomeCode: null,
+      resultCode: null,
+      twoMinCode: 0,
+      eventPayload: null
+    };
 
-    const saveStatus = document.getElementById("saveStatus");
-    saveStatus.textContent = "Speichere ...";
+    const labels = {
+      direction: { 2: "zur_hand", 1: "gegen_hand" },
+      outcome: { 1: "gewonnen", 2: "verloren", 3: "fehler" },
+      result: { 0: "spiel_geht_weiter", 1: "tor", 2: "foul_bei_spieler", 4: "7m" },
+      twoMin: { 0: "nein", 1: "ja" }
+    };
 
-    try {
-      await addDoc(collection(db, "matches", payload.match_id, "scout_events"), payload);
-      saveStatus.textContent = "Gespeichert ✅";
-    } catch (error) {
-      console.error("Fehler beim Speichern:", error);
-      saveStatus.textContent = "Fehler beim Speichern ❌";
+    function updateMeta() {
+      document.getElementById("metaZone").textContent = state.zoneId ?? "–";
+      document.getElementById("metaPosition").textContent =
+        state.positionLabel ? `${state.positionLabel} (${state.positionCode})` : "–";
+      document.getElementById("metaDirection").textContent =
+        state.directionCode ? `${labels.direction[state.directionCode]} (${state.directionCode})` : "–";
+      document.getElementById("metaPoints").textContent =
+        Number.isFinite(state.points) ? String(state.points) : "–";
     }
-  }
 
-  function resetAll() {
-    document.querySelectorAll(".zone").forEach(z => z.classList.remove("active"));
-    document.querySelectorAll(".button-row button").forEach(b => b.classList.remove("active"));
+    function bindToggleGroup(groupId, stateKey) {
+      const buttons = document.querySelectorAll(`#${groupId} button`);
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          buttons.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          state[stateKey] = Number(btn.dataset.value);
+          updateMeta();
+        });
+      });
+    }
 
-    state.zoneId = null;
-    state.positionCode = null;
-    state.positionLabel = null;
-    state.directionCode = null;
-    state.points = null;
-    state.outcomeCode = null;
-    state.resultCode = null;
-    state.twoMinCode = 0;
-    state.eventPayload = null;
+    function activateZones() {
+      const zones = document.querySelectorAll(".zone:not(.inactive)");
+      zones.forEach(zone => {
+        zone.addEventListener("click", () => {
+          zones.forEach(z => z.classList.remove("active"));
+          zone.classList.add("active");
+          state.zoneId = zone.dataset.zoneId;
+          state.positionCode = Number(zone.dataset.positionCode);
+          state.positionLabel = zone.dataset.positionLabel;
+          state.points = Number(zone.dataset.points);
+          updateMeta();
+        });
+      });
+    }
 
-    document.getElementById("playerNumber").value = "";
-    document.getElementById("opponentNumber").value = "";
-    document.getElementById("sequenceBox").textContent = "–";
-    document.getElementById("jsonBox").textContent = "{}";
-    document.getElementById("saveStatus").textContent = "";
-    updateMeta();
-  }
+    function formatTimestamp(ts) {
+      const y = ts.getFullYear();
+      const m = String(ts.getMonth() + 1).padStart(2, "0");
+      const d = String(ts.getDate()).padStart(2, "0");
+      const hh = String(ts.getHours()).padStart(2, "0");
+      const mm = String(ts.getMinutes()).padStart(2, "0");
+      const ss = String(ts.getSeconds()).padStart(2, "0");
+      return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+    }
 
-  window.addEventListener("DOMContentLoaded", async () => {
-    activateZones();
-    bindToggleGroup("directionButtons", "directionCode");
-    bindToggleGroup("outcomeButtons", "outcomeCode");
-    bindToggleGroup("resultButtons", "resultCode");
-    bindToggleGroup("twoMinButtons", "twoMinCode");
+    async function loadMatchById(matchId) {
+      if (!matchId) return false;
 
-    document.getElementById("buildBtn").addEventListener("click", buildEvent);
-    document.getElementById("saveBtn").addEventListener("click", saveEvent);
-    document.getElementById("resetBtn").addEventListener("click", resetAll);
-    document.getElementById("matchSelect").addEventListener("change", applySelectedMatch);
+      try {
+        const snap = await getDoc(doc(db, "matches", matchId));
+        if (!snap.exists()) return false;
 
-    updateMeta();
-    await loadMatches();
-  });
-</script>
+        const data = snap.data() || {};
+        const home = data.team_home_name || "Unbekannt";
+        const away = data.team_away_name || "Unbekannt";
+
+        document.getElementById("matchId").value = matchId;
+        document.getElementById("matchLabel").textContent = `${home} vs. ${away}`;
+
+        const ts = data.date?.toDate ? data.date.toDate() : new Date(data.date || data.updated_at);
+        if (ts && !isNaN(ts.getTime())) {
+          document.getElementById("timestamp").value = formatTimestamp(ts);
+        } else {
+          document.getElementById("timestamp").value = "";
+        }
+
+        return true;
+      } catch (err) {
+        console.error("Fehler beim direkten Match-Load:", err);
+        return false;
+      }
+    }
+
+    async function loadMatches() {
+      const select = document.getElementById("matchSelect");
+      select.innerHTML = `<option value="">Lade Spiele...</option>`;
+
+      try {
+        const snap = await getDocs(collection(db, "matches"));
+
+        if (snap.empty) {
+          select.innerHTML = `<option value="">Keine Spiele gefunden</option>`;
+          const fallbackId = document.getElementById("matchId").value.trim() || "62090160";
+          await loadMatchById(fallbackId);
+          return;
+        }
+
+        const matches = snap.docs.map(d => {
+          const data = d.data() || {};
+          const home = data.team_home_name || "Unbekannt";
+          const away = data.team_away_name || "Unbekannt";
+
+          let dateStr = "ohne Datum";
+          const ts = data.date?.toDate ? data.date.toDate() : new Date(data.date || data.updated_at);
+          if (ts && !isNaN(ts.getTime())) {
+            dateStr = ts.toLocaleDateString("de-DE");
+          }
+
+          return {
+            id: d.id,
+            label: `${dateStr} | ${home} vs. ${away}`
+          };
+        });
+
+        matches.sort((a, b) => a.label.localeCompare(b.label, "de"));
+
+        select.innerHTML = "";
+        matches.forEach(match => {
+          const opt = document.createElement("option");
+          opt.value = match.id;
+          opt.textContent = match.label;
+          select.appendChild(opt);
+        });
+
+        if (matches.length) {
+          select.value = matches[0].id;
+          await loadMatchById(matches[0].id);
+        }
+      } catch (err) {
+        console.error("Fehler beim Laden der Spiele:", err);
+        select.innerHTML = `<option value="">Fehler beim Laden</option>`;
+        const fallbackId = document.getElementById("matchId").value.trim() || "62090160";
+        await loadMatchById(fallbackId);
+      }
+    }
+
+    function buildEvent() {
+      const matchId = document.getElementById("matchId").value.trim();
+      const timestamp = document.getElementById("timestamp").value.trim();
+      const playerNumberRaw = document.getElementById("playerNumber").value.trim();
+      const opponentRaw = document.getElementById("opponentNumber").value.trim();
+
+      if (!matchId) return alert("Bitte Spiel wählen.");
+      if (!timestamp) return alert("Bitte Timestamp setzen.");
+      if (!playerNumberRaw) return alert("Bitte Spielernummer setzen.");
+      if (!state.zoneId) return alert("Bitte Zone anklicken.");
+      if (!state.directionCode) return alert("Bitte Richtung wählen.");
+      if (!state.outcomeCode) return alert("Bitte Ausgang wählen.");
+      if (state.resultCode === null) return alert("Bitte Ergebnis wählen.");
+
+      const playerNumber = Number(playerNumberRaw);
+      const opponentNumber = opponentRaw === "" ? 0 : Number(opponentRaw);
+
+      const scoutSequence = [
+        playerNumber,
+        opponentNumber,
+        state.positionCode,
+        state.directionCode,
+        state.outcomeCode,
+        state.resultCode,
+        state.twoMinCode ?? 0
+      ].join(",");
+
+      const payload = {
+        event_type: "duel",
+        match_id: matchId,
+        timestamp,
+        team_player_number: playerNumber,
+        opponent_player_number: opponentNumber,
+        position_code: state.positionCode,
+        position_label: state.positionLabel,
+        direction_code: state.directionCode,
+        direction_label: labels.direction[state.directionCode],
+        zone_id: state.zoneId,
+        points: state.points,
+        outcome_code: state.outcomeCode,
+        outcome_label: labels.outcome[state.outcomeCode],
+        result_code: state.resultCode,
+        result_label: labels.result[state.resultCode],
+        two_min_code: state.twoMinCode ?? 0,
+        two_min_label: labels.twoMin[state.twoMinCode ?? 0],
+        scout_sequence: scoutSequence,
+        source: "arena_scout",
+        created_at: serverTimestamp()
+      };
+
+      state.eventPayload = payload;
+      document.getElementById("sequenceBox").textContent = scoutSequence;
+      document.getElementById("jsonBox").textContent = JSON.stringify(
+        { ...payload, created_at: "serverTimestamp()" },
+        null,
+        2
+      );
+      document.getElementById("saveStatus").textContent = "Event gebaut. Bereit für Save.";
+      return payload;
+    }
+
+    async function saveEvent() {
+      const payload = state.eventPayload || buildEvent();
+      if (!payload) return;
+
+      const saveStatus = document.getElementById("saveStatus");
+      saveStatus.textContent = "Speichere ...";
+
+      try {
+        await addDoc(collection(db, "matches", payload.match_id, "scout_events"), payload);
+        saveStatus.textContent = "Gespeichert ✅";
+      } catch (error) {
+        console.error("Fehler beim Speichern:", error);
+        saveStatus.textContent = "Fehler beim Speichern ❌";
+      }
+    }
+
+    function resetAll() {
+      document.querySelectorAll(".zone").forEach(z => z.classList.remove("active"));
+      document.querySelectorAll(".button-row button").forEach(b => b.classList.remove("active"));
+
+      state.zoneId = null;
+      state.positionCode = null;
+      state.positionLabel = null;
+      state.directionCode = null;
+      state.points = null;
+      state.outcomeCode = null;
+      state.resultCode = null;
+      state.twoMinCode = 0;
+      state.eventPayload = null;
+
+      document.getElementById("playerNumber").value = "";
+      document.getElementById("opponentNumber").value = "";
+      document.getElementById("sequenceBox").textContent = "–";
+      document.getElementById("jsonBox").textContent = "{}";
+      document.getElementById("saveStatus").textContent = "";
+      updateMeta();
+    }
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      activateZones();
+      bindToggleGroup("directionButtons", "directionCode");
+      bindToggleGroup("outcomeButtons", "outcomeCode");
+      bindToggleGroup("resultButtons", "resultCode");
+      bindToggleGroup("twoMinButtons", "twoMinCode");
+
+      document.getElementById("buildBtn").addEventListener("click", buildEvent);
+      document.getElementById("saveBtn").addEventListener("click", saveEvent);
+      document.getElementById("resetBtn").addEventListener("click", resetAll);
+      document.getElementById("matchSelect").addEventListener("change", async (e) => {
+        await loadMatchById(e.target.value);
+      });
+
+      updateMeta();
+      await loadMatches();
+    });
+  </script>
 </head>
 <body>
   <div class="page">
