@@ -14,9 +14,9 @@
       --muted: #9fb0c5;
       --line: #f4f4f4;
       --border: rgba(255,255,255,0.12);
-      --zone: rgba(67, 116, 180, 0.18);
-      --zone-hover: rgba(0, 194, 168, 0.28);
-      --zone-active: rgba(0, 194, 168, 0.52);
+      --zone: rgba(67, 116, 180, 0.12);
+      --zone-hover: rgba(0, 194, 168, 0.22);
+      --zone-active: rgba(0, 194, 168, 0.45);
       --inactive: rgba(100, 130, 160, 0.08);
       --accent: #2f8cff;
       --danger: #ff6b6b;
@@ -47,7 +47,9 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.24);
     }
 
-    .field-card { padding: 14px; }
+    .field-card {
+      padding: 14px;
+    }
 
     .side-card {
       padding: 16px;
@@ -77,21 +79,6 @@
       border-radius: 14px;
     }
 
-    .field-line {
-      fill: none;
-      stroke: var(--line);
-      stroke-width: 3;
-      vector-effect: non-scaling-stroke;
-    }
-
-    .field-dashed {
-      fill: none;
-      stroke: rgba(255,255,255,0.9);
-      stroke-width: 2.5;
-      stroke-dasharray: 9 9;
-      vector-effect: non-scaling-stroke;
-    }
-
     .zone {
       fill: var(--zone);
       stroke: rgba(255,255,255,0.42);
@@ -117,26 +104,6 @@
       pointer-events: none;
       cursor: default;
     }
-
-    .goal {
-      fill: var(--goal);
-      stroke: #ffffff;
-      stroke-width: 2;
-      vector-effect: non-scaling-stroke;
-    }
-
-    .label {
-      fill: #ffffff;
-      font-size: 17px;
-      font-weight: 700;
-      text-anchor: middle;
-      dominant-baseline: middle;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .label.small { font-size: 15px; }
-    .label.top { font-size: 20px; }
 
     .meta-strip {
       display: grid;
@@ -266,13 +233,10 @@
       addDoc,
       serverTimestamp,
       getDocs,
-      query,
-      orderBy,
       doc,
       getDoc
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // HIER 1:1 eure echte Firebase-Config aus der alten index.html einsetzen
     const firebaseConfig = {
       apiKey: "AIzaSyAJwAR1krrLK-fU-uCtLz8dqRvtdoTyPWY",
       authDomain: "udoagentendaten.firebaseapp.com",
@@ -385,20 +349,35 @@
       select.innerHTML = `<option value="">Lade Spiele...</option>`;
 
       try {
-        let snap;
-        try {
-          snap = await getDocs(query(collection(db, "matches"), orderBy("start_time", "desc")));
-        } catch (e) {
-          console.warn("orderBy(start_time) fehlgeschlagen, fallback ohne Sortierung", e);
-          snap = await getDocs(collection(db, "matches"));
+        const snap = await getDocs(collection(db, "matches"));
+
+        if (snap.empty) {
+          select.innerHTML = `<option value="">Keine Spiele gefunden</option>`;
+          return;
         }
 
         state.matches = snap.docs.map(d => {
           const data = d.data() || {};
-          const home = data.home_team_name || data.team_name || "TVB Stuttgart";
-          const away = data.away_team_name || data.opponent_name || "Gegner";
+
+          const home =
+            data.home_team_name ||
+            data.team_name ||
+            data.homeTeam ||
+            data.home ||
+            "TVB Stuttgart";
+
+          const away =
+            data.away_team_name ||
+            data.opponent_name ||
+            data.awayTeam ||
+            data.away ||
+            "Gegner";
+
+          let dateStr = "ohne Datum";
           const ts = data.start_time?.toDate ? data.start_time.toDate() : null;
-          const dateStr = ts ? ts.toLocaleDateString("de-DE") : "ohne Datum";
+          if (ts) {
+            dateStr = ts.toLocaleDateString("de-DE");
+          }
 
           return {
             id: d.id,
@@ -430,8 +409,21 @@
         if (!snap.exists()) return;
 
         const data = snap.data() || {};
-        const home = data.home_team_name || data.team_name || "TVB Stuttgart";
-        const away = data.away_team_name || data.opponent_name || "Gegner";
+
+        const home =
+          data.home_team_name ||
+          data.team_name ||
+          data.homeTeam ||
+          data.home ||
+          "TVB Stuttgart";
+
+        const away =
+          data.away_team_name ||
+          data.opponent_name ||
+          data.awayTeam ||
+          data.away ||
+          "Gegner";
+
         document.getElementById("matchLabel").textContent = `${home} vs. ${away}`;
 
         const ts = data.start_time?.toDate ? data.start_time.toDate() : null;
@@ -443,6 +435,8 @@
           const mm = String(ts.getMinutes()).padStart(2, "0");
           const ss = String(ts.getSeconds()).padStart(2, "0");
           document.getElementById("timestamp").value = `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+        } else {
+          document.getElementById("timestamp").value = "";
         }
       } catch (err) {
         console.error("Fehler beim Laden des Match-Dokuments:", err);
@@ -576,7 +570,7 @@
       <div class="sub" id="matchLabel">Kein Spiel geladen</div>
 
       <svg viewBox="0 0 1200 800" aria-label="Handball-Halbfeld mit Zonen">
-        <image href="Sektoren.jpeg" width="1200" height="800" preserveAspectRatio="none" />
+        <image href="./Sektoren.jpeg" width="1200" height="800" preserveAspectRatio="none" />
 
         <polygon id="ra_1" class="zone"
           points="61,665 179,666 170,730 58,727"
@@ -630,11 +624,11 @@
           points="1013,664 1133,660 1134,725 1021,730"
           data-zone-id="la_1" data-position-code="1" data-position-label="LA" data-points="1"></polygon>
 
-        <polygon id="rueckraum" class="zone"
+        <polygon id="rueckraum" class="zone inactive"
           points="61,347 227,291 434,251 636,243 835,261 981,291 1133,342 1131,519 1025,427 856,366 679,360 479,360 317,371 175,422 96,485 62,522"
           data-zone-id="rr_1" data-position-code="9" data-position-label="RR" data-points="1"></polygon>
 
-        <polygon id="kreis" class="zone"
+        <polygon id="kreis" class="zone inactive"
           points="226,584 218,605 256,592 306,575 364,560 417,547 473,543 519,539 562,535 620,536 668,539 745,551 822,568 881,591 939,610 993,632 955,568 870,506 774,480 604,471 449,474 335,504 218,599"
           data-zone-id="km_1" data-position-code="4" data-position-label="KM" data-points="1"></polygon>
       </svg>
