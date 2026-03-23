@@ -3,347 +3,276 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TVB Live Scout V2</title>
+  <title>Arena Scout</title>
+
   <style>
-    :root{
-      --bg:#f3f4f6;
-      --card:#ffffff;
-      --border:#d7dbe2;
-      --input:#eef1f5;
-      --text:#1f2937;
-      --muted:#6b7280;
-      --primary:#1f6feb;
-      --primary-hover:#1558b0;
-      --ok:#0f9d58;
-      --err:#d93025;
-      --warn:#b45309;
+    :root {
+      --bg: #07111d;
+      --panel: #0d1726;
+      --panel-2: #122034;
+      --text: #f5f7fb;
+      --muted: #9fb0c5;
+      --line: #f4f4f4;
+      --border: rgba(255,255,255,0.12);
+      --zone: rgba(67, 116, 180, 0.18);
+      --zone-hover: rgba(0, 194, 168, 0.28);
+      --zone-active: rgba(0, 194, 168, 0.52);
+      --inactive: rgba(100, 130, 160, 0.08);
+      --accent: #2f8cff;
+      --danger: #ff6b6b;
+      --goal: #d92f2f;
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
-    .topbar{
-      background:#fff;border-bottom:1px solid var(--border);
-      padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:20px
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
-    .topbar-left{display:flex;align-items:center;gap:16px;min-width:0}
-    .logo-tvb{height:42px;width:auto;object-fit:contain}
-    .logo-capaneo{height:24px;width:auto;object-fit:contain}
-    .match-title{
-      font-size:24px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(760px, 1fr) 420px;
+      gap: 18px;
+      padding: 18px;
     }
-    .page{max-width:1460px;margin:24px auto;padding:0 16px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px}
-    .toolbar{
-      display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap
+
+    .card {
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.24);
     }
-    .toolbar h1{font-size:24px;margin:0}
-    .toolbar-actions{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{
-      border:1px solid var(--border);background:#fff;color:var(--text);border-radius:14px;
-      padding:12px 16px;font-size:16px;cursor:pointer;text-decoration:none;
-      display:inline-flex;align-items:center;justify-content:center;gap:8px
+
+    .field-card { padding: 14px; }
+
+    .side-card {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
-    .btn:hover{background:#f9fafb}
-    .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
-    .btn.primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
-    .btn.recording{background:#fee2e2;border-color:#fca5a5;color:#991b1b}
-    .btn.timer-on{background:#ecfdf3;border-color:#86efac;color:#166534}
-    .meta-row{
-      display:grid;grid-template-columns:2.3fr 1fr 1fr 1.2fr;gap:18px;margin-bottom:18px
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      line-height: 1.15;
     }
-    .timer-box{
-      display:flex;gap:8px;align-items:end;flex-wrap:wrap
+
+    .sub {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 12px;
     }
-    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
-    .field label{display:block;font-size:14px;margin-bottom:7px;color:#374151}
-    .field input[type="text"], .field input[type="number"], .field select, .field textarea{
-      width:100%;border:1px solid transparent;background:var(--input);border-radius:14px;
-      padding:14px 15px;font-size:17px;color:var(--text);outline:none
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #08111c;
+      border-radius: 14px;
     }
-    .field input:focus, .field select:focus, .field textarea:focus{
-      border-color:#aab4c3;background:#e8edf3
+
+    .field-line {
+      fill: none;
+      stroke: var(--line);
+      stroke-width: 3;
+      vector-effect: non-scaling-stroke;
     }
-    .field textarea{min-height:112px;resize:vertical}
-    .full{grid-column:1 / -1}
-    .checkbox-wrap{display:flex;align-items:center;gap:12px;padding-top:31px}
-    .checkbox-wrap input{width:22px;height:22px;margin:0}
-    .status{
-      margin-top:16px;padding:12px 14px;border-radius:12px;background:#eef2ff;
-      color:#243b53;font-size:14px;white-space:pre-wrap
+
+    .field-dashed {
+      fill: none;
+      stroke: rgba(255,255,255,0.9);
+      stroke-width: 2.5;
+      stroke-dasharray: 9 9;
+      vector-effect: non-scaling-stroke;
     }
-    .status.ok{background:#eaf7ef;color:var(--ok)}
-    .status.err{background:#fdecea;color:var(--err)}
-    .status.warn{background:#fff7ed;color:var(--warn)}
-    .hint{margin-top:10px;color:var(--muted);font-size:13px}
-    .voice-box{
-      margin-top:18px;padding:14px;border-radius:14px;background:#f8fafc;border:1px dashed var(--border)
+
+    .zone {
+      fill: var(--zone);
+      stroke: rgba(255,255,255,0.42);
+      stroke-width: 1.5;
+      vector-effect: non-scaling-stroke;
+      transition: fill .15s ease, stroke .15s ease;
+      cursor: pointer;
     }
-    .voice-box strong{display:block;margin-bottom:8px}
-    .subgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-    .pill{
-      display:inline-block;padding:6px 10px;border-radius:999px;background:#f3f4f6;
-      font-size:12px;color:#374151;border:1px solid var(--border)
+
+    .zone:hover {
+      fill: var(--zone-hover);
+      stroke: rgba(255,255,255,0.95);
     }
-    @media (max-width: 1100px){
-      .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .meta-row{grid-template-columns:1fr}
-      .subgrid{grid-template-columns:1fr}
+
+    .zone.active {
+      fill: var(--zone-active);
+      stroke: #ffffff;
     }
-    @media (max-width: 760px){
-      .grid,.subgrid{grid-template-columns:1fr}
-      .match-title{font-size:18px;white-space:normal}
-      .logo-tvb{height:34px}
-      .logo-capaneo{height:20px}
-      .checkbox-wrap{padding-top:0}
+
+    .zone.inactive {
+      fill: var(--inactive);
+      stroke: rgba(255,255,255,0.22);
+      pointer-events: none;
+      cursor: default;
+    }
+
+    .goal {
+      fill: var(--goal);
+      stroke: #ffffff;
+      stroke-width: 2;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .label {
+      fill: #ffffff;
+      font-size: 17px;
+      font-weight: 700;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .label.small { font-size: 15px; }
+    .label.top { font-size: 20px; }
+
+    .meta-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .pill {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      min-height: 64px;
+    }
+
+    .pill .k {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: .04em;
+      margin-bottom: 6px;
+    }
+
+    .pill .v {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      height: 42px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      padding: 0 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(47,140,255,0.15);
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button {
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      padding: 0 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      border-color: rgba(255,255,255,0.35);
+    }
+
+    button.active {
+      background: rgba(47,140,255,0.18);
+      border-color: var(--accent);
+    }
+
+    button.primary {
+      background: linear-gradient(180deg, #2f8cff, #1569d8);
+      border-color: #2f8cff;
+    }
+
+    button.danger {
+      background: rgba(255,107,107,0.14);
+      border-color: rgba(255,107,107,0.42);
+    }
+
+    pre {
+      margin: 0;
+      padding: 12px;
+      border-radius: 12px;
+      background: #09111b;
+      border: 1px solid var(--border);
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.45;
+      color: #d8e2ef;
+      min-height: 120px;
+    }
+
+    .save-status {
+      font-size: 13px;
+      color: #b9d1ea;
+      min-height: 18px;
+    }
+
+    @media (max-width: 1180px) {
+      .page {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
-</head>
-<body>
-  <div class="topbar">
-    <div class="topbar-left">
-      <img src="assets/tvb.jpg" alt="TVB" class="logo-tvb">
-      <div id="matchHeader" class="match-title">Du scoutest für das Spiel: wird geladen ...</div>
-    </div>
-    <img src="assets/capaneo.png" alt="Capaneo" class="logo-capaneo">
-  </div>
-
-  <div class="page">
-    <div class="card">
-      <div class="toolbar">
-        <h1>Manuelle Erfassung V2</h1>
-        <div class="toolbar-actions">
-          <button id="voiceBtn" class="btn" type="button">🎤 Spracheingabe starten</button>
-          <button id="clearBtn" class="btn" type="button">Felder leeren</button>
-          <a id="guideLink" class="btn" href="guide.html" target="_blank" rel="noopener">Anleitung öffnen</a>
-        </div>
-      </div>
-
-      <div class="meta-row">
-        <div class="field">
-          <label for="matchSelect">Spiel auswählen</label>
-          <select id="matchSelect">
-            <option>Lade Spiele ...</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="match_minute">Minute</label>
-          <input id="match_minute" type="number" min="0" value="0">
-        </div>
-
-        <div class="field">
-          <label for="match_second">Sekunde</label>
-          <input id="match_second" type="number" min="0" max="59" value="0">
-        </div>
-
-        <div class="field">
-          <label>Stoppuhr</label>
-          <div class="timer-box">
-            <button id="timerStartBtn" class="btn" type="button">Start</button>
-            <button id="timerStopBtn" class="btn" type="button">Stop</button>
-            <button id="timerResetBtn" class="btn" type="button">Reset</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid">
-        <div class="field">
-          <label for="context">Kontext</label>
-          <select id="context">
-            <option value="tvb_attack">TVB Angriff</option>
-            <option value="tvb_defense">TVB Abwehr</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="action">Aktion</label>
-          <select id="action">
-            <option value="duel">Zweikampf</option>
-            <option value="shot">Wurf</option>
-            <option value="turnover">Ballverlust</option>
-            <option value="foul">Foul</option>
-            <option value="block">Block</option>
-            <option value="save">Parade</option>
-            <option value="steal">Ballgewinn</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="result">Ergebnis</label>
-          <select id="result">
-            <option value="won">Gewonnen</option>
-            <option value="lost">Verloren</option>
-            <option value="success">Erfolgreich</option>
-            <option value="failed">Nicht erfolgreich</option>
-            <option value="none">Kein Ergebnis</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="follow">Folgeaktion</label>
-          <select id="follow">
-            <option value="none">Keine</option>
-            <option value="goal">Tor</option>
-            <option value="shot">Wurf</option>
-            <option value="foul">Foul</option>
-            <option value="turnover">Ballverlust</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="numbers">Zahlensituation</label>
-          <select id="numbers">
-            <option value="equal">Gleichzahl</option>
-            <option value="overload">Überzahl</option>
-            <option value="underload">Unterzahl</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <div class="checkbox-wrap">
-            <input type="checkbox" id="onevone">
-            <label for="onevone" style="margin:0">1:1</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="player_tvb">TVB Spieler</label>
-          <select id="player_tvb">
-            <option value="">Lade Spieler ...</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="player_opponent">Gegenspieler</label>
-          <select id="player_opponent">
-            <option value="">Lade Gegner ...</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="system">TVB System / Taktik</label>
-          <select id="system">
-            <option value="">bitte wählen</option>
-            <option value="6:0">6:0</option>
-            <option value="5:1">5:1</option>
-            <option value="3:2:1">3:2:1</option>
-            <option value="7:6">7:6</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="opponent_system">Gegner System / Taktik</label>
-          <select id="opponent_system">
-            <option value="">bitte wählen</option>
-            <option value="6:0">6:0</option>
-            <option value="5:1">5:1</option>
-            <option value="3:2:1">3:2:1</option>
-            <option value="7:6">7:6</option>
-            <option value="System A">System A</option>
-            <option value="System B">System B</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="zone">Zone</label>
-          <select id="zone">
-            <option value="">bitte wählen</option>
-            <option value="0/1">0/1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6m">6m</option>
-            <option value="7m">7m</option>
-            <option value="LA">LA</option>
-            <option value="RA">RA</option>
-            <option value="RM">RM</option>
-            <option value="RL">RL</option>
-            <option value="RR">RR</option>
-            <option value="KM">KM</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="shot_from">Wurf von Zone</label>
-          <select id="shot_from">
-            <option value="">bitte wählen</option>
-            <option value="0/1">0/1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6m">6m</option>
-            <option value="7m">7m</option>
-            <option value="LA">LA</option>
-            <option value="RA">RA</option>
-            <option value="RM">RM</option>
-            <option value="RL">RL</option>
-            <option value="RR">RR</option>
-            <option value="KM">KM</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="target">Ziel im Tor</label>
-          <select id="target">
-            <option value="">bitte wählen</option>
-            <option value="left_high">oben links</option>
-            <option value="center_high">oben Mitte</option>
-            <option value="right_high">oben rechts</option>
-            <option value="left_low">unten links</option>
-            <option value="center_low">unten Mitte</option>
-            <option value="right_low">unten rechts</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="goalkeeper_name">Torhüter</label>
-          <input id="goalkeeper_name" type="text" placeholder="z. B. Kornecky">
-        </div>
-
-        <div class="field">
-          <label for="event_type">Event-Typ</label>
-          <select id="event_type">
-            <option value="">automatisch</option>
-            <option value="attack">Angriff</option>
-            <option value="defense">Abwehr</option>
-            <option value="goalkeeper">Torhüter</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <div class="checkbox-wrap">
-            <input type="checkbox" id="is_goalkeeper_event">
-            <label for="is_goalkeeper_event" style="margin:0">Torhüter-Event</label>
-          </div>
-        </div>
-
-        <div class="field full">
-          <label for="notes">Notizen / Rohtext</label>
-          <textarea id="notes" placeholder="z. B. TVB in Abwehr, 6 0 Formation, Fischer vom Kreis, Wurf, Tor unten links, Torhüter Kornecky"></textarea>
-        </div>
-      </div>
-
-      <div class="voice-box">
-        <strong>Spracheingabe</strong>
-        <div class="subgrid">
-          <div><span class="pill">Beispiel 1</span><div class="hint">Minute 3 25, TVB Angriff, Zweikampf gewonnen, Tor.</div></div>
-          <div><span class="pill">Beispiel 2</span><div class="hint">TVB in Abwehr, 6 0 Formation, Fischer vom Kreis, Wurf, Tor unten links, Torhüter Kornecky.</div></div>
-          <div><span class="pill">Regel</span><div class="hint">Kurze Sätze. Danach prüfen. Dann senden.</div></div>
-        </div>
-        <div id="voiceTranscript" class="hint" style="margin-top:10px">Noch keine Spracheingabe.</div>
-      </div>
-
-      <button id="sendBtn" class="btn primary" type="button" style="margin-top:18px;width:100%">Senden</button>
-      <div id="status" class="status">Seite geladen. Initialisiere ...</div>
-      <div class="hint">Gespeichert wird nach: <code>matches/{selectedMatchId}/scout_events</code></div>
-    </div>
-  </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      serverTimestamp,
+      getDocs,
+      query,
+      orderBy,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+    // HIER 1:1 eure echte Firebase-Config aus der alten index.html einsetzen
     const firebaseConfig = {
       apiKey: "AIzaSyAJwAR1krrLK-fU-uCtLz8dqRvtdoTyPWY",
       authDomain: "udoagentendaten.firebaseapp.com",
@@ -357,611 +286,448 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const els = {
-      status: document.getElementById("status"),
-      header: document.getElementById("matchHeader"),
-      transcript: document.getElementById("voiceTranscript"),
-      sendBtn: document.getElementById("sendBtn"),
-      voiceBtn: document.getElementById("voiceBtn"),
-      clearBtn: document.getElementById("clearBtn"),
-      matchSelect: document.getElementById("matchSelect"),
-      guideLink: document.getElementById("guideLink"),
-      timerStartBtn: document.getElementById("timerStartBtn"),
-      timerStopBtn: document.getElementById("timerStopBtn"),
-      timerResetBtn: document.getElementById("timerResetBtn"),
-      match_minute: document.getElementById("match_minute"),
-      match_second: document.getElementById("match_second"),
-      player_tvb: document.getElementById("player_tvb"),
-      player_opponent: document.getElementById("player_opponent"),
-      notes: document.getElementById("notes"),
-      context: document.getElementById("context"),
-      action: document.getElementById("action"),
-      result: document.getElementById("result"),
-      follow: document.getElementById("follow"),
-      numbers: document.getElementById("numbers"),
-      onevone: document.getElementById("onevone"),
-      system: document.getElementById("system"),
-      opponent_system: document.getElementById("opponent_system"),
-      zone: document.getElementById("zone"),
-      shot_from: document.getElementById("shot_from"),
-      target: document.getElementById("target"),
-      goalkeeper_name: document.getElementById("goalkeeper_name"),
-      event_type: document.getElementById("event_type"),
-      is_goalkeeper_event: document.getElementById("is_goalkeeper_event")
+    const state = {
+      zoneId: null,
+      positionCode: null,
+      positionLabel: null,
+      directionCode: null,
+      points: null,
+      outcomeCode: null,
+      resultCode: null,
+      twoMinCode: 0,
+      eventPayload: null,
+      matches: []
     };
 
-    let selectedMatchId = null;
-    let selectedMatchData = null;
-    let matchesCache = [];
-    let lookupData = null;
-    let selectedTVBPlayers = [];
-    let selectedOpponentPlayers = [];
-    let recognition = null;
-    let isRecording = false;
-
-    let timerSeconds = 0;
-    let timerInterval = null;
-    let timerRunning = false;
-
-    function setStatus(message, type = "") {
-      els.status.textContent = message;
-      els.status.className = "status" + (type ? " " + type : "");
-      console.log(message);
-    }
-
-    function getValue(id) {
-      const el = document.getElementById(id);
-      return el ? el.value.trim() : "";
-    }
-
-    function setValue(id, value) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      if (el.tagName === "SELECT") {
-        const exists = Array.from(el.options).some(o => o.value === value);
-        if (exists) el.value = value;
-      } else {
-        el.value = value;
+    const labels = {
+      direction: {
+        1: "zur_hand",
+        2: "gegen_hand"
+      },
+      outcome: {
+        1: "gewonnen",
+        2: "verloren",
+        3: "fehler"
+      },
+      result: {
+        0: "spiel_geht_weiter",
+        1: "tor",
+        2: "foul_bei_spieler",
+        4: "7m"
+      },
+      twoMin: {
+        0: "nein",
+        1: "ja"
       }
+    };
+
+    function updateMeta() {
+      document.getElementById("metaZone").textContent = state.zoneId ?? "–";
+      document.getElementById("metaPosition").textContent =
+        state.positionLabel ? `${state.positionLabel} (${state.positionCode})` : "–";
+      document.getElementById("metaDirection").textContent =
+        state.directionCode ? `${labels.direction[state.directionCode]} (${state.directionCode})` : "–";
+      document.getElementById("metaPoints").textContent =
+        Number.isFinite(state.points) ? String(state.points) : "–";
     }
 
-    function normalizeText(value) {
-      return (value || "")
-        .toLowerCase()
-        .replace(/ä/g, "ae")
-        .replace(/ö/g, "oe")
-        .replace(/ü/g, "ue")
-        .replace(/ß/g, "ss")
-        .replace(/[^\p{L}\p{N}\s/:]/gu, " ")
-        .replace(/\s+/g, " ")
-        .trim();
+    function bindToggleGroup(groupId, stateKey) {
+      const buttons = document.querySelectorAll(`#${groupId} button`);
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          buttons.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          state[stateKey] = Number(btn.dataset.value);
+          updateMeta();
+        });
+      });
     }
 
-    function parsePossibleDate(value) {
-      if (!value) return 0;
-      if (typeof value === "string") {
-        const parsed = Date.parse(value);
-        return Number.isNaN(parsed) ? 0 : parsed;
-      }
-      if (typeof value === "object") {
-        if (typeof value.toDate === "function") {
-          try { return value.toDate().getTime(); } catch { return 0; }
-        }
-        if (typeof value.seconds === "number") return value.seconds * 1000;
-      }
-      return 0;
+    function activateZones() {
+      const zones = document.querySelectorAll(".zone:not(.inactive)");
+      zones.forEach(zone => {
+        zone.addEventListener("click", () => {
+          zones.forEach(z => z.classList.remove("active"));
+          zone.classList.add("active");
+
+          state.zoneId = zone.dataset.zoneId;
+          state.positionCode = Number(zone.dataset.positionCode);
+          state.positionLabel = zone.dataset.positionLabel;
+          state.points = Number(zone.dataset.points);
+
+          updateMeta();
+        });
+      });
     }
 
-    function getSortTimestamp(data) {
-      return (
-        parsePossibleDate(data.updated_at) ||
-        parsePossibleDate(data.start_time) ||
-        parsePossibleDate(data.match_date) ||
-        parsePossibleDate(data.date) ||
-        0
-      );
-    }
+    function renderMatchOptions(matches) {
+      const select = document.getElementById("matchSelect");
+      select.innerHTML = "";
 
-    function formatDateForLabel(data) {
-      const ts =
-        parsePossibleDate(data.start_time) ||
-        parsePossibleDate(data.match_date) ||
-        parsePossibleDate(data.date) ||
-        parsePossibleDate(data.updated_at);
-
-      if (!ts) return "";
-      return new Date(ts).toLocaleDateString("de-DE");
-    }
-
-    function buildMatchLabel(id, data) {
-      const home = data.team_home_name || data.home || data.home_team || data.heim || "Heim";
-      const away = data.team_away_name || data.away || data.away_team || data.gast || "Gast";
-      const dt = formatDateForLabel(data);
-      return dt ? `${dt} | ${home} vs ${away} (${id})` : `${home} vs ${away} (${id})`;
-    }
-
-    function updateGuideLink() {
-      els.guideLink.href = selectedMatchId
-        ? `guide.html?match_id=${encodeURIComponent(selectedMatchId)}`
-        : "guide.html";
-    }
-
-    function updateHeaderFromData(id, data) {
-      selectedMatchData = data;
-      const dateText = formatDateForLabel(data);
-      const homeText = data.team_home_name || data.home || data.home_team || data.heim || "Heim";
-      const awayText = data.team_away_name || data.away || data.away_team || data.gast || "Gast";
-      els.header.textContent = dateText
-        ? `Du scoutest für das Spiel: ${id} | ${dateText} | ${homeText} vs ${awayText}`
-        : `Du scoutest für das Spiel: ${id} | ${homeText} vs ${awayText}`;
-    }
-
-    function buildPlayerOptionLabel(player) {
-      const name = player.player_name || "Unbekannt";
-      const id = player.player_id || "";
-      const number = player.number ?? "";
-      return number !== "" ? `${name} (${id}) #${number}` : `${name} (${id})`;
-    }
-
-    function fillPlayerSelect(selectEl, players, emptyText) {
-      selectEl.innerHTML = "";
-      const first = document.createElement("option");
-      first.value = "";
-      first.textContent = emptyText;
-      selectEl.appendChild(first);
-
-      for (const p of players) {
+      if (!matches.length) {
         const opt = document.createElement("option");
-        opt.value = String(p.player_id || "");
-        opt.textContent = buildPlayerOptionLabel(p);
-        opt.dataset.playerName = p.player_name || "";
-        selectEl.appendChild(opt);
+        opt.value = "";
+        opt.textContent = "Keine Spiele gefunden";
+        select.appendChild(opt);
+        return;
       }
-    }
 
-    async function loadLookupJson() {
-      const res = await fetch("assets/league_team_lookup.json", { cache: "no-store" });
-      if (!res.ok) throw new Error(`Lookup HTTP ${res.status}`);
-      lookupData = await res.json();
-    }
-
-    function getTeamPlayers(teamId) {
-      if (!lookupData || !lookupData.teams || !lookupData.teams[teamId]) return [];
-      return Array.isArray(lookupData.teams[teamId].players) ? lookupData.teams[teamId].players : [];
+      matches.forEach(match => {
+        const opt = document.createElement("option");
+        opt.value = match.id;
+        opt.textContent = match.label;
+        select.appendChild(opt);
+      });
     }
 
     async function loadMatches() {
-      const snap = await getDocs(collection(db, "matches"));
-      const items = [];
+      const select = document.getElementById("matchSelect");
+      select.innerHTML = `<option value="">Lade Spiele...</option>`;
 
-      snap.forEach(docSnap => {
-        const data = docSnap.data();
-        items.push({
-          id: docSnap.id,
-          data,
-          sortTs: getSortTimestamp(data)
+      try {
+        let snap;
+        try {
+          snap = await getDocs(query(collection(db, "matches"), orderBy("start_time", "desc")));
+        } catch (e) {
+          console.warn("orderBy(start_time) fehlgeschlagen, fallback ohne Sortierung", e);
+          snap = await getDocs(collection(db, "matches"));
+        }
+
+        state.matches = snap.docs.map(d => {
+          const data = d.data() || {};
+          const home = data.home_team_name || data.team_name || "TVB Stuttgart";
+          const away = data.away_team_name || data.opponent_name || "Gegner";
+          const ts = data.start_time?.toDate ? data.start_time.toDate() : null;
+          const dateStr = ts ? ts.toLocaleDateString("de-DE") : "ohne Datum";
+
+          return {
+            id: d.id,
+            data,
+            label: `${dateStr} | ${home} vs. ${away}`
+          };
         });
-      });
 
-      items.sort((a, b) => b.sortTs - a.sortTs);
-      matchesCache = items;
+        renderMatchOptions(state.matches);
 
-      els.matchSelect.innerHTML = "";
-      if (items.length === 0) {
-        const option = document.createElement("option");
-        option.value = "";
-        option.textContent = "Keine Spiele gefunden";
-        els.matchSelect.appendChild(option);
-        selectedMatchId = null;
-        els.header.textContent = "Keine Spiele verfügbar";
-        return;
-      }
-
-      for (const item of items) {
-        const option = document.createElement("option");
-        option.value = item.id;
-        option.textContent = buildMatchLabel(item.id, item.data);
-        els.matchSelect.appendChild(option);
-      }
-
-      selectedMatchId = items[0].id;
-      els.matchSelect.value = selectedMatchId;
-      updateHeaderFromData(items[0].id, items[0].data);
-      updateGuideLink();
-      await loadPlayersForMatch();
-    }
-
-    async function loadPlayersForMatch() {
-      if (!selectedMatchData || !lookupData) {
-        fillPlayerSelect(els.player_tvb, [], "Spieler nicht verfügbar");
-        fillPlayerSelect(els.player_opponent, [], "Gegner nicht verfügbar");
-        return;
-      }
-
-      const homeId = selectedMatchData.team_home_id || "";
-      const awayId = selectedMatchData.team_away_id || "";
-
-      let tvbTeamId = "";
-      let opponentTeamId = "";
-
-      if (homeId === "tvb_stuttgart") {
-        tvbTeamId = homeId;
-        opponentTeamId = awayId;
-      } else if (awayId === "tvb_stuttgart") {
-        tvbTeamId = awayId;
-        opponentTeamId = homeId;
-      } else {
-        tvbTeamId = "tvb_stuttgart";
-        opponentTeamId = awayId || homeId || "";
-      }
-
-      selectedTVBPlayers = getTeamPlayers(tvbTeamId);
-      selectedOpponentPlayers = getTeamPlayers(opponentTeamId);
-
-      selectedTVBPlayers.sort((a, b) => String(a.number ?? "").localeCompare(String(b.number ?? ""), "de", { numeric: true }));
-      selectedOpponentPlayers.sort((a, b) => String(a.number ?? "").localeCompare(String(b.number ?? ""), "de", { numeric: true }));
-
-      fillPlayerSelect(els.player_tvb, selectedTVBPlayers, "bitte wählen");
-      fillPlayerSelect(els.player_opponent, selectedOpponentPlayers, "bitte wählen");
-    }
-
-    function updateTimerFields() {
-      const minutes = Math.floor(timerSeconds / 60);
-      const seconds = timerSeconds % 60;
-      els.match_minute.value = String(minutes);
-      els.match_second.value = String(seconds);
-    }
-
-    function startTimer() {
-      if (timerRunning) return;
-      timerRunning = true;
-      els.timerStartBtn.classList.add("timer-on");
-      timerInterval = setInterval(() => {
-        timerSeconds += 1;
-        updateTimerFields();
-      }, 1000);
-      setStatus("Stoppuhr läuft.");
-    }
-
-    function stopTimer() {
-      if (!timerRunning) return;
-      clearInterval(timerInterval);
-      timerInterval = null;
-      timerRunning = false;
-      els.timerStartBtn.classList.remove("timer-on");
-      setStatus("Stoppuhr gestoppt.");
-    }
-
-    function resetTimer() {
-      stopTimer();
-      timerSeconds = 0;
-      updateTimerFields();
-      setStatus("Stoppuhr zurückgesetzt.");
-    }
-
-    function clearFields() {
-      els.context.value = "tvb_attack";
-      els.action.value = "duel";
-      els.result.value = "won";
-      els.follow.value = "none";
-      els.numbers.value = "equal";
-      els.onevone.checked = false;
-      els.player_tvb.value = "";
-      els.player_opponent.value = "";
-      els.system.value = "";
-      els.opponent_system.value = "";
-      els.zone.value = "";
-      els.shot_from.value = "";
-      els.target.value = "";
-      els.goalkeeper_name.value = "";
-      els.event_type.value = "";
-      els.is_goalkeeper_event.checked = false;
-      els.notes.value = "";
-      els.transcript.textContent = "Noch keine Spracheingabe.";
-    }
-
-    function findPlayerByAlias(players, text) {
-      const normText = normalizeText(text);
-      let best = null;
-
-      for (const player of players) {
-        const candidates = new Set();
-        if (player.player_name) candidates.add(player.player_name);
-        if (Array.isArray(player.aliases)) {
-          for (const alias of player.aliases) candidates.add(alias);
+        if (state.matches.length) {
+          select.value = state.matches[0].id;
+          await applySelectedMatch();
         }
+      } catch (err) {
+        console.error("Fehler beim Laden der Spiele:", err);
+        select.innerHTML = `<option value="">Fehler beim Laden</option>`;
+      }
+    }
 
-        for (const raw of candidates) {
-          const alias = normalizeText(raw);
-          if (!alias) continue;
-          if (normText.includes(alias)) {
-            if (!best || alias.length > best.aliasLength) {
-              best = { player, aliasLength: alias.length, rawAlias: raw };
-            }
-          }
+    async function applySelectedMatch() {
+      const matchId = document.getElementById("matchSelect").value;
+      document.getElementById("matchId").value = matchId || "";
+
+      if (!matchId) return;
+
+      try {
+        const snap = await getDoc(doc(db, "matches", matchId));
+        if (!snap.exists()) return;
+
+        const data = snap.data() || {};
+        const home = data.home_team_name || data.team_name || "TVB Stuttgart";
+        const away = data.away_team_name || data.opponent_name || "Gegner";
+        document.getElementById("matchLabel").textContent = `${home} vs. ${away}`;
+
+        const ts = data.start_time?.toDate ? data.start_time.toDate() : null;
+        if (ts) {
+          const y = ts.getFullYear();
+          const m = String(ts.getMonth() + 1).padStart(2, "0");
+          const d = String(ts.getDate()).padStart(2, "0");
+          const hh = String(ts.getHours()).padStart(2, "0");
+          const mm = String(ts.getMinutes()).padStart(2, "0");
+          const ss = String(ts.getSeconds()).padStart(2, "0");
+          document.getElementById("timestamp").value = `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
         }
+      } catch (err) {
+        console.error("Fehler beim Laden des Match-Dokuments:", err);
       }
-
-      return best ? best.player : null;
     }
 
-    function detectTarget(text) {
-      const t = normalizeText(text);
-      if (t.includes("unten links")) return "left_low";
-      if (t.includes("unten rechts")) return "right_low";
-      if (t.includes("oben links")) return "left_high";
-      if (t.includes("oben rechts")) return "right_high";
-      if (t.includes("mitte oben") || t.includes("oben mitte")) return "center_high";
-      if (t.includes("mitte unten") || t.includes("unten mitte")) return "center_low";
-      return "";
-    }
+    function buildEvent() {
+      const matchId = document.getElementById("matchId").value.trim();
+      const timestamp = document.getElementById("timestamp").value.trim();
+      const playerNumberRaw = document.getElementById("playerNumber").value.trim();
+      const opponentRaw = document.getElementById("opponentNumber").value.trim();
 
-    function detectZoneHints(text) {
-      const t = normalizeText(text);
-      if (t.includes("kreis")) return "KM";
-      if (t.includes("linksaussen") || t.includes("links aussen") || t.includes("linksaußen")) return "LA";
-      if (t.includes("rechtsaussen") || t.includes("rechts aussen") || t.includes("rechtsaußen")) return "RA";
-      if (t.includes("rueckraum mitte") || t.includes("rückraum mitte")) return "RM";
-      if (t.includes("rueckraum links") || t.includes("rückraum links")) return "RL";
-      if (t.includes("rueckraum rechts") || t.includes("rückraum rechts")) return "RR";
-      return "";
-    }
+      if (!matchId) return alert("Bitte Spiel wählen.");
+      if (!timestamp) return alert("Bitte Timestamp setzen.");
+      if (!playerNumberRaw) return alert("Bitte Spielernummer setzen.");
+      if (!state.zoneId) return alert("Bitte Zone anklicken.");
+      if (!state.directionCode) return alert("Bitte Richtung wählen.");
+      if (!state.outcomeCode) return alert("Bitte Ausgang wählen.");
+      if (state.resultCode === null) return alert("Bitte Ergebnis wählen.");
 
-    function detectGoalkeeper(text) {
-      const t = normalizeText(text);
-      const known = ["kornecky", "spaeth", "späth", "mrkva", "dahmke"];
-      for (const gk of known) {
-        if (t.includes(normalizeText(gk))) return gk;
-      }
-      const match = t.match(/torhueter\s+([a-zA-ZäöüÄÖÜß]+)/i) || t.match(/torhüter\s+([a-zA-ZäöüÄÖÜß]+)/i);
-      return match ? match[1] : "";
-    }
+      const playerNumber = Number(playerNumberRaw);
+      const opponentNumber = opponentRaw === "" ? 0 : Number(opponentRaw);
 
-    function applyParserRules(text) {
-      const t = normalizeText(text);
-
-      if (t.includes("abwehr")) {
-        els.context.value = "tvb_defense";
-        if (!els.event_type.value) els.event_type.value = "defense";
-      }
-      if (t.includes("angriff")) {
-        els.context.value = "tvb_attack";
-        if (!els.event_type.value) els.event_type.value = "attack";
-      }
-
-      if (t.includes("6 0") || t.includes("6:0") || t.includes("6 null")) els.system.value = "6:0";
-      if (t.includes("5 1") || t.includes("5:1")) els.system.value = "5:1";
-      if (t.includes("3 2 1") || t.includes("3:2:1")) els.system.value = "3:2:1";
-      if (t.includes("7 6") || t.includes("7:6")) els.system.value = "7:6";
-      if (t.includes("formation") || t.includes("taktik")) {
-        // bewusst kein weiterer Parse-Schritt, nur als Signal dass Systemfelder relevant sind
-      }
-
-      if (t.includes("zweikampf")) els.action.value = "duel";
-      if (t.includes("wurf")) els.action.value = "shot";
-      if (t.includes("ballverlust")) els.action.value = "turnover";
-      if (t.includes("foul")) els.action.value = "foul";
-      if (t.includes("block")) els.action.value = "block";
-      if (t.includes("parade")) els.action.value = "save";
-      if (t.includes("ballgewinn")) els.action.value = "steal";
-
-      if (t.includes("gewonnen")) els.result.value = "won";
-      if (t.includes("verloren")) els.result.value = "lost";
-      if (t.includes("nicht erfolgreich")) els.result.value = "failed";
-      if (t.includes("erfolgreich")) els.result.value = "success";
-
-      if (t.includes("tor")) {
-        els.follow.value = "goal";
-        els.result.value = "success";
-        if (els.action.value !== "shot") els.action.value = "shot";
-      }
-
-      if (t.includes("gleichzahl")) els.numbers.value = "equal";
-      if (t.includes("ueberzahl") || t.includes("überzahl")) els.numbers.value = "overload";
-      if (t.includes("unterzahl")) els.numbers.value = "underload";
-
-      if (t.includes("1 gegen 1") || t.includes("eins gegen eins") || t.includes("1:1")) {
-        els.onevone.checked = true;
-      }
-
-      const minuteMatch = t.match(/minute\s+(\d{1,2})/);
-      if (minuteMatch) els.match_minute.value = minuteMatch[1];
-
-      const secondWordMatch = t.match(/sekunde\s+(\d{1,2})/);
-      if (secondWordMatch) {
-        els.match_second.value = secondWordMatch[1];
-      } else {
-        const minuteSecondMatch = t.match(/minute\s+\d{1,2}\s+(\d{1,2})/);
-        if (minuteSecondMatch) els.match_second.value = minuteSecondMatch[1];
-      }
-
-      const target = detectTarget(text);
-      if (target) els.target.value = target;
-
-      const zoneHint = detectZoneHints(text);
-      if (zoneHint) {
-        els.zone.value = zoneHint;
-        if (els.action.value === "shot" || t.includes("wurf")) {
-          els.shot_from.value = zoneHint;
-        }
-      }
-
-      const zoneMatch = t.match(/zone\s+([a-z0-9/:]+)/);
-      if (zoneMatch) els.zone.value = zoneMatch[1];
-
-      const tvbPlayer = findPlayerByAlias(selectedTVBPlayers, text);
-      if (tvbPlayer) els.player_tvb.value = String(tvbPlayer.player_id);
-
-      const oppPlayer = findPlayerByAlias(selectedOpponentPlayers, text);
-      if (oppPlayer) els.player_opponent.value = String(oppPlayer.player_id);
-
-      const gk = detectGoalkeeper(text);
-      if (gk) {
-        els.goalkeeper_name.value = gk;
-        els.is_goalkeeper_event.checked = true;
-        if (!els.event_type.value) els.event_type.value = "goalkeeper";
-      }
-
-      els.notes.value = text;
-    }
-
-    function setupSpeech() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        els.voiceBtn.disabled = true;
-        setStatus("Browser unterstützt diese Spracheingabe nicht. Bitte Chrome oder Edge nutzen.", "warn");
-        return;
-      }
-
-      recognition = new SpeechRecognition();
-      recognition.lang = "de-DE";
-      recognition.interimResults = false;
-      recognition.continuous = false;
-
-      recognition.onstart = () => {
-        isRecording = true;
-        els.voiceBtn.classList.add("recording");
-        els.voiceBtn.textContent = "⏺ Aufnahme läuft ...";
-        setStatus("Spracheingabe läuft.");
-      };
-
-      recognition.onresult = (event) => {
-        const text = event.results[0][0].transcript;
-        els.transcript.textContent = "Erkannt: " + text;
-        applyParserRules(text);
-        setStatus("Spracheingabe erkannt. Felder wurden vorbelegt.", "ok");
-      };
-
-      recognition.onerror = (event) => {
-        setStatus("Sprachfehler: " + event.error, "err");
-      };
-
-      recognition.onend = () => {
-        isRecording = false;
-        els.voiceBtn.classList.remove("recording");
-        els.voiceBtn.textContent = "🎤 Spracheingabe starten";
-      };
-
-      els.voiceBtn.addEventListener("click", () => {
-        if (isRecording) {
-          recognition.stop();
-          return;
-        }
-        recognition.start();
-      });
-    }
-
-    async function saveEvent() {
-      if (!selectedMatchId) {
-        setStatus("Bitte zuerst ein Spiel auswählen.", "err");
-        return;
-      }
-
-      els.sendBtn.disabled = true;
-      setStatus("Sende Event ...");
-
-      const selectedTVBOption = els.player_tvb.options[els.player_tvb.selectedIndex];
-      const selectedOppOption = els.player_opponent.options[els.player_opponent.selectedIndex];
+      const scoutSequence = [
+        playerNumber,
+        opponentNumber,
+        state.positionCode,
+        state.directionCode,
+        state.outcomeCode,
+        state.resultCode,
+        state.twoMinCode ?? 0
+      ].join(",");
 
       const payload = {
-        match_id: selectedMatchId,
-        match_minute: Number(getValue("match_minute") || 0),
-        match_second: Number(getValue("match_second") || 0),
-        team_context: getValue("context"),
-        action_type: getValue("action"),
-        result: getValue("result"),
-        follow_action: getValue("follow"),
-        numerical_situation: getValue("numbers"),
-        is_one_v_one: els.onevone.checked,
-
-        player_tvb: getValue("player_tvb") || null,
-        player_tvb_name: selectedTVBOption?.dataset?.playerName || null,
-        player_tvb_raw: selectedTVBOption?.textContent || null,
-
-        player_opponent: getValue("player_opponent") || null,
-        player_opponent_name: selectedOppOption?.dataset?.playerName || null,
-        player_opponent_raw: selectedOppOption?.textContent || null,
-
-        tvb_system_label: getValue("system") || null,
-        opponent_system_label: getValue("opponent_system") || null,
-        zone: getValue("zone") || null,
-        shot_from_zone: getValue("shot_from") || null,
-        shot_target_zone: getValue("target") || null,
-
-        goalkeeper_name: getValue("goalkeeper_name") || null,
-        is_goalkeeper_event: els.is_goalkeeper_event.checked,
-        event_type: getValue("event_type") || null,
-
-        notes: getValue("notes"),
-        source: "manual_ui",
-        confidence: 1.0,
+        event_type: "duel",
+        match_id: matchId,
+        timestamp,
+        team_player_number: playerNumber,
+        opponent_player_number: opponentNumber,
+        position_code: state.positionCode,
+        position_label: state.positionLabel,
+        direction_code: state.directionCode,
+        direction_label: labels.direction[state.directionCode],
+        zone_id: state.zoneId,
+        points: state.points,
+        outcome_code: state.outcomeCode,
+        outcome_label: labels.outcome[state.outcomeCode],
+        result_code: state.resultCode,
+        result_label: labels.result[state.resultCode],
+        two_min_code: state.twoMinCode ?? 0,
+        two_min_label: labels.twoMin[state.twoMinCode ?? 0],
+        scout_sequence: scoutSequence,
+        source: "arena_scout",
         created_at: serverTimestamp()
       };
 
-      try {
-        const ref = await addDoc(collection(db, "matches", selectedMatchId, "scout_events"), payload);
-        setStatus("Gespeichert in Match " + selectedMatchId + ". Dokument-ID: " + ref.id, "ok");
+      state.eventPayload = payload;
+      document.getElementById("sequenceBox").textContent = scoutSequence;
+      document.getElementById("jsonBox").textContent = JSON.stringify(
+        { ...payload, created_at: "serverTimestamp()" },
+        null,
+        2
+      );
+      document.getElementById("saveStatus").textContent = "Event gebaut. Bereit für Save.";
+      return payload;
+    }
 
-        setTimeout(() => {
-          clearFields();
-        }, 250);
-      } catch (err) {
-        console.error(err);
-        setStatus("Firestore Fehler: " + err.message, "err");
-      } finally {
-        els.sendBtn.disabled = false;
+    async function saveEvent() {
+      const payload = state.eventPayload || buildEvent();
+      if (!payload) return;
+
+      const saveStatus = document.getElementById("saveStatus");
+      saveStatus.textContent = "Speichere ...";
+
+      try {
+        await addDoc(collection(db, "matches", payload.match_id, "scout_events"), payload);
+        saveStatus.textContent = "Gespeichert ✅";
+      } catch (error) {
+        console.error("Fehler beim Speichern:", error);
+        saveStatus.textContent = "Fehler beim Speichern ❌";
       }
     }
 
-    function bindEvents() {
-      els.clearBtn.addEventListener("click", clearFields);
-      els.sendBtn.addEventListener("click", saveEvent);
+    function resetAll() {
+      document.querySelectorAll(".zone").forEach(z => z.classList.remove("active"));
+      document.querySelectorAll(".button-row button").forEach(b => b.classList.remove("active"));
 
-      els.matchSelect.addEventListener("change", async () => {
-        selectedMatchId = els.matchSelect.value;
-        const cached = matchesCache.find(m => m.id === selectedMatchId);
-        if (cached) {
-          updateHeaderFromData(cached.id, cached.data);
-          updateGuideLink();
-          await loadPlayersForMatch();
-          clearFields();
-          setStatus("Spiel gewechselt: " + buildMatchLabel(cached.id, cached.data), "ok");
-        }
-      });
+      state.zoneId = null;
+      state.positionCode = null;
+      state.positionLabel = null;
+      state.directionCode = null;
+      state.points = null;
+      state.outcomeCode = null;
+      state.resultCode = null;
+      state.twoMinCode = 0;
+      state.eventPayload = null;
 
-      els.timerStartBtn.addEventListener("click", startTimer);
-      els.timerStopBtn.addEventListener("click", stopTimer);
-      els.timerResetBtn.addEventListener("click", resetTimer);
-
-      els.match_minute.addEventListener("change", () => {
-        const m = Number(els.match_minute.value || 0);
-        const s = Number(els.match_second.value || 0);
-        timerSeconds = m * 60 + s;
-      });
-
-      els.match_second.addEventListener("change", () => {
-        const m = Number(els.match_minute.value || 0);
-        const s = Number(els.match_second.value || 0);
-        timerSeconds = m * 60 + s;
-      });
+      document.getElementById("playerNumber").value = "";
+      document.getElementById("opponentNumber").value = "";
+      document.getElementById("sequenceBox").textContent = "–";
+      document.getElementById("jsonBox").textContent = "{}";
+      document.getElementById("saveStatus").textContent = "";
+      updateMeta();
     }
 
-    async function initPage() {
-      try {
-        setStatus("Initialisiere Seite ...");
-        bindEvents();
-        setupSpeech();
-        await loadLookupJson();
-        await loadMatches();
-        updateGuideLink();
-        setStatus("Seite bereit.", "ok");
-      } catch (err) {
-        console.error(err);
-        setStatus("Initialisierungsfehler: " + err.message, "err");
-      }
-    }
+    window.addEventListener("DOMContentLoaded", async () => {
+      activateZones();
+      bindToggleGroup("directionButtons", "directionCode");
+      bindToggleGroup("outcomeButtons", "outcomeCode");
+      bindToggleGroup("resultButtons", "resultCode");
+      bindToggleGroup("twoMinButtons", "twoMinCode");
 
-    initPage();
+      document.getElementById("buildBtn").addEventListener("click", buildEvent);
+      document.getElementById("saveBtn").addEventListener("click", saveEvent);
+      document.getElementById("resetBtn").addEventListener("click", resetAll);
+      document.getElementById("matchSelect").addEventListener("change", applySelectedMatch);
+
+      updateMeta();
+      await loadMatches();
+    });
   </script>
+</head>
+<body>
+  <div class="page">
+    <section class="card field-card">
+      <h1>Arena Scout</h1>
+      <div class="sub">
+        Spiele werden aus <code>matches</code> geladen. Save schreibt nach
+        <code>/matches/{matchId}/scout_events</code>.
+      </div>
+      <div class="sub" id="matchLabel">Kein Spiel geladen</div>
+
+      <svg viewBox="0 0 1200 800" aria-label="Handball-Halbfeld mit Zonen">
+        <image href="Sektoren.jpeg" width="1200" height="800" preserveAspectRatio="none" />
+
+        <polygon id="ra_1" class="zone"
+          points="61,665 179,666 170,730 58,727"
+          data-zone-id="ra_1" data-position-code="6" data-position-label="RA" data-points="1"></polygon>
+
+        <polygon id="ra_2" class="zone"
+          points="58,603 207,605 179,666 61,665"
+          data-zone-id="ra_2" data-position-code="6" data-position-label="RA" data-points="2"></polygon>
+
+        <polygon id="ra_3" class="zone"
+          points="58,544 247,559 207,605 58,603"
+          data-zone-id="ra_3" data-position-code="6" data-position-label="RA" data-points="3"></polygon>
+
+        <polygon id="hr_1" class="zone"
+          points="178,426 287,522 247,559 58,544"
+          data-zone-id="hr_1" data-position-code="5" data-position-label="HR" data-points="1"></polygon>
+
+        <polygon id="hr_2" class="zone"
+          points="284,378 348,495 287,522 178,426"
+          data-zone-id="hr_2" data-position-code="5" data-position-label="HR" data-points="2"></polygon>
+
+        <polygon id="hr_3" class="zone"
+          points="457,362 458,474 348,495 284,378"
+          data-zone-id="hr_3" data-position-code="5" data-position-label="HR" data-points="3"></polygon>
+
+        <polygon id="rm_main" class="zone"
+          points="457,362 727,358 727,474 458,474"
+          data-zone-id="rm_main" data-position-code="3" data-position-label="RM" data-points="3"></polygon>
+
+        <polygon id="hl_3" class="zone"
+          points="727,358 875,371 843,488 727,474"
+          data-zone-id="hl_3" data-position-code="2" data-position-label="HL" data-points="3"></polygon>
+
+        <polygon id="hl_2" class="zone"
+          points="875,371 1022,427 923,530 843,488"
+          data-zone-id="hl_2" data-position-code="2" data-position-label="HL" data-points="2"></polygon>
+
+        <polygon id="hl_1" class="zone"
+          points="1022,427 1133,546 953,567 923,530"
+          data-zone-id="hl_1" data-position-code="2" data-position-label="HL" data-points="1"></polygon>
+
+        <polygon id="la_3" class="zone"
+          points="953,567 1133,546 1134,608 989,608"
+          data-zone-id="la_3" data-position-code="1" data-position-label="LA" data-points="3"></polygon>
+
+        <polygon id="la_2" class="zone"
+          points="989,608 1134,608 1133,660 1013,664"
+          data-zone-id="la_2" data-position-code="1" data-position-label="LA" data-points="2"></polygon>
+
+        <polygon id="la_1" class="zone"
+          points="1013,664 1133,660 1134,725 1021,730"
+          data-zone-id="la_1" data-position-code="1" data-position-label="LA" data-points="1"></polygon>
+
+        <polygon id="rueckraum" class="zone"
+          points="61,347 227,291 434,251 636,243 835,261 981,291 1133,342 1131,519 1025,427 856,366 679,360 479,360 317,371 175,422 96,485 62,522"
+          data-zone-id="rr_1" data-position-code="9" data-position-label="RR" data-points="1"></polygon>
+
+        <polygon id="kreis" class="zone"
+          points="226,584 218,605 256,592 306,575 364,560 417,547 473,543 519,539 562,535 620,536 668,539 745,551 822,568 881,591 939,610 993,632 955,568 870,506 774,480 604,471 449,474 335,504 218,599"
+          data-zone-id="km_1" data-position-code="4" data-position-label="KM" data-points="1"></polygon>
+      </svg>
+
+      <div class="meta-strip">
+        <div class="pill"><div class="k">Zone</div><div class="v" id="metaZone">–</div></div>
+        <div class="pill"><div class="k">Position</div><div class="v" id="metaPosition">–</div></div>
+        <div class="pill"><div class="k">Richtung</div><div class="v" id="metaDirection">–</div></div>
+        <div class="pill"><div class="k">Punkte</div><div class="v" id="metaPoints">–</div></div>
+      </div>
+    </section>
+
+    <aside class="card side-card">
+      <div class="grid-2">
+        <div>
+          <label for="matchSelect">Spiel laden</label>
+          <select id="matchSelect"></select>
+        </div>
+        <div>
+          <label for="matchId">Match ID</label>
+          <input id="matchId" />
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <label for="timestamp">Timestamp</label>
+          <input id="timestamp" />
+        </div>
+        <div>
+          <label for="playerNumber">Spieler</label>
+          <input id="playerNumber" type="number" />
+        </div>
+      </div>
+
+      <div>
+        <label for="opponentNumber">Gegner</label>
+        <input id="opponentNumber" type="number" />
+      </div>
+
+      <div>
+        <label>Richtung am Verteidiger vorbei</label>
+        <div class="button-row" id="directionButtons">
+          <button type="button" data-value="1">Zur Hand</button>
+          <button type="button" data-value="2">Gegen Hand</button>
+        </div>
+      </div>
+
+      <div>
+        <label>Ausgang</label>
+        <div class="button-row" id="outcomeButtons">
+          <button type="button" data-value="1">Gewonnen</button>
+          <button type="button" data-value="2">Verloren</button>
+          <button type="button" data-value="3">Fehler</button>
+        </div>
+      </div>
+
+      <div>
+        <label>Ergebnis</label>
+        <div class="button-row" id="resultButtons">
+          <button type="button" data-value="0">Weiter</button>
+          <button type="button" data-value="1">Tor</button>
+          <button type="button" data-value="2">Foul</button>
+          <button type="button" data-value="4">7m</button>
+        </div>
+      </div>
+
+      <div>
+        <label>2 Minuten</label>
+        <div class="button-row" id="twoMinButtons">
+          <button type="button" data-value="0">Nein</button>
+          <button type="button" data-value="1">Ja</button>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button class="primary" id="buildBtn" type="button">Event bauen</button>
+        <button class="primary" id="saveBtn" type="button">Save</button>
+        <button class="danger" id="resetBtn" type="button">Reset</button>
+      </div>
+
+      <div class="save-status" id="saveStatus"></div>
+
+      <div>
+        <label>Scout Sequence</label>
+        <pre id="sequenceBox">–</pre>
+      </div>
+
+      <div>
+        <label>Event JSON</label>
+        <pre id="jsonBox">{}</pre>
+      </div>
+    </aside>
+  </div>
 </body>
 </html>
