@@ -33,7 +33,7 @@
     .page {
       min-height: 100vh;
       display: grid;
-      grid-template-columns: minmax(760px, 1fr) 420px;
+      grid-template-columns: minmax(760px, 1fr) 440px;
       gap: 18px;
       padding: 18px;
     }
@@ -251,29 +251,54 @@
 
     const state = {
       zoneId: null,
-      positionCode: null,
-      positionLabel: null,
-      directionCode: null,
+      sectorCode: null,
       points: null,
+      positionCode: null,
+      directionCode: null,
       outcomeCode: null,
       resultCode: null,
-      twoMinCode: 0,
+      finishCode: null,
       eventPayload: null
     };
 
     const labels = {
-      direction: { 1: "gegen_hand_L", 1: "zu_hand_R" },
-      outcome: { 1: "gewonnen", 2: "verloren", 3: "fehler" },
-      result: { 1: "spiel_geht_weiter", 2: "tor", 3: "foul_bei_spieler", 4: "7m" },
-      twoMin: { 1: "nein", 2: "ja" }
+      position: {
+        1: "LA",
+        2: "HL",
+        3: "RM",
+        4: "KM",
+        5: "HR",
+        6: "RA"
+      },
+      direction: {
+        1: "zur_hand",
+        2: "gegen_hand"
+      },
+      outcome: {
+        1: "gewonnen",
+        2: "verloren",
+        3: "fehler"
+      },
+      result: {
+        0: "spiel_geht_weiter",
+        2: "foul_bei_spieler",
+        4: "7m",
+        5: "2min_strafe"
+      },
+      finish: {
+        1: "tor",
+        2: "parade",
+        3: "kreis_ab",
+        4: "einwurf"
+      }
     };
 
     function updateMeta() {
       document.getElementById("metaZone").textContent = state.zoneId ?? "–";
       document.getElementById("metaPosition").textContent =
-        state.positionLabel ? `${state.positionLabel} (${state.positionCode})` : "–";
-      document.getElementById("metaDirection").textContent =
-        state.directionCode ? `${labels.direction[state.directionCode]} (${state.directionCode})` : "–";
+        state.positionCode ? `${labels.position[state.positionCode]} (${state.positionCode})` : "–";
+      document.getElementById("metaSector").textContent =
+        state.sectorCode ? `${state.sectorCode}` : "–";
       document.getElementById("metaPoints").textContent =
         Number.isFinite(state.points) ? String(state.points) : "–";
     }
@@ -296,10 +321,11 @@
         zone.addEventListener("click", () => {
           zones.forEach(z => z.classList.remove("active"));
           zone.classList.add("active");
+
           state.zoneId = zone.dataset.zoneId;
-          state.positionCode = Number(zone.dataset.positionCode);
-          state.positionLabel = zone.dataset.positionLabel;
+          state.sectorCode = Number(zone.dataset.sectorCode);
           state.points = Number(zone.dataset.points);
+
           updateMeta();
         });
       });
@@ -405,10 +431,12 @@
       if (!matchId) return alert("Bitte Spiel wählen.");
       if (!timestamp) return alert("Bitte Timestamp setzen.");
       if (!playerNumberRaw) return alert("Bitte Spielernummer setzen.");
-      if (!state.zoneId) return alert("Bitte Zone anklicken.");
+      if (!state.positionCode) return alert("Bitte Position 1–6 wählen.");
       if (!state.directionCode) return alert("Bitte Richtung wählen.");
       if (!state.outcomeCode) return alert("Bitte Ausgang wählen.");
-      if (state.resultCode === null) return alert("Bitte Ergebnis wählen.");
+      if (state.resultCode === null || state.resultCode === undefined) return alert("Bitte Ergebnis wählen.");
+      if (!state.sectorCode) return alert("Bitte Sektor über den Feldklick wählen.");
+      if (!state.finishCode) return alert("Bitte Abschluss wählen.");
 
       const playerNumber = Number(playerNumberRaw);
       const opponentNumber = opponentRaw === "" ? 0 : Number(opponentRaw);
@@ -420,7 +448,8 @@
         state.directionCode,
         state.outcomeCode,
         state.resultCode,
-        state.twoMinCode ?? 0
+        state.sectorCode,
+        state.finishCode
       ].join(",");
 
       const payload = {
@@ -430,17 +459,18 @@
         team_player_number: playerNumber,
         opponent_player_number: opponentNumber,
         position_code: state.positionCode,
-        position_label: state.positionLabel,
+        position_label: labels.position[state.positionCode],
         direction_code: state.directionCode,
         direction_label: labels.direction[state.directionCode],
-        zone_id: state.zoneId,
-        points: state.points,
         outcome_code: state.outcomeCode,
         outcome_label: labels.outcome[state.outcomeCode],
         result_code: state.resultCode,
         result_label: labels.result[state.resultCode],
-        two_min_code: state.twoMinCode ?? 0,
-        two_min_label: labels.twoMin[state.twoMinCode ?? 0],
+        sector_code: state.sectorCode,
+        zone_id: state.zoneId,
+        points: state.points,
+        finish_code: state.finishCode,
+        finish_label: labels.finish[state.finishCode],
         scout_sequence: scoutSequence,
         source: "arena_scout",
         created_at: serverTimestamp()
@@ -478,13 +508,13 @@
       document.querySelectorAll(".button-row button").forEach(b => b.classList.remove("active"));
 
       state.zoneId = null;
-      state.positionCode = null;
-      state.positionLabel = null;
-      state.directionCode = null;
+      state.sectorCode = null;
       state.points = null;
+      state.positionCode = null;
+      state.directionCode = null;
       state.outcomeCode = null;
       state.resultCode = null;
-      state.twoMinCode = 0;
+      state.finishCode = null;
       state.eventPayload = null;
 
       document.getElementById("playerNumber").value = "";
@@ -497,10 +527,11 @@
 
     window.addEventListener("DOMContentLoaded", async () => {
       activateZones();
+      bindToggleGroup("positionButtons", "positionCode");
       bindToggleGroup("directionButtons", "directionCode");
       bindToggleGroup("outcomeButtons", "outcomeCode");
       bindToggleGroup("resultButtons", "resultCode");
-      bindToggleGroup("twoMinButtons", "twoMinCode");
+      bindToggleGroup("finishButtons", "finishCode");
 
       document.getElementById("buildBtn").addEventListener("click", buildEvent);
       document.getElementById("saveBtn").addEventListener("click", saveEvent);
@@ -529,69 +560,69 @@
 
         <polygon id="ra_1" class="zone"
           points="61,665 179,666 170,730 58,727"
-          data-zone-id="ra_1" data-position-code="6" data-position-label="RA" data-points="1"></polygon>
+          data-zone-id="ra_1" data-sector-code="1" data-points="1"></polygon>
 
         <polygon id="ra_2" class="zone"
           points="58,603 207,605 179,666 61,665"
-          data-zone-id="ra_2" data-position-code="6" data-position-label="RA" data-points="2"></polygon>
+          data-zone-id="ra_2" data-sector-code="2" data-points="2"></polygon>
 
         <polygon id="ra_3" class="zone"
           points="58,544 247,559 207,605 58,603"
-          data-zone-id="ra_3" data-position-code="6" data-position-label="RA" data-points="3"></polygon>
+          data-zone-id="ra_3" data-sector-code="3" data-points="3"></polygon>
 
         <polygon id="hr_1" class="zone"
           points="178,426 287,522 247,559 58,544"
-          data-zone-id="rr_1" data-position-code="5" data-position-label="HR" data-points="1"></polygon>
+          data-zone-id="hr_1" data-sector-code="1" data-points="1"></polygon>
 
-        <polygon id="rr_2" class="zone"
+        <polygon id="hr_2" class="zone"
           points="284,378 348,495 287,522 178,426"
-          data-zone-id="hr_2" data-position-code="5" data-position-label="HR" data-points="2"></polygon>
+          data-zone-id="hr_2" data-sector-code="2" data-points="2"></polygon>
 
-        <polygon id="rr_3" class="zone"
+        <polygon id="hr_3" class="zone"
           points="457,362 458,474 348,495 284,378"
-          data-zone-id="hr_3" data-position-code="5" data-position-label="HR" data-points="3"></polygon>
+          data-zone-id="hr_3" data-sector-code="3" data-points="3"></polygon>
 
         <polygon id="rm_main" class="zone"
           points="457,362 727,358 727,474 458,474"
-          data-zone-id="rm_main" data-position-code="3" data-position-label="RM" data-points="3"></polygon>
+          data-zone-id="rm_main" data-sector-code="3" data-points="3"></polygon>
 
-        <polygon id="rl_3" class="zone"
+        <polygon id="hl_3" class="zone"
           points="727,358 875,371 843,488 727,474"
-          data-zone-id="hl_3" data-position-code="2" data-position-label="HL" data-points="3"></polygon>
+          data-zone-id="hl_3" data-sector-code="3" data-points="3"></polygon>
 
-        <polygon id="rl_2" class="zone"
+        <polygon id="hl_2" class="zone"
           points="875,371 1022,427 923,530 843,488"
-          data-zone-id="hl_2" data-position-code="2" data-position-label="HL" data-points="2"></polygon>
+          data-zone-id="hl_2" data-sector-code="2" data-points="2"></polygon>
 
-        <polygon id="rl_1" class="zone"
+        <polygon id="hl_1" class="zone"
           points="1022,427 1133,546 953,567 923,530"
-          data-zone-id="hl_1" data-position-code="2" data-position-label="HL" data-points="1"></polygon>
+          data-zone-id="hl_1" data-sector-code="1" data-points="1"></polygon>
 
         <polygon id="la_3" class="zone"
           points="953,567 1133,546 1134,608 989,608"
-          data-zone-id="la_3" data-position-code="1" data-position-label="LA" data-points="3"></polygon>
+          data-zone-id="la_3" data-sector-code="3" data-points="3"></polygon>
 
         <polygon id="la_2" class="zone"
           points="989,608 1134,608 1133,660 1013,664"
-          data-zone-id="la_2" data-position-code="1" data-position-label="LA" data-points="2"></polygon>
+          data-zone-id="la_2" data-sector-code="2" data-points="2"></polygon>
 
         <polygon id="la_1" class="zone"
           points="1013,664 1133,660 1134,725 1021,730"
-          data-zone-id="la_1" data-position-code="1" data-position-label="LA" data-points="1"></polygon>
+          data-zone-id="la_1" data-sector-code="1" data-points="1"></polygon>
 
-        <polygon id="rueckraum" class="zone"
+        <polygon id="rueckraum" class="zone inactive"
           points="61,347 227,291 434,251 636,243 835,261 981,291 1133,342 1131,519 1025,427 856,366 679,360 479,360 317,371 175,422 96,485 62,522"
-          data-zone-id="rr_1" data-position-code="9" data-position-label="RR" data-points="1"></polygon>
+          data-zone-id="rr_1" data-sector-code="1" data-points="1"></polygon>
 
-        <polygon id="kreis" class="zone"
+        <polygon id="kreis" class="zone inactive"
           points="226,584 218,605 256,592 306,575 364,560 417,547 473,543 519,539 562,535 620,536 668,539 745,551 822,568 881,591 939,610 993,632 955,568 870,506 774,480 604,471 449,474 335,504 218,599"
-          data-zone-id="km_1" data-position-code="4" data-position-label="KM" data-points="3"></polygon>
+          data-zone-id="km_1" data-sector-code="1" data-points="1"></polygon>
       </svg>
 
       <div class="meta-strip">
         <div class="pill"><div class="k">Zone</div><div class="v" id="metaZone">–</div></div>
         <div class="pill"><div class="k">Position</div><div class="v" id="metaPosition">–</div></div>
-        <div class="pill"><div class="k">Richtung</div><div class="v" id="metaDirection">–</div></div>
+        <div class="pill"><div class="k">Sektor</div><div class="v" id="metaSector">–</div></div>
         <div class="pill"><div class="k">Punkte</div><div class="v" id="metaPoints">–</div></div>
       </div>
     </section>
@@ -625,6 +656,18 @@
       </div>
 
       <div>
+        <label>Position</label>
+        <div class="button-row" id="positionButtons">
+          <button type="button" data-value="1">1</button>
+          <button type="button" data-value="2">2</button>
+          <button type="button" data-value="3">3</button>
+          <button type="button" data-value="4">4</button>
+          <button type="button" data-value="5">5</button>
+          <button type="button" data-value="6">6</button>
+        </div>
+      </div>
+
+      <div>
         <label>Richtung am Verteidiger vorbei</label>
         <div class="button-row" id="directionButtons">
           <button type="button" data-value="1">Zur Hand</button>
@@ -645,17 +688,19 @@
         <label>Ergebnis</label>
         <div class="button-row" id="resultButtons">
           <button type="button" data-value="0">Weiter</button>
-          <button type="button" data-value="1">Tor</button>
           <button type="button" data-value="2">Foul</button>
           <button type="button" data-value="4">7m</button>
+          <button type="button" data-value="5">2Min</button>
         </div>
       </div>
 
       <div>
-        <label>2 Minuten</label>
-        <div class="button-row" id="twoMinButtons">
-          <button type="button" data-value="0">Nein</button>
-          <button type="button" data-value="1">Ja</button>
+        <label>Abschluss</label>
+        <div class="button-row" id="finishButtons">
+          <button type="button" data-value="1">Tor</button>
+          <button type="button" data-value="2">Parade</button>
+          <button type="button" data-value="3">Kreis ab</button>
+          <button type="button" data-value="4">Einwurf</button>
         </div>
       </div>
 
