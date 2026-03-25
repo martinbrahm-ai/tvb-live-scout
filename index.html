@@ -370,10 +370,9 @@
       },
       duelResult: {
         1: "spiel_geht_weiter",
-        2: "tor",
+        2: "ballverlust",
         3: "foul_bei_spieler",
         4: "7m",
-        5: "2min"
       },
       twoMin: {
         1: "nein",
@@ -869,62 +868,69 @@
       if (!state.outcomeCode) return alert("Bitte Ausgang wählen.");
       if (!state.duelResultCode) return alert("Bitte Duellfolge wählen.");
       if (!state.twoMinCode) return alert("Bitte 2 Minuten wählen.");
-      if (!state.zoneId) return alert("Bitte Wurfposition im Feld klicken.");
-      if (!state.shotResultCode) return alert("Bitte Abschluss wählen.");
+      if (state.shotResultCode && !state.zoneId) {
+        return alert("Bitte Wurfposition im Feld klicken.");
+      }
+
+      if (state.zoneId && !state.shotResultCode) {
+        return alert("Bitte Abschluss wählen.");
+      }
 
       const teamPlayerNumber = Number(playerNumberRaw);
       const opponentNumber = opponentRaw === "" ? null : Number(opponentRaw);
 
       const scoutSequence = buildScoutSequence(teamPlayerNumber, opponentNumber);
 
-      const payload = {
-        event_type: "duel",
-        match_id: matchId,
+  const payload = {
+      event_type: "duel",
+      match_id: matchId,
 
-        system_timestamp: systemTimestamp,
-        timestamp: systemTimestamp,
+      system_timestamp: systemTimestamp,
+      timestamp: systemTimestamp,
 
-        manual_clock_seconds: state.manualClockSeconds,
-        manual_clock_label: state.manualClockSeconds === null ? null : formatClock(state.manualClockSeconds),
-        period: state.period,
-        clock_running: state.clockRunning,
-        timeout_active: state.timeoutActive,
-        timeout_team: state.timeoutTeam,
+      manual_clock_seconds: state.manualClockSeconds,
+      manual_clock_label: state.manualClockSeconds === null ? null : formatClock(state.manualClockSeconds),
+      period: state.period,
+      clock_running: state.clockRunning,
+      timeout_active: state.timeoutActive,
+      timeout_team: state.timeoutTeam,
 
-        team_player_number: teamPlayerNumber,
-        opponent_player_number: opponentNumber,
+      team_player_number: teamPlayerNumber,
+      opponent_player_number: opponentNumber,
 
-        defender_slot: state.defenderSlot,
+      defender_slot: state.defenderSlot,
 
-        direction_code: state.directionCode,
-        direction_label: labels.direction[state.directionCode],
+      direction_code: state.directionCode,
+      direction_label: labels.direction[state.directionCode],
 
-        outcome_code: state.outcomeCode,
-        outcome_label: labels.outcome[state.outcomeCode],
+      outcome_code: state.outcomeCode,
+      outcome_label: labels.outcome[state.outcomeCode],
 
-        duel_result_code: state.duelResultCode,
-        duel_result_label: labels.duelResult[state.duelResultCode],
+      duel_result_code: state.duelResultCode,
+      duel_result_label: labels.duelResult[state.duelResultCode],
 
-        two_min_code: state.twoMinCode,
-        two_min_label: labels.twoMin[state.twoMinCode],
+      two_min_code: state.twoMinCode,
+      two_min_label: labels.twoMin[state.twoMinCode],
 
-        shot_zone_id: state.zoneId,
-        zone_id: state.zoneId,
-        shot_points: state.points,
-        points: state.points,
+      shot_zone_id: state.zoneId || null,
+      zone_id: state.zoneId || null,
+      shot_points: state.zoneId ? state.points : null,
+      points: state.zoneId ? state.points : null,
 
-        shot_result_code: state.shotResultCode,
-        shot_result_label: labels.shotResult[state.shotResultCode],
+      shot_result_code: state.shotResultCode || null,
+      shot_result_label: state.shotResultCode ? labels.shotResult[state.shotResultCode] : null,
 
-        voice_transcript: voiceTranscript || null,
-        notes: notes || null,
+      voice_transcript: voiceTranscript || null,
+      notes: notes || null,
 
-        scout_sequence: scoutSequence,
-        source: "arena_scout",
-        created_at: serverTimestamp()
-      };
+      scout_sequence: scoutSequence,
+      source: "arena_scout",
+      created_at: serverTimestamp()
+    };
 
       state.eventPayload = payload;
+      
+      
       document.getElementById("sequenceBox").textContent = scoutSequence;
       document.getElementById("jsonBox").textContent = JSON.stringify(
         { ...payload, created_at: "serverTimestamp()" },
@@ -1194,15 +1200,14 @@
             <button type="button" data-value="3">Fehler</button>
           </div>
         </div>
-
+        
         <div style="margin-top:10px;">
           <label>Duellfolge</label>
           <div class="button-row" id="duelResultButtons">
             <button type="button" data-value="1">Weiter</button>
-            <button type="button" data-value="2">Tor</button>
+            <button type="button" data-value="2">Ballverlust</button>
             <button type="button" data-value="3">Foul</button>
             <button type="button" data-value="4">7m</button>
-            <button type="button" data-value="5">2 Min</button>
           </div>
         </div>
 
