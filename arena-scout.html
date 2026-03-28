@@ -12,167 +12,551 @@
       --field: rgba(255,255,255,0.09);
       --field-border: rgba(255,255,255,0.10);
       --text: #eef4ff;
-      --muted: #aab8ce;
+      --muted: #9fb0c7;
       --primary: #2f8cff;
-      --danger: #7a3343;
+      --primary-2: #1f74de;
+      --success: #078a7f;
+      --success-border: #0fc7b6;
+      --danger: #6c3340;
       --danger-border: #b24c63;
-      --success: #0d6d6f;
-      --success-border: #0aa3a6;
       --darkbox: #020d1d;
-      --chip-active: rgba(47, 140, 255, 0.28);
-      --shadow: 0 18px 40px rgba(0,0,0,0.22);
+      --active: rgba(47, 140, 255, 0.28);
+      --active-border: rgba(83, 163, 255, 0.8);
+      --shadow: 0 10px 30px rgba(0,0,0,0.22);
     }
+
     * { box-sizing: border-box; }
-    body {
+
+    html, body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, #061223 0%, #0a1730 100%);
+      background: linear-gradient(180deg, #051120 0%, #0b1830 100%);
       color: var(--text);
-      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
     }
-    .wrap { max-width: 1460px; margin: 0 auto; padding: 12px; }
+
+    body {
+      padding: 12px;
+    }
+
+    .app {
+      max-width: 1540px;
+      margin: 0 auto;
+      display: grid;
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 24px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+
     .topbar {
-      display:flex; justify-content:space-between; align-items:center; gap:12px;
-      margin-bottom: 10px; flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 1.4fr 180px 130px 150px 1fr auto auto;
+      gap: 10px;
+      align-items: end;
     }
-    .brand { display:flex; gap:10px; align-items:center; }
-    .brand-badge {
-      width:44px; height:44px; border-radius:14px; background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.12); display:grid; place-items:center; font-weight:700;
+
+    .label {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 6px;
+      display: block;
     }
-    .brand-text h1 { margin:0; font-size:22px; line-height:1.05; }
-    .brand-text p { margin:3px 0 0; color:var(--muted); font-size:12px; }
-    .nav-link {
-      color:#dfeaff; text-decoration:none; border:1px solid rgba(255,255,255,0.12);
-      border-radius:12px; padding:10px 14px; background:rgba(255,255,255,0.05); font-weight:700;
+
+    .input, select, textarea, .display {
+      width: 100%;
+      min-height: 50px;
+      border-radius: 16px;
+      border: 1px solid var(--field-border);
+      background: var(--field);
+      color: var(--text);
+      padding: 12px 14px;
+      font-size: 18px;
+      outline: none;
     }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      background: #07111e;
+      font-size: 22px;
+      letter-spacing: 0.02em;
+    }
+
+    .mini-stack {
+      display: grid;
+      gap: 8px;
+    }
+
     .top-actions {
-      position: sticky; top: 0; z-index: 30; display:grid; grid-template-columns: 1.4fr auto;
-      gap:10px; margin-bottom: 10px; padding: 8px 0; backdrop-filter: blur(8px);
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+      justify-content: flex-end;
     }
-    .compact-bar, .action-bar, .card {
-      background: var(--panel); border:1px solid var(--panel-border); border-radius:22px; box-shadow: var(--shadow);
+
+    button {
+      min-height: 50px;
+      padding: 0 18px;
+      border-radius: 16px;
+      border: 1px solid var(--field-border);
+      background: var(--field);
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
     }
-    .compact-bar {
-      display:grid; grid-template-columns: 2.2fr .8fr .7fr .8fr .8fr auto; gap:8px;
-      padding:10px;
-      align-items:end;
-    }
-    .mini-field { display:flex; flex-direction:column; gap:4px; min-width:0; }
-    .mini-field label { color:var(--muted); font-size:12px; font-weight:700; }
-    .mini-field input, .mini-field select, .clock-box {
-      width:100%; min-height:44px; border-radius:14px; border:1px solid var(--field-border);
-      background:var(--field); color:var(--text); padding:10px 12px; font-size:16px; outline:none;
-    }
-    .clock-box {
-      background: var(--darkbox); display:flex; align-items:center; justify-content:center;
-      font-size:24px; font-weight:700;
-    }
-    .mini-clock-buttons { display:flex; gap:6px; flex-wrap:wrap; }
-    .mini-clock-buttons button, .action-bar button {
-      min-height:44px; border-radius:14px; padding:0 14px; border:1px solid var(--field-border);
-      background:var(--field); color:var(--text); font-size:15px; font-weight:700; cursor:pointer;
-    }
-    .action-bar {
-      display:flex; gap:8px; align-items:center; justify-content:flex-end; padding:10px;
-    }
+
     button:hover { transform: translateY(-1px); }
-    .btn-primary { background: linear-gradient(180deg, #3d99ff 0%, #2079e8 100%); border-color:#4393f3; }
-    .btn-success { background: rgba(13, 109, 111, 0.32); border-color: var(--success-border); }
-    .btn-danger { background: rgba(122, 51, 67, 0.28); border-color: var(--danger-border); }
-    .btn-mic.live { background: rgba(13, 109, 111, 0.32); border-color: var(--success-border); }
-    .status-inline { color:#9ad8cb; font-size:13px; min-width: 110px; text-align:right; }
+    button:active { transform: translateY(0); }
 
-    .main-grid {
-      display:grid; grid-template-columns: 1.2fr 1fr; gap:12px; align-items:start;
+    .btn-primary {
+      background: linear-gradient(180deg, #3e9aff 0%, #2179e8 100%);
+      border-color: #4897f5;
     }
-    .left-stack, .right-stack { display:flex; flex-direction:column; gap:12px; }
-    .card { padding:14px; }
-    .title { margin:0 0 10px; font-size:20px; }
-    .muted { color:var(--muted); font-size:14px; line-height:1.35; }
-    .entry-grid { display:grid; grid-template-columns: 1.25fr .9fr; gap:12px; }
-    .field-grid-2 { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    .field-group { display:flex; flex-direction:column; gap:6px; }
-    .field-group label { color:var(--muted); font-size:14px; font-weight:700; }
-    input, textarea {
-      width:100%; min-height:56px; border-radius:16px; border:1px solid var(--field-border);
-      background:var(--field); color:var(--text); padding:14px 16px; font-size:24px; outline:none;
-    }
-    input.readonly-input { cursor:pointer; }
-    textarea { min-height:100px; font-size:18px; resize:vertical; }
-    .chip-row, .btn-row { display:flex; gap:8px; flex-wrap:wrap; }
-    .chip-row button, .btn-row button {
-      min-height:56px; padding:0 16px; border-radius:16px; border:1px solid var(--field-border);
-      background:var(--field); color:var(--text); font-size:18px; font-weight:700; cursor:pointer;
-    }
-    button.active {
-      background: var(--chip-active); border-color:#5aa5ff; box-shadow:0 0 0 2px rgba(90,165,255,0.14) inset;
-    }
-    .player-chip {
-      min-width:130px; min-height:60px; display:flex; flex-direction:column; justify-content:center;
-      align-items:flex-start; gap:2px; text-align:left;
-    }
-    .player-chip .num { font-size:20px; line-height:1; }
-    .player-chip .name { font-size:12px; color:#d6e3f7; font-weight:600; line-height:1.15; }
-    .choice-grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    .choice-card {
-      border:1px solid rgba(255,255,255,0.10); border-radius:18px; background:rgba(255,255,255,0.04); padding:12px;
-    }
-    .choice-card h3 { margin:0 0 10px; font-size:16px; }
 
-    .numpad-targets { display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:10px; }
-    .numpad-targets button { min-height:48px; border-radius:14px; }
-    .numpad-display {
-      display:grid; grid-template-columns: 1fr auto; gap:8px; align-items:center; margin-bottom:8px;
+    .btn-success {
+      background: rgba(7, 138, 127, 0.34);
+      border-color: var(--success-border);
     }
-    .numpad-display .active-target {
-      padding:10px 12px; border-radius:14px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.10);
-      color:var(--muted); font-size:13px; font-weight:700;
+
+    .btn-danger {
+      background: rgba(108, 51, 64, 0.34);
+      border-color: var(--danger-border);
     }
-    .key-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; }
-    .key-grid button {
-      min-height:58px; border-radius:16px; font-size:22px; font-weight:700; border:1px solid var(--field-border);
-      background: var(--field); color: var(--text); cursor:pointer;
+
+    .btn-mic.live {
+      background: rgba(7, 138, 127, 0.45);
+      border-color: var(--success-border);
+      box-shadow: 0 0 0 3px rgba(15,199,182,0.12);
     }
-    .speech-grid { display:grid; grid-template-columns: auto 1fr; gap:12px; align-items:start; }
-    .compact-footer { margin-top: 12px; }
-    details {
-      border:1px solid rgba(255,255,255,0.10); border-radius:16px; background:rgba(255,255,255,0.04); overflow:hidden;
+
+    .layout {
+      display: grid;
+      grid-template-columns: 520px 1fr;
+      gap: 12px;
+      align-items: start;
     }
-    summary { list-style:none; cursor:pointer; padding:12px 14px; font-weight:700; font-size:15px; }
-    summary::-webkit-details-marker { display:none; }
-    .details-body { padding:0 14px 14px; }
+
+    .left-col, .right-col {
+      display: grid;
+      gap: 12px;
+    }
+
+    .numpad-wrap {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 12px;
+    }
+
+    .number-targets {
+      display: grid;
+      gap: 10px;
+    }
+
+    .number-box {
+      border: 1px solid var(--field-border);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .number-box.active {
+      border-color: var(--active-border);
+      background: var(--active);
+    }
+
+    .number-title {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .number-value {
+      min-height: 56px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .roster-grid button,
+    .choice-grid button,
+    .clock-buttons button,
+    .numpad button {
+      min-height: 56px;
+      font-size: 16px;
+      padding: 8px 10px;
+    }
+
+    .roster-grid button small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 500;
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .numpad {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      align-content: start;
+    }
+
+    .numpad button {
+      font-size: 28px;
+    }
+
+    .choice-section {
+      display: grid;
+      gap: 12px;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .choice-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .choice-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .choice-grid.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .choice-grid.six { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+    .choice-grid button.active,
+    .roster-grid button.active,
+    .clock-buttons button.active {
+      background: var(--active);
+      border-color: var(--active-border);
+    }
+
+    .clock-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .voice-grid {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .footer-tools {
+      display: grid;
+      gap: 10px;
+    }
+
+    details.card {
+      padding-top: 10px;
+    }
+
+    details > summary {
+      list-style: none;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      outline: none;
+    }
+
+    details > summary::-webkit-details-marker { display: none; }
+
+    .json-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
     pre {
-      margin:0; white-space:pre-wrap; word-break:break-word; font-size:11px; line-height:1.35; color:#dce7f7;
-      background: rgba(2,13,29,0.82); border:1px solid rgba(255,255,255,0.09); border-radius:16px; padding:12px;
-      max-height: 220px; overflow:auto;
+      margin: 0;
+      min-height: 120px;
+      max-height: 220px;
+      overflow: auto;
+      border-radius: 18px;
+      padding: 12px;
+      background: var(--darkbox);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #eaf2ff;
+      font-size: 13px;
+      line-height: 1.45;
+      white-space: pre-wrap;
     }
 
-    @media (max-width: 1240px) {
-      .top-actions { grid-template-columns: 1fr; }
-      .compact-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .main-grid, .entry-grid { grid-template-columns: 1fr; }
+    .status-line {
+      color: #cde3ff;
+      font-size: 14px;
+      min-height: 18px;
     }
-    @media (max-width: 760px) {
-      .wrap { padding: 10px; }
-      .compact-bar { grid-template-columns: 1fr 1fr; }
-      .field-grid-2, .choice-grid, .speech-grid, .numpad-targets { grid-template-columns: 1fr; }
-      .mini-clock-buttons { grid-column: 1 / -1; }
-      .action-bar { justify-content:stretch; flex-wrap:wrap; }
-      .action-bar button { flex: 1 1 calc(50% - 4px); }
-      .chip-row button, .btn-row button, .player-chip { flex:1 1 calc(50% - 4px); min-width: unset; }
-      input { font-size: 20px; }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 1320px) {
+      .layout { grid-template-columns: 1fr; }
+      .topbar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .top-actions { grid-column: 1 / -1; justify-content: stretch; }
+      .top-actions button { flex: 1 1 auto; }
+    }
+
+    @media (max-width: 900px) {
+      .numpad-wrap,
+      .voice-grid,
+      .json-grid,
+      .topbar {
+        grid-template-columns: 1fr;
+      }
+      .roster-grid,
+      .choice-grid,
+      .choice-grid.two,
+      .choice-grid.three,
+      .choice-grid.five,
+      .choice-grid.six,
+      .clock-buttons {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
   </style>
+</head>
+<body>
+  <div class="app">
+    <section class="card">
+      <div class="topbar">
+        <div>
+          <label class="label" for="matchSelect">Spielauswahl</label>
+          <select id="matchSelect"></select>
+        </div>
+
+        <div>
+          <label class="label" for="matchId">Match ID</label>
+          <input class="input" id="matchId" readonly />
+        </div>
+
+        <div>
+          <label class="label" for="period">Periode</label>
+          <select id="period">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="label" for="manualClock">Stoppuhr</label>
+          <input class="input" id="manualClock" type="number" min="0" step="1" placeholder="Sek." />
+        </div>
+
+        <div class="mini-stack">
+          <div>
+            <span class="label">Live Uhr</span>
+            <div class="display" id="clockDisplay">00:00</div>
+          </div>
+        </div>
+
+        <div class="top-actions">
+          <button class="btn-success" id="sendTopBtn">Senden</button>
+          <button class="btn-danger" id="resetTopBtn">Reset</button>
+        </div>
+      </div>
+
+      <div class="clock-buttons" style="margin-top:10px;">
+        <button id="clockStartBtn" class="btn-primary">Start</button>
+        <button id="clockPauseBtn">Pause</button>
+        <button id="clockStopBtn">Stop</button>
+        <button id="clockResetBtn" class="btn-danger">Reset Uhr</button>
+      </div>
+    </section>
+
+    <div class="layout">
+      <div class="left-col">
+        <section class="card">
+          <div class="numpad-wrap">
+            <div class="number-targets">
+              <div class="number-box active" id="teamNumberBox">
+                <div class="number-title">TVB-Spieler</div>
+                <div class="number-value" id="teamNumberValue">–</div>
+                <button type="button" id="teamFieldBtn">TVB-Spieler aktiv</button>
+              </div>
+
+              <div class="number-box" id="oppNumberBox">
+                <div class="number-title">Gegnernummer (optional)</div>
+                <div class="number-value" id="oppNumberValue">–</div>
+                <button type="button" id="oppFieldBtn">Gegner aktiv</button>
+              </div>
+
+              <div>
+                <div class="label">TVB-Spieler direkt anklicken</div>
+                <div class="roster-grid" id="rosterGrid"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="label">Numpad</div>
+              <div class="numpad" id="numpad">
+                <button data-key="1">1</button>
+                <button data-key="2">2</button>
+                <button data-key="3">3</button>
+                <button data-key="4">4</button>
+                <button data-key="5">5</button>
+                <button data-key="6">6</button>
+                <button data-key="7">7</button>
+                <button data-key="8">8</button>
+                <button data-key="9">9</button>
+                <button data-key="clear">C</button>
+                <button data-key="0">0</button>
+                <button data-key="back">⌫</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card choice-section">
+          <div>
+            <div class="label">Verteidigerposition 1–6</div>
+            <div class="choice-grid six" id="defenderButtons">
+              <button data-value="1">1</button>
+              <button data-value="2">2</button>
+              <button data-value="3">3</button>
+              <button data-value="4">4</button>
+              <button data-value="5">5</button>
+              <button data-value="6">6</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="label">Richtung am Verteidiger vorbei</div>
+            <div class="choice-grid two" id="directionButtons">
+              <button data-value="1">Zur Hand</button>
+              <button data-value="2">Gegen Hand</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="right-col">
+        <section class="card choice-section">
+          <div>
+            <div class="label">Ausgang</div>
+            <div class="choice-grid three" id="outcomeButtons">
+              <button data-value="1">Gewonnen</button>
+              <button data-value="2">Verloren</button>
+              <button data-value="3">Fehler</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="label">Duellfolge</div>
+            <div class="choice-grid" id="duelResultButtons">
+              <button data-value="1">Weiter</button>
+              <button data-value="2">Ballverlust</button>
+              <button data-value="3">Foul</button>
+              <button data-value="4">7m</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="label">2 Minuten</div>
+            <div class="choice-grid two" id="twoMinButtons">
+              <button data-value="1">Nein</button>
+              <button data-value="2">Ja</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="label">Abschluss</div>
+            <div class="choice-grid five" id="shotResultButtons">
+              <button data-value="1">Tor</button>
+              <button data-value="2">Vorbei</button>
+              <button data-value="3">Einwurf</button>
+              <button data-value="4">Parade</button>
+              <button data-value="5">Block</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="voice-grid">
+            <div>
+              <div class="label">Spracheingabe</div>
+              <button class="btn-mic" id="micBtn">🎤 Push to Talk</button>
+              <div class="muted" style="margin-top:8px;">Gedrückt halten. Zahlenfolge wird direkt ins Mapping übernommen.</div>
+            </div>
+
+            <div>
+              <label class="label" for="voiceTranscript">Sprachsequenz / Notiz</label>
+              <textarea id="voiceTranscript" placeholder="z. B. 12,5,1,1,1,2 oder freie Notiz"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="card footer-tools">
+          <div class="top-actions" style="justify-content:flex-start;">
+            <button class="btn-success" id="sendBottomBtn">Senden</button>
+            <button class="btn-danger" id="resetBottomBtn">Reset</button>
+          </div>
+          <div class="status-line" id="saveStatus">Bereit.</div>
+        </section>
+      </div>
+    </div>
+
+    <details class="card">
+      <summary>Kontrolle / JSON</summary>
+      <div class="json-grid">
+        <div>
+          <div class="label">Live-Mapping</div>
+          <pre id="liveMappingBox">{}</pre>
+        </div>
+        <div>
+          <div class="label">Event JSON</div>
+          <pre id="eventJsonBox">{}</pre>
+        </div>
+      </div>
+    </details>
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import {
       getFirestore,
       collection,
+      getDocs,
       addDoc,
       serverTimestamp,
-      getDocs,
       doc,
       getDoc
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -191,25 +575,23 @@
     const db = getFirestore(app);
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-    let recognition = null;
-    let micArmed = false;
-    let holdTimeout = null;
-    let clockInterval = null;
-
     const state = {
+      matchId: "",
+      teamPlayerNumber: "",
+      opponentPlayerNumber: "",
       defenderSlot: null,
       directionCode: null,
       outcomeCode: null,
       duelResultCode: null,
       twoMinCode: null,
       shotResultCode: null,
-      manualClockSeconds: null,
+      manualClockSeconds: 0,
       clockRunning: false,
-      timeoutActive: false,
-      timeoutTeam: "none",
       period: 1,
       voiceTranscript: "",
-      activeNumberTarget: "player"
+      activeField: "team",
+      clockInterval: null,
+      roster: []
     };
 
     const labels = {
@@ -220,405 +602,160 @@
       shotResult: { 1: "tor", 2: "vorbei", 3: "einwurf", 4: "parade", 5: "block" }
     };
 
-    function byId(id) { return document.getElementById(id); }
+    function $(id) { return document.getElementById(id); }
     function pad2(v) { return String(v).padStart(2, "0"); }
-    function valueOrNull(v) { const t = String(v ?? "").trim(); return t === "" ? null : t; }
-    function formatClock(seconds) {
-      if (seconds === null || seconds === undefined || Number.isNaN(Number(seconds))) return "–";
-      const safe = Math.max(0, Number(seconds) || 0);
+    function formatClock(sec) {
+      const safe = Math.max(0, Number(sec) || 0);
       return `${pad2(Math.floor(safe / 60))}:${pad2(safe % 60)}`;
     }
-    function formatTimestamp(ts) {
-      return `${ts.getFullYear()}-${pad2(ts.getMonth() + 1)}-${pad2(ts.getDate())} ${pad2(ts.getHours())}:${pad2(ts.getMinutes())}:${pad2(ts.getSeconds())}`;
-    }
-    function setSystemTimestampNow() { byId("timestamp").value = formatTimestamp(new Date()); }
 
-    function syncClockUi() {
-      byId("manualClockSeconds").value = state.manualClockSeconds === null ? "" : String(state.manualClockSeconds);
-      byId("clockDisplay").textContent = formatClock(state.manualClockSeconds);
-      byId("timeoutMini").textContent = state.timeoutActive ? `Timeout: ${state.timeoutTeam}` : "Kein Timeout";
-      byId("period").value = String(state.period);
-      byId("clockStateMini").textContent = state.clockRunning ? "läuft" : "stopp";
+    function setStatus(text, isError = false) {
+      const el = $("saveStatus");
+      el.textContent = text;
+      el.style.color = isError ? "#ffb8c4" : "#cde3ff";
     }
 
-    function updateCompactPreview(lastPayload = null) {
-      const preview = {
-        match_id: valueOrNull(byId("matchId").value),
-        team_player_number: valueOrNull(byId("playerNumber").value),
-        opponent_player_number: valueOrNull(byId("opponentNumber").value),
-        defender_slot: state.defenderSlot,
-        direction_code: state.directionCode,
-        outcome_code: state.outcomeCode,
-        duel_result_code: state.duelResultCode,
-        two_min_code: state.twoMinCode,
-        shot_result_code: state.shotResultCode,
-        manual_clock_seconds: state.manualClockSeconds,
-        voice_transcript: state.voiceTranscript || ""
-      };
-      byId("liveMapping").textContent = JSON.stringify(preview, null, 2);
-      byId("sequencePreview").textContent = buildScoutSequence(preview.team_player_number, preview.opponent_player_number) || "–";
-      if (lastPayload) byId("lastSent").textContent = JSON.stringify(lastPayload, null, 2);
-      syncClockUi();
-      updateTargetTabs();
+    function setActiveField(field) {
+      state.activeField = field;
+      $("teamNumberBox").classList.toggle("active", field === "team");
+      $("oppNumberBox").classList.toggle("active", field === "opponent");
     }
 
-    function setActiveButton(groupId, value) {
-      document.querySelectorAll(`#${groupId} button`).forEach(btn => {
-        btn.classList.toggle("active", Number(btn.dataset.value) === Number(value));
+    function updateNumberDisplays() {
+      $("teamNumberValue").textContent = state.teamPlayerNumber || "–";
+      $("oppNumberValue").textContent = state.opponentPlayerNumber || "–";
+
+      document.querySelectorAll("#rosterGrid button").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.number === state.teamPlayerNumber);
       });
     }
 
-    function bindToggleGroup(groupId, stateKey) {
-      document.querySelectorAll(`#${groupId} button`).forEach(btn => {
+    function activateNumpadKey(key) {
+      const targetKey = key === "Backspace" ? "back" : key;
+      const btn = document.querySelector(`#numpad button[data-key="${targetKey}"]`);
+      if (!btn) return;
+      btn.style.transform = "scale(0.97)";
+      setTimeout(() => { btn.style.transform = ""; }, 90);
+    }
+
+    function applyNumpad(key) {
+      const target = state.activeField === "team" ? "teamPlayerNumber" : "opponentPlayerNumber";
+      let value = state[target] || "";
+
+      if (key === "clear") value = "";
+      else if (key === "back") value = value.slice(0, -1);
+      else if (/^\d$/.test(key)) value = `${value}${key}`.slice(0, 3);
+
+      state[target] = value;
+      updateNumberDisplays();
+      renderLiveMapping();
+    }
+
+    function bindChoiceGroup(groupId, stateKey) {
+      const buttons = document.querySelectorAll(`#${groupId} button[data-value]`);
+      buttons.forEach(btn => {
         btn.addEventListener("click", () => {
+          buttons.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
           state[stateKey] = Number(btn.dataset.value);
-          setActiveButton(groupId, state[stateKey]);
-          updateCompactPreview();
+          renderLiveMapping();
         });
       });
     }
 
-    function setSelectedPlayer(number) {
-      byId("playerNumber").value = String(number);
-      state.activeNumberTarget = "opponent";
-      document.querySelectorAll("#tvbQuickPlayers .player-chip").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.number === String(number));
-      });
-      updateCompactPreview();
+    function resetChoiceGroup(groupId) {
+      document.querySelectorAll(`#${groupId} button`).forEach(btn => btn.classList.remove("active"));
     }
 
-    function normalizeRosterEntry(player) {
-      if (!player || typeof player !== "object") return null;
-      const candidatesNum = [player.jersey_number, player.shirt_number, player.player_number, player.number, player.no, player.trikotnummer];
-      const rawNumber = candidatesNum.find(v => v !== undefined && v !== null && String(v).trim() !== "");
-      if (rawNumber === undefined) return null;
-      const number = String(rawNumber).trim();
-      const name = [player.name, player.player_name, player.full_name, player.display_name, player.firstname && player.lastname ? `${player.firstname} ${player.lastname}` : null].find(Boolean) || `TVB ${number}`;
-      return { number, name };
-    }
-
-    function collectRoster(matchData) {
-      const keys = ["team_home_players", "home_players", "tvb_players", "team_players", "players", "team_home_roster", "home_roster", "tvb_roster", "roster", "squad"];
-      const found = [];
-      for (const key of keys) {
-        const value = matchData?.[key];
-        if (Array.isArray(value)) value.forEach(p => { const n = normalizeRosterEntry(p); if (n) found.push(n); });
-        if (value && typeof value === "object" && !Array.isArray(value)) {
-          for (const subKey of ["players", "roster", "squad", "team_players"]) {
-            const nested = value[subKey];
-            if (Array.isArray(nested)) nested.forEach(p => { const n = normalizeRosterEntry(p); if (n) found.push(n); });
-          }
-        }
-      }
-      const uniq = [];
-      const seen = new Set();
-      found.forEach(entry => { if (!seen.has(entry.number)) { seen.add(entry.number); uniq.push(entry); } });
-      return uniq.sort((a, b) => Number(a.number) - Number(b.number));
-    }
-
-    function renderQuickPlayers(players) {
-      const box = byId("tvbQuickPlayers");
-      if (!players.length) {
-        box.innerHTML = `<div class="muted">Kein TVB-Roster im Match gefunden. Spielernummer per Numpad eingeben.</div>`;
-        return;
-      }
-      box.innerHTML = "";
-      players.forEach(player => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "player-chip";
-        btn.dataset.number = player.number;
-        btn.innerHTML = `<span class="num">#${player.number}</span><span class="name">${player.name}</span>`;
-        btn.addEventListener("click", () => setSelectedPlayer(player.number));
-        box.appendChild(btn);
-      });
-    }
-
-    async function loadMatchById(matchId) {
-      if (!matchId) return false;
-      try {
-        const snap = await getDoc(doc(db, "matches", matchId));
-        if (!snap.exists()) return false;
-        const data = snap.data() || {};
-        const home = data.team_home_name || data.home_team_name || "TVB";
-        const away = data.team_away_name || data.away_team_name || "Gegner";
-        byId("matchId").value = matchId;
-        byId("matchLabel").textContent = `${home} vs. ${away}`;
-        renderQuickPlayers(collectRoster(data));
-        setSystemTimestampNow();
-        updateCompactPreview();
-        return true;
-      } catch (err) {
-        console.error("Fehler beim Match-Load:", err);
-        return false;
-      }
-    }
-
-    async function loadMatches() {
-      const select = byId("matchSelect");
-      select.innerHTML = `<option value="">Lade Spiele...</option>`;
-      try {
-        const snap = await getDocs(collection(db, "matches"));
-        if (snap.empty) {
-          select.innerHTML = `<option value="">Keine Spiele gefunden</option>`;
-          return;
-        }
-        const matches = snap.docs.map(d => {
-          const data = d.data() || {};
-          const home = data.team_home_name || "TVB";
-          const away = data.team_away_name || "Gegner";
-          let dateStr = "ohne Datum";
-          const ts = data.date?.toDate ? data.date.toDate() : new Date(data.date || data.updated_at || Date.now());
-          if (ts && !isNaN(ts.getTime())) dateStr = ts.toLocaleDateString("de-DE");
-          return { id: d.id, label: `${dateStr} | ${home} vs. ${away}` };
-        }).sort((a, b) => a.label.localeCompare(b.label, "de"));
-        select.innerHTML = "";
-        matches.forEach(match => {
-          const opt = document.createElement("option");
-          opt.value = match.id;
-          opt.textContent = match.label;
-          select.appendChild(opt);
-        });
-        if (matches.length) {
-          select.value = matches[0].id;
-          await loadMatchById(matches[0].id);
-        }
-      } catch (err) {
-        console.error("Fehler beim Laden der Spiele:", err);
-        select.innerHTML = `<option value="">Fehler beim Laden</option>`;
-      }
-    }
-
-    function startClock() {
-      if (state.clockRunning) return;
-      state.clockRunning = true;
-      if (clockInterval) clearInterval(clockInterval);
-      clockInterval = window.setInterval(() => {
-        if (!state.clockRunning || state.timeoutActive) return;
-        if (state.manualClockSeconds === null) state.manualClockSeconds = 0;
-        state.manualClockSeconds += 1;
-        updateCompactPreview();
-      }, 1000);
-      updateCompactPreview();
-    }
-    function pauseClock() { state.clockRunning = false; if (clockInterval) { clearInterval(clockInterval); clockInterval = null; } updateCompactPreview(); }
-    function stopClock() { state.clockRunning = false; if (clockInterval) { clearInterval(clockInterval); clockInterval = null; } updateCompactPreview(); }
-    function resetClock() { state.clockRunning = false; if (clockInterval) { clearInterval(clockInterval); clockInterval = null; } state.manualClockSeconds = 0; updateCompactPreview(); }
-    function toggleTimeout(team) { if (state.timeoutActive && state.timeoutTeam === team) { state.timeoutActive = false; state.timeoutTeam = "none"; } else { state.timeoutActive = true; state.timeoutTeam = team; } updateCompactPreview(); }
-
-    function bindClockControls() {
-      byId("clockStartBtn").addEventListener("click", startClock);
-      byId("clockPauseBtn").addEventListener("click", pauseClock);
-      byId("clockStopBtn").addEventListener("click", stopClock);
-      byId("clockResetBtn").addEventListener("click", resetClock);
-      byId("manualClockSeconds").addEventListener("change", e => {
-        const raw = e.target.value.trim();
-        state.manualClockSeconds = raw === "" ? null : Math.max(0, Number(raw) || 0);
-        updateCompactPreview();
-      });
-      byId("period").addEventListener("change", e => { state.period = Math.max(1, Number(e.target.value) || 1); updateCompactPreview(); });
-      byId("timeoutTvhBtn").addEventListener("click", () => toggleTimeout("tvb"));
-      byId("timeoutOppBtn").addEventListener("click", () => toggleTimeout("opponent"));
-    }
-
-    function setActiveNumberTarget(target) {
-      state.activeNumberTarget = target;
-      updateTargetTabs();
-    }
-
-    function updateTargetTabs() {
-      document.querySelectorAll("#numpadTargets button").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.target === state.activeNumberTarget);
-      });
-      byId("activeTargetLabel").textContent = state.activeNumberTarget === "player" ? "Eingabeziel: TVB-Spieler" : "Eingabeziel: Gegner";
-    }
-
-    function getTargetInput() {
-      return state.activeNumberTarget === "player" ? byId("playerNumber") : byId("opponentNumber");
-    }
-
-    function appendDigit(digit) {
-      const input = getTargetInput();
-      input.value = `${input.value || ""}${digit}`;
-      if (state.activeNumberTarget === "player") {
-        document.querySelectorAll("#tvbQuickPlayers .player-chip").forEach(btn => {
-          btn.classList.toggle("active", btn.dataset.number === input.value);
-        });
-      }
-      updateCompactPreview();
-    }
-
-    function backspaceDigit() {
-      const input = getTargetInput();
-      input.value = String(input.value || "").slice(0, -1);
-      updateCompactPreview();
-    }
-
-    function clearTarget() {
-      const input = getTargetInput();
-      input.value = "";
-      if (state.activeNumberTarget === "player") document.querySelectorAll("#tvbQuickPlayers .player-chip").forEach(btn => btn.classList.remove("active"));
-      updateCompactPreview();
-    }
-
-    function bindNumpad() {
-      document.querySelectorAll("#numpadTargets button").forEach(btn => btn.addEventListener("click", () => setActiveNumberTarget(btn.dataset.target)));
-      document.querySelectorAll("#numberPad button[data-digit]").forEach(btn => btn.addEventListener("click", () => appendDigit(btn.dataset.digit)));
-      byId("padBackspace").addEventListener("click", backspaceDigit);
-      byId("padClear").addEventListener("click", clearTarget);
-      byId("playerNumber").addEventListener("click", () => setActiveNumberTarget("player"));
-      byId("opponentNumber").addEventListener("click", () => setActiveNumberTarget("opponent"));
-    }
-
-    function parseVoiceSequence(text) {
-      const normalized = String(text || "")
-        .replace(/\bnull\b/gi, "")
-        .replace(/\bund\b/gi, ",")
-        .replace(/;/g, ",")
-        .replace(/\s+/g, "")
-        .replace(/,+/g, ",")
-        .replace(/(^,|,$)/g, "");
-      if (!normalized) return [];
-      return normalized.split(",").map(v => v.trim()).filter(Boolean).map(v => Number(v)).filter(v => Number.isFinite(v));
-    }
-
-    function applyVoiceTokens(tokens) {
-      if (!Array.isArray(tokens) || !tokens.length) { updateCompactPreview(); return; }
-      const [teamPlayer, opponent, defenderSlot, direction, outcome, duelResult, twoMin, shotResult] = tokens;
-      if (teamPlayer !== undefined) setSelectedPlayer(teamPlayer);
-      if (opponent !== undefined) byId("opponentNumber").value = String(opponent);
-      if (defenderSlot && defenderSlot >= 1 && defenderSlot <= 6) { state.defenderSlot = defenderSlot; setActiveButton("defenderButtons", defenderSlot); }
-      if (labels.direction[direction]) { state.directionCode = direction; setActiveButton("directionButtons", direction); }
-      if (labels.outcome[outcome]) { state.outcomeCode = outcome; setActiveButton("outcomeButtons", outcome); }
-      if (labels.duelResult[duelResult]) { state.duelResultCode = duelResult; setActiveButton("duelResultButtons", duelResult); }
-      if (labels.twoMin[twoMin]) { state.twoMinCode = twoMin; setActiveButton("twoMinButtons", twoMin); }
-      if (labels.shotResult[shotResult]) { state.shotResultCode = shotResult; setActiveButton("shotResultButtons", shotResult); }
-      updateCompactPreview();
-    }
-
-    function bindSpeech() {
-      const speechBtn = byId("speechBtn");
-      const transcriptEl = byId("voiceTranscript");
-      if (!SpeechRecognition) {
-        speechBtn.disabled = true;
-        speechBtn.textContent = "Sprache nicht verfügbar";
-        return;
-      }
-      recognition = new SpeechRecognition();
-      recognition.lang = "de-DE";
-      recognition.interimResults = true;
-      recognition.continuous = false;
-      recognition.onresult = event => {
-        let fullText = transcriptEl.value.trim();
-        let latestChunk = "";
-        for (let i = event.resultIndex; i < event.results.length; i++) latestChunk += event.results[i][0].transcript;
-        latestChunk = latestChunk.trim();
-        if (!latestChunk) return;
-        const merged = [fullText, latestChunk].filter(Boolean).join(fullText ? ", " : "");
-        transcriptEl.value = merged;
-        state.voiceTranscript = merged;
-        applyVoiceTokens(parseVoiceSequence(merged));
-      };
-      recognition.onend = () => {
-        if (!micArmed) {
-          speechBtn.classList.remove("live");
-          speechBtn.textContent = "🎤 Push to Talk";
-          return;
-        }
-        holdTimeout = setTimeout(() => {
-          if (micArmed && recognition) { try { recognition.start(); } catch (err) { console.warn("Speech restart blocked:", err); } }
-        }, 250);
-      };
-      recognition.onerror = event => console.warn("Speech error:", event.error);
-      const startRec = e => { if (e) e.preventDefault(); micArmed = true; speechBtn.classList.add("live"); speechBtn.textContent = "🎙 Aufnahme aktiv"; clearTimeout(holdTimeout); try { recognition.start(); } catch (err) { console.warn("Speech start blocked:", err); } };
-      const stopRec = e => { if (e) e.preventDefault(); micArmed = false; try { recognition.stop(); } catch (err) { console.warn("Speech stop blocked:", err); } };
-      speechBtn.addEventListener("mousedown", startRec);
-      speechBtn.addEventListener("mouseup", stopRec);
-      speechBtn.addEventListener("mouseleave", stopRec);
-      speechBtn.addEventListener("touchstart", startRec, { passive: false });
-      speechBtn.addEventListener("touchend", stopRec, { passive: false });
-      transcriptEl.addEventListener("input", () => { state.voiceTranscript = transcriptEl.value.trim(); applyVoiceTokens(parseVoiceSequence(state.voiceTranscript)); });
-    }
-
-    function buildScoutSequence(teamPlayerNumber, opponentNumber) {
-      return [teamPlayerNumber, opponentNumber ?? "", state.defenderSlot ?? "", state.directionCode ?? "", state.outcomeCode ?? "", state.duelResultCode ?? "", state.twoMinCode ?? "", state.shotResultCode ?? ""].join(",");
-    }
-
-    function buildPayload() {
-      const matchId = byId("matchId").value.trim();
-      const systemTimestamp = byId("timestamp").value.trim();
-      const playerNumberRaw = byId("playerNumber").value.trim();
-      const opponentRaw = byId("opponentNumber").value.trim();
-      const notes = byId("notes").value.trim();
-      const voiceTranscript = byId("voiceTranscript").value.trim();
-
-      if (!matchId) throw new Error("Bitte Spiel wählen.");
-      if (!systemTimestamp) throw new Error("Bitte Systemzeit setzen.");
-      if (!playerNumberRaw) throw new Error("Bitte TVB-Spieler wählen oder Nummer eingeben.");
-      if (!Number.isFinite(state.defenderSlot)) throw new Error("Bitte Verteidigerposition 1–6 wählen.");
-      if (!state.directionCode) throw new Error("Bitte Richtung wählen.");
-      if (!state.outcomeCode) throw new Error("Bitte Ausgang wählen.");
-      if (!state.duelResultCode) throw new Error("Bitte Duellfolge wählen.");
-      if (!state.twoMinCode) throw new Error("Bitte 2 Minuten wählen.");
-
-      const teamPlayerNumber = Number(playerNumberRaw);
-      if (!Number.isFinite(teamPlayerNumber)) throw new Error("TVB-Spieler muss als Nummer vorliegen.");
-      const opponentNumber = opponentRaw === "" ? null : Number(opponentRaw);
-      if (opponentRaw !== "" && !Number.isFinite(opponentNumber)) throw new Error("Gegner bitte als Trikotnummer eingeben.");
-
+    function buildPayload(includeServerTimestamp = true) {
       return {
         event_type: "duel",
-        source: "arena_scout",
-        match_id: matchId,
-        system_timestamp: systemTimestamp,
-        timestamp: systemTimestamp,
-        manual_clock_seconds: state.manualClockSeconds,
-        manual_clock_label: state.manualClockSeconds === null ? null : formatClock(state.manualClockSeconds),
-        period: state.period,
-        clock_running: state.clockRunning,
-        timeout_active: state.timeoutActive,
-        timeout_team: state.timeoutTeam,
-        team_player_number: teamPlayerNumber,
-        opponent_player_number: opponentNumber,
+        match_id: state.matchId,
+        period: Number(state.period) || 1,
+        manual_clock_seconds: Number(state.manualClockSeconds) || 0,
+        manual_clock_label: formatClock(state.manualClockSeconds),
+        team_player_number: state.teamPlayerNumber ? Number(state.teamPlayerNumber) : null,
+        opponent_player_number: state.opponentPlayerNumber ? Number(state.opponentPlayerNumber) : null,
         defender_slot: state.defenderSlot,
         direction_code: state.directionCode,
-        direction_label: labels.direction[state.directionCode],
+        direction_label: state.directionCode ? labels.direction[state.directionCode] : null,
         outcome_code: state.outcomeCode,
-        outcome_label: labels.outcome[state.outcomeCode],
+        outcome_label: state.outcomeCode ? labels.outcome[state.outcomeCode] : null,
         duel_result_code: state.duelResultCode,
-        duel_result_label: labels.duelResult[state.duelResultCode],
+        duel_result_label: state.duelResultCode ? labels.duelResult[state.duelResultCode] : null,
         two_min_code: state.twoMinCode,
-        two_min_label: labels.twoMin[state.twoMinCode],
-        shot_result_code: state.shotResultCode || null,
+        two_min_label: state.twoMinCode ? labels.twoMin[state.twoMinCode] : null,
+        shot_result_code: state.shotResultCode,
         shot_result_label: state.shotResultCode ? labels.shotResult[state.shotResultCode] : null,
-        voice_transcript: voiceTranscript || null,
-        notes: notes || null,
-        scout_sequence: buildScoutSequence(teamPlayerNumber, opponentNumber),
-        created_at: serverTimestamp()
+        voice_transcript: state.voiceTranscript || null,
+        scout_sequence: [
+          state.teamPlayerNumber || "",
+          state.opponentPlayerNumber || "",
+          state.defenderSlot || "",
+          state.directionCode || "",
+          state.outcomeCode || "",
+          state.duelResultCode || "",
+          state.twoMinCode || "",
+          state.shotResultCode || ""
+        ].join(","),
+        source: "arena_scout",
+        created_at: includeServerTimestamp ? serverTimestamp() : "serverTimestamp()"
       };
+    }
+
+    function renderLiveMapping() {
+      const livePayload = buildPayload(false);
+      $("clockDisplay").textContent = formatClock(state.manualClockSeconds);
+      $("liveMappingBox").textContent = JSON.stringify({
+        team_player_number: livePayload.team_player_number,
+        opponent_player_number: livePayload.opponent_player_number,
+        defender_slot: livePayload.defender_slot,
+        direction_code: livePayload.direction_code,
+        outcome_code: livePayload.outcome_code,
+        duel_result_code: livePayload.duel_result_code,
+        two_min_code: livePayload.two_min_code,
+        shot_result_code: livePayload.shot_result_code,
+        manual_clock_seconds: livePayload.manual_clock_seconds,
+        voice_transcript: livePayload.voice_transcript || ""
+      }, null, 2);
+      $("eventJsonBox").textContent = JSON.stringify(livePayload, null, 2);
+    }
+
+    function validatePayload() {
+      if (!state.matchId) return "Bitte Spiel wählen.";
+      if (!state.teamPlayerNumber) return "Bitte TVB-Spieler setzen.";
+      if (!state.defenderSlot) return "Bitte Verteidigerposition wählen.";
+      if (!state.directionCode) return "Bitte Richtung wählen.";
+      if (!state.outcomeCode) return "Bitte Ausgang wählen.";
+      if (!state.duelResultCode) return "Bitte Duellfolge wählen.";
+      if (!state.twoMinCode) return "Bitte 2 Minuten wählen.";
+      return null;
     }
 
     async function sendEvent() {
-      const status = byId("saveStatus");
-      status.textContent = "Sende ...";
+      const validationError = validatePayload();
+      if (validationError) {
+        alert(validationError);
+        return;
+      }
+
+      const payload = buildPayload(true);
+      setStatus("Speichere ...");
+
       try {
-        const payload = buildPayload();
-        await addDoc(collection(db, "matches", payload.match_id, "scout_events"), payload);
-        status.textContent = "Gesendet ✅";
-        updateCompactPreview({ ...payload, created_at: "serverTimestamp()" });
-        resetForm(false);
-        setSystemTimestampNow();
+        await addDoc(collection(db, "matches", state.matchId, "scout_events"), payload);
+        setStatus("Gespeichert ✅ Neueingabe bereit.");
+        resetForm(true);
       } catch (error) {
-        console.error("Fehler beim Senden:", error);
-        status.textContent = error?.message || "Fehler beim Senden ❌";
+        console.error("Firestore Fehler:", error);
+        setStatus("Fehler beim Speichern ❌", true);
+        alert("Fehler beim Speichern in Firestore.");
       }
     }
 
-    function resetForm(clearStatus = true) {
-      ["defenderButtons", "directionButtons", "outcomeButtons", "duelResultButtons", "twoMinButtons", "shotResultButtons"].forEach(groupId => {
-        document.querySelectorAll(`#${groupId} button`).forEach(btn => btn.classList.remove("active"));
-      });
-      document.querySelectorAll("#tvbQuickPlayers .player-chip").forEach(btn => btn.classList.remove("active"));
+    function resetForm(keepMatch = false) {
+      state.teamPlayerNumber = "";
+      state.opponentPlayerNumber = "";
       state.defenderSlot = null;
       state.directionCode = null;
       state.outcomeCode = null;
@@ -626,252 +763,289 @@
       state.twoMinCode = null;
       state.shotResultCode = null;
       state.voiceTranscript = "";
-      state.activeNumberTarget = "player";
-      byId("playerNumber").value = "";
-      byId("opponentNumber").value = "";
-      byId("voiceTranscript").value = "";
-      byId("notes").value = "";
-      if (clearStatus) byId("saveStatus").textContent = "";
-      updateCompactPreview();
+      state.activeField = "team";
+
+      if (!keepMatch) {
+        state.manualClockSeconds = 0;
+        state.period = 1;
+        $("manualClock").value = "0";
+        $("period").value = "1";
+      }
+
+      $("voiceTranscript").value = "";
+      resetChoiceGroup("defenderButtons");
+      resetChoiceGroup("directionButtons");
+      resetChoiceGroup("outcomeButtons");
+      resetChoiceGroup("duelResultButtons");
+      resetChoiceGroup("twoMinButtons");
+      resetChoiceGroup("shotResultButtons");
+      setActiveField("team");
+      updateNumberDisplays();
+      renderLiveMapping();
     }
 
-    window.addEventListener("DOMContentLoaded", async () => {
-      bindToggleGroup("defenderButtons", "defenderSlot");
-      bindToggleGroup("directionButtons", "directionCode");
-      bindToggleGroup("outcomeButtons", "outcomeCode");
-      bindToggleGroup("duelResultButtons", "duelResultCode");
-      bindToggleGroup("twoMinButtons", "twoMinCode");
-      bindToggleGroup("shotResultButtons", "shotResultCode");
-      bindClockControls();
-      bindSpeech();
-      bindNumpad();
-      byId("sendBtnTop").addEventListener("click", sendEvent);
-      byId("sendBtnBottom").addEventListener("click", sendEvent);
-      byId("resetBtnTop").addEventListener("click", () => resetForm(true));
-      byId("resetBtnBottom").addEventListener("click", () => resetForm(true));
-      byId("matchSelect").addEventListener("change", async e => { await loadMatchById(e.target.value); resetForm(true); });
-      setSystemTimestampNow();
-      updateCompactPreview();
+    function extractPlayers(matchData) {
+      const candidateKeys = [
+        "team_home_players", "home_players", "tvb_players", "players", "roster", "squad"
+      ];
+      const players = [];
+
+      for (const key of candidateKeys) {
+        const value = matchData?.[key];
+        if (Array.isArray(value)) {
+          for (const item of value) {
+            if (item && typeof item === "object") players.push(item);
+          }
+        } else if (value && typeof value === "object" && Array.isArray(value.players)) {
+          for (const item of value.players) {
+            if (item && typeof item === "object") players.push(item);
+          }
+        }
+      }
+
+      const normalized = players.map((player) => {
+        const number = String(
+          player.jersey_number ?? player.shirt_number ?? player.player_number ?? player.number ?? ""
+        ).trim();
+        const name = String(
+          player.player_name ?? player.name ?? player.full_name ?? player.display_name ?? ""
+        ).trim();
+        return { number, name };
+      }).filter(p => p.number);
+
+      const unique = [];
+      const seen = new Set();
+      normalized.forEach(p => {
+        if (seen.has(p.number)) return;
+        seen.add(p.number);
+        unique.push(p);
+      });
+
+      return unique.sort((a, b) => Number(a.number) - Number(b.number));
+    }
+
+    function renderRoster(players) {
+      const grid = $("rosterGrid");
+      grid.innerHTML = "";
+
+      if (!players.length) {
+        grid.innerHTML = '<button type="button" disabled>Roster leer</button>';
+        return;
+      }
+
+      players.forEach(player => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.dataset.number = player.number;
+        btn.innerHTML = `${player.number}${player.name ? `<small>${player.name}</small>` : ""}`;
+        btn.addEventListener("click", () => {
+          state.teamPlayerNumber = player.number;
+          setActiveField("team");
+          updateNumberDisplays();
+          renderLiveMapping();
+        });
+        grid.appendChild(btn);
+      });
+      updateNumberDisplays();
+    }
+
+    async function loadMatchById(matchId) {
+      state.matchId = matchId;
+      $("matchId").value = matchId;
+
+      try {
+        const snap = await getDoc(doc(db, "matches", matchId));
+        const data = snap.exists() ? snap.data() : {};
+        state.roster = extractPlayers(data);
+        renderRoster(state.roster);
+      } catch (error) {
+        console.error("Match load error:", error);
+        state.roster = [];
+        renderRoster([]);
+      }
+      renderLiveMapping();
+    }
+
+    async function loadMatches() {
+      const select = $("matchSelect");
+      select.innerHTML = '<option value="">Lade Spiele...</option>';
+
+      try {
+        const snap = await getDocs(collection(db, "matches"));
+        const matches = snap.docs.map((d) => {
+          const data = d.data() || {};
+          const home = data.team_home_name || data.home_team_name || "TVB";
+          const away = data.team_away_name || data.away_team_name || "Gegner";
+          let labelDate = "ohne Datum";
+          const dt = data.date?.toDate ? data.date.toDate() : new Date(data.date || data.updated_at || Date.now());
+          if (dt && !Number.isNaN(dt.getTime())) labelDate = dt.toLocaleDateString("de-DE");
+          return { id: d.id, label: `${labelDate} | ${home} vs. ${away}` };
+        }).sort((a, b) => a.label.localeCompare(b.label, "de"));
+
+        if (!matches.length) {
+          select.innerHTML = '<option value="">Keine Spiele gefunden</option>';
+          return;
+        }
+
+        select.innerHTML = "";
+        matches.forEach(match => {
+          const opt = document.createElement("option");
+          opt.value = match.id;
+          opt.textContent = match.label;
+          select.appendChild(opt);
+        });
+        select.value = matches[0].id;
+        await loadMatchById(matches[0].id);
+      } catch (error) {
+        console.error("Fehler beim Laden der Spiele:", error);
+        select.innerHTML = '<option value="">Fehler beim Laden</option>';
+        setStatus("Spiele konnten nicht geladen werden.", true);
+      }
+    }
+
+    function bindClock() {
+      $("manualClock").value = "0";
+      $("manualClock").addEventListener("input", (e) => {
+        state.manualClockSeconds = Math.max(0, Number(e.target.value) || 0);
+        renderLiveMapping();
+      });
+
+      $("period").addEventListener("change", (e) => {
+        state.period = Math.max(1, Number(e.target.value) || 1);
+        renderLiveMapping();
+      });
+
+      $("clockStartBtn").addEventListener("click", () => {
+        if (state.clockRunning) return;
+        state.clockRunning = true;
+        if (state.clockInterval) clearInterval(state.clockInterval);
+        state.clockInterval = window.setInterval(() => {
+          if (!state.clockRunning) return;
+          state.manualClockSeconds += 1;
+          $("manualClock").value = String(state.manualClockSeconds);
+          renderLiveMapping();
+        }, 1000);
+        $("clockStartBtn").classList.add("active");
+      });
+
+      $("clockPauseBtn").addEventListener("click", () => {
+        state.clockRunning = false;
+        $("clockStartBtn").classList.remove("active");
+      });
+
+      $("clockStopBtn").addEventListener("click", () => {
+        state.clockRunning = false;
+        if (state.clockInterval) clearInterval(state.clockInterval);
+        state.clockInterval = null;
+        $("clockStartBtn").classList.remove("active");
+      });
+
+      $("clockResetBtn").addEventListener("click", () => {
+        state.clockRunning = false;
+        if (state.clockInterval) clearInterval(state.clockInterval);
+        state.clockInterval = null;
+        state.manualClockSeconds = 0;
+        $("manualClock").value = "0";
+        $("clockStartBtn").classList.remove("active");
+        renderLiveMapping();
+      });
+    }
+
+    function bindVoice() {
+      const micBtn = $("micBtn");
+      const transcript = $("voiceTranscript");
+
+      transcript.addEventListener("input", () => {
+        state.voiceTranscript = transcript.value.trim();
+        renderLiveMapping();
+      });
+
+      if (!SpeechRecognition) {
+        micBtn.disabled = true;
+        micBtn.textContent = "Sprache nicht unterstützt";
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = "de-DE";
+      recognition.interimResults = true;
+      recognition.continuous = false;
+
+      recognition.onresult = (event) => {
+        const text = Array.from(event.results).map(r => r[0].transcript).join(" ").trim();
+        transcript.value = text;
+        state.voiceTranscript = text;
+        renderLiveMapping();
+      };
+
+      recognition.onstart = () => micBtn.classList.add("live");
+      recognition.onend = () => micBtn.classList.remove("live");
+      recognition.onerror = () => micBtn.classList.remove("live");
+
+      const start = (e) => {
+        e.preventDefault();
+        try { recognition.start(); } catch (_) {}
+      };
+      const stop = (e) => {
+        e.preventDefault();
+        try { recognition.stop(); } catch (_) {}
+      };
+
+      micBtn.addEventListener("mousedown", start);
+      micBtn.addEventListener("mouseup", stop);
+      micBtn.addEventListener("mouseleave", stop);
+      micBtn.addEventListener("touchstart", start, { passive: false });
+      micBtn.addEventListener("touchend", stop, { passive: false });
+    }
+
+    function bindUI() {
+      $("teamFieldBtn").addEventListener("click", () => setActiveField("team"));
+      $("oppFieldBtn").addEventListener("click", () => setActiveField("opponent"));
+
+      document.querySelectorAll("#numpad button").forEach(btn => {
+        btn.addEventListener("click", () => applyNumpad(btn.dataset.key));
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (/^\d$/.test(e.key)) {
+          applyNumpad(e.key);
+          activateNumpadKey(e.key);
+        } else if (e.key === "Backspace") {
+          applyNumpad("back");
+          activateNumpadKey("Backspace");
+        }
+      });
+
+      bindChoiceGroup("defenderButtons", "defenderSlot");
+      bindChoiceGroup("directionButtons", "directionCode");
+      bindChoiceGroup("outcomeButtons", "outcomeCode");
+      bindChoiceGroup("duelResultButtons", "duelResultCode");
+      bindChoiceGroup("twoMinButtons", "twoMinCode");
+      bindChoiceGroup("shotResultButtons", "shotResultCode");
+
+      $("matchSelect").addEventListener("change", async (e) => {
+        if (!e.target.value) return;
+        await loadMatchById(e.target.value);
+      });
+
+      $("sendTopBtn").addEventListener("click", sendEvent);
+      $("sendBottomBtn").addEventListener("click", sendEvent);
+      $("resetTopBtn").addEventListener("click", () => resetForm(true));
+      $("resetBottomBtn").addEventListener("click", () => resetForm(true));
+    }
+
+    async function init() {
+      bindUI();
+      bindClock();
+      bindVoice();
+      setActiveField("team");
+      updateNumberDisplays();
+      renderRoster([]);
+      renderLiveMapping();
       await loadMatches();
-    });
+    }
+
+    init();
   </script>
-</head>
-<body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <div class="brand-badge">TVB</div>
-        <div class="brand-text">
-          <h1>Arena Scout</h1>
-          <p>Große Eingabeflächen · Numpad · Direkter Firestore-Versand</p>
-        </div>
-      </div>
-      <a class="nav-link" href="./index.html">← Startseite</a>
-    </div>
-
-    <div class="top-actions">
-      <section class="compact-bar">
-        <div class="mini-field">
-          <label for="matchSelect">Spiel</label>
-          <select id="matchSelect"></select>
-        </div>
-        <div class="mini-field">
-          <label for="matchId">Match ID</label>
-          <input id="matchId" type="text" readonly />
-        </div>
-        <div class="mini-field">
-          <label for="period">Periode</label>
-          <input id="period" type="number" min="1" step="1" value="1" />
-        </div>
-        <div class="mini-field">
-          <label for="manualClockSeconds">Sek.</label>
-          <input id="manualClockSeconds" type="number" min="0" placeholder="0" />
-        </div>
-        <div class="mini-field">
-          <label>Stoppuhr</label>
-          <div id="clockDisplay" class="clock-box">–</div>
-        </div>
-        <div class="mini-clock-buttons">
-          <button id="clockStartBtn" class="btn-primary">Start</button>
-          <button id="clockPauseBtn">Pause</button>
-          <button id="clockStopBtn">Stop</button>
-          <button id="clockResetBtn" class="btn-danger">Reset</button>
-          <button id="timeoutTvhBtn">TVB TO</button>
-          <button id="timeoutOppBtn">Gegner TO</button>
-        </div>
-      </section>
-
-      <section class="action-bar">
-        <button id="sendBtnTop" class="btn-success">Senden</button>
-        <button id="resetBtnTop" class="btn-danger">Reset</button>
-        <div class="status-inline">
-          <div id="clockStateMini">stopp</div>
-          <div id="timeoutMini">Kein Timeout</div>
-        </div>
-      </section>
-    </div>
-
-    <div id="matchLabel" class="muted" style="margin: 0 0 10px 2px;">Kein Spiel geladen</div>
-
-    <div class="main-grid">
-      <div class="left-stack">
-        <section class="card">
-          <h2 class="title">Beteiligte</h2>
-          <div class="entry-grid">
-            <div>
-              <div class="field-grid-2">
-                <div class="field-group">
-                  <label for="playerNumber">TVB-Spieler</label>
-                  <input id="playerNumber" class="readonly-input" type="text" inputmode="none" readonly placeholder="per Klick oder Numpad" />
-                </div>
-                <div class="field-group">
-                  <label for="opponentNumber">Gegner (optional)</label>
-                  <input id="opponentNumber" class="readonly-input" type="text" inputmode="none" readonly placeholder="Trikotnummer per Numpad" />
-                </div>
-              </div>
-
-              <div class="field-group" style="margin-top:10px;">
-                <label>TVB-Spieler schnell anklicken</label>
-                <div id="tvbQuickPlayers" class="chip-row"></div>
-              </div>
-
-              <div class="field-group" style="margin-top:10px;">
-                <label>Verteidigerposition 1–6</label>
-                <div id="defenderButtons" class="chip-row">
-                  <button type="button" data-value="1">1</button>
-                  <button type="button" data-value="2">2</button>
-                  <button type="button" data-value="3">3</button>
-                  <button type="button" data-value="4">4</button>
-                  <button type="button" data-value="5">5</button>
-                  <button type="button" data-value="6">6</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="choice-card">
-              <h3>Nummernfeld</h3>
-              <div id="numpadTargets" class="numpad-targets">
-                <button type="button" data-target="player" class="active">TVB-Spieler</button>
-                <button type="button" data-target="opponent">Gegner</button>
-              </div>
-              <div class="numpad-display">
-                <div id="activeTargetLabel" class="active-target">Eingabeziel: TVB-Spieler</div>
-                <button id="padClear" type="button">C</button>
-              </div>
-              <div id="numberPad" class="key-grid">
-                <button type="button" data-digit="1">1</button>
-                <button type="button" data-digit="2">2</button>
-                <button type="button" data-digit="3">3</button>
-                <button type="button" data-digit="4">4</button>
-                <button type="button" data-digit="5">5</button>
-                <button type="button" data-digit="6">6</button>
-                <button type="button" data-digit="7">7</button>
-                <button type="button" data-digit="8">8</button>
-                <button type="button" data-digit="9">9</button>
-                <button id="padBackspace" type="button">⌫</button>
-                <button type="button" data-digit="0">0</button>
-                <button type="button" data-target="player" onclick="return false;">#</button>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <div class="right-stack">
-        <section class="card">
-          <h2 class="title">Duell & Abschluss</h2>
-          <div class="choice-grid">
-            <div class="choice-card">
-              <h3>Richtung</h3>
-              <div id="directionButtons" class="chip-row">
-                <button type="button" data-value="1">Zur Hand</button>
-                <button type="button" data-value="2">Gegen Hand</button>
-              </div>
-            </div>
-            <div class="choice-card">
-              <h3>Ausgang</h3>
-              <div id="outcomeButtons" class="chip-row">
-                <button type="button" data-value="1">Gewonnen</button>
-                <button type="button" data-value="2">Verloren</button>
-                <button type="button" data-value="3">Fehler</button>
-              </div>
-            </div>
-            <div class="choice-card">
-              <h3>Duellfolge</h3>
-              <div id="duelResultButtons" class="chip-row">
-                <button type="button" data-value="1">Weiter</button>
-                <button type="button" data-value="2">Ballverlust</button>
-                <button type="button" data-value="3">Foul</button>
-                <button type="button" data-value="4">7m</button>
-              </div>
-            </div>
-            <div class="choice-card">
-              <h3>2 Minuten</h3>
-              <div id="twoMinButtons" class="chip-row">
-                <button type="button" data-value="1">Nein</button>
-                <button type="button" data-value="2">Ja</button>
-              </div>
-            </div>
-            <div class="choice-card" style="grid-column: 1 / -1;">
-              <h3>Abschluss</h3>
-              <div id="shotResultButtons" class="chip-row">
-                <button type="button" data-value="1">Tor</button>
-                <button type="button" data-value="2">Vorbei</button>
-                <button type="button" data-value="3">Einwurf</button>
-                <button type="button" data-value="4">Parade</button>
-                <button type="button" data-value="5">Block</button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="card">
-          <h2 class="title">Sprache / Notiz</h2>
-          <div class="speech-grid">
-            <button id="speechBtn" class="btn-primary btn-mic">🎤 Push to Talk</button>
-            <div class="muted">Sprache mappt weiter: Spieler, Gegner, Verteidiger, Richtung, Ausgang, Duellfolge, 2 Minuten, Abschluss.</div>
-          </div>
-          <div class="field-grid-2" style="margin-top:10px;">
-            <div class="field-group">
-              <label for="voiceTranscript">Sprachsequenz</label>
-              <textarea id="voiceTranscript" placeholder="z. B. 3,9,3,1,1,1,1,1"></textarea>
-            </div>
-            <div class="field-group">
-              <label for="notes">Notiz</label>
-              <textarea id="notes" placeholder="Freitext optional"></textarea>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-
-    <div class="compact-footer">
-      <section class="card">
-        <div class="action-bar" style="padding:0; border:none; background:none; box-shadow:none;">
-          <button id="sendBtnBottom" class="btn-success">Senden</button>
-          <button id="resetBtnBottom" class="btn-danger">Reset</button>
-          <div id="saveStatus" class="status-inline" style="text-align:left; min-width:180px;"></div>
-        </div>
-
-        <details style="margin-top:8px;">
-          <summary>Kontrollfelder</summary>
-          <div class="details-body" style="display:grid; gap:10px;">
-            <div>
-              <div class="muted" style="margin-bottom:6px;">Scout Sequence</div>
-              <pre id="sequencePreview">–</pre>
-            </div>
-            <div>
-              <div class="muted" style="margin-bottom:6px;">Live-Mapping</div>
-              <pre id="liveMapping">{}</pre>
-            </div>
-            <div>
-              <div class="muted" style="margin-bottom:6px;">Letztes gesendetes Event</div>
-              <pre id="lastSent">{}</pre>
-            </div>
-          </div>
-        </details>
-      </section>
-    </div>
-  </div>
 </body>
 </html>
