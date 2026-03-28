@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kinexon Taktik Live</title>
+  <style>
+    :root {
+      --bg: #071a2f;
+      --panel: #102844;
+      --border: #26486c;
+      --text: #ffffff;
+      --muted: #a8bfd7;
+      --green: #4ade80;
+      --yellow: #facc15;
+      --red: #f87171;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .wrap {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr auto;
+      gap: 14px;
+      margin-bottom: 18px;
+      align-items: end;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    select, button {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #152c48;
+      color: var(--text);
+      font-size: 16px;
+      outline: none;
+    }
+
+    button {
+      cursor: pointer;
+      width: auto;
+      min-width: 120px;
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .card .label {
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .card .value {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 24px 0 14px;
+    }
+
+    .team-window-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .window-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      min-height: 150px;
+    }
+
+    .window-card.green {
+      box-shadow: inset 0 0 0 2px rgba(74, 222, 128, 0.45);
+    }
+
+    .window-card.yellow {
+      box-shadow: inset 0 0 0 2px rgba(250, 204, 21, 0.45);
+    }
+
+    .window-card.red {
+      box-shadow: inset 0 0 0 2px rgba(248, 113, 113, 0.45);
+    }
+
+    .window-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .window-line {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 4px 0;
+    }
+
+    .window-value {
+      font-size: 28px;
+      font-weight: 800;
+      margin-top: 12px;
+    }
+
+    .green-text { color: var(--green); }
+    .yellow-text { color: var(--yellow); }
+    .red-text { color: var(--red); }
+
+    .field-wrap,
+    .table-wrap {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+
+    canvas {
+      width: 100%;
+      max-width: 1483px;
+      height: auto;
+      display: block;
+      border-radius: 14px;
+      background: #2a2a2a;
+    }
+
+    .footer {
+      margin-top: 14px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    th {
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .badge.green {
+      background: rgba(74, 222, 128, 0.15);
+      color: var(--green);
+    }
+
+    .badge.yellow {
+      background: rgba(250, 204, 21, 0.15);
+      color: var(--yellow);
+    }
+
+    .badge.red {
+      background: rgba(248, 113, 113, 0.15);
+      color: var(--red);
+    }
+
+    @media (max-width: 1200px) {
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(180px, 1fr));
+      }
+
+      .team-window-grid {
+        grid-template-columns: repeat(2, minmax(180px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Kinexon Taktik Live</h1>
+
+    <div class="toolbar">
+      <div class="field-group">
+        <label for="matchSelect">Match</label>
+        <select id="matchSelect"></select>
+      </div>
+
+      <div class="field-group">
+        <label for="teamSelect">Team-Anzeige</label>
+        <select id="teamSelect">
+          <option value="__all__">Beide Teams</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label for="attackSideSelect">Angriff normalisieren auf</label>
+        <select id="attackSideSelect">
+          <option value="right" selected>rechtes Tor</option>
+          <option value="left">linkes Tor</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>&nbsp;</label>
+        <button id="reloadBtn">Neu laden</button>
+      </div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="card">
+        <div class="label">Gewähltes Team</div>
+        <div class="value" id="summaryTeam">-</div>
+      </div>
+      <div class="card">
+        <div class="label">Shots gesamt</div>
+        <div class="value" id="summaryShots">0</div>
+      </div>
+      <div class="card">
+        <div class="label">Punkte gesamt</div>
+        <div class="value" id="summaryPoints">0</div>
+      </div>
+      <div class="card">
+        <div class="label">Tore gesamt</div>
+        <div class="value" id="summaryGoals">0</div>
+      </div>
+    </div>
+
+    <div class="section-title">10-Minuten-Fenster</div>
+    <div id="windowGrid" class="team-window-grid"></div>
+
+    <div class="section-title">Feldansicht</div>
+    <div class="field-wrap">
+      <canvas id="fieldCanvas" width="1483" height="677"></canvas>
+      <div class="footer" id="statusText">Warte auf Daten …</div>
+    </div>
+
+    <div class="section-title">Taktik-Tabelle</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th>Fenster</th>
+            <th>Würfe</th>
+            <th>Punkte</th>
+            <th>Tore</th>
+            <th>Wert</th>
+            <th>Ampel</th>
+          </tr>
+        </thead>
+        <tbody id="resultTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJwAR1krrLK-fU-uCtLz8dqRvtdoTyPWY",
+      authDomain: "udoagentendaten.firebaseapp.com",
+      projectId: "udoagentendaten",
+      storageBucket: "udoagentendaten.firebasestorage.app",
+      messagingSenderId: "115120028998",
+      appId: "1:115120028998:web:fb24fc6ab5059288da7947",
+      measurementId: "G-J5M3ZWZ1V9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const WIDTH = 1483;
+    const HEIGHT = 677;
+
+    const WINDOW_KEYS = [
+      "HZ1_00_10",
+      "HZ1_10_20",
+      "HZ1_20_30",
+      "HZ2_30_40",
+      "HZ2_40_50",
+      "HZ2_50_60"
+    ];
+
+    const WINDOW_LABELS = {
+      HZ1_00_10: "HZ1 · 0–10",
+      HZ1_10_20: "HZ1 · 10–20",
+      HZ1_20_30: "HZ1 · 20–30",
+      HZ2_30_40: "HZ2 · 30–40",
+      HZ2_40_50: "HZ2 · 40–50",
+      HZ2_50_60: "HZ2 · 50–60"
+    };
+
+    const matchSelect = document.getElementById("matchSelect");
+    const teamSelect = document.getElementById("teamSelect");
+    const attackSideSelect = document.getElementById("attackSideSelect");
+    const reloadBtn = document.getElementById("reloadBtn");
+
+    const summaryTeam = document.getElementById("summaryTeam");
+    const summaryShots = document.getElementById("summaryShots");
+    const summaryPoints = document.getElementById("summaryPoints");
+    const summaryGoals = document.getElementById("summaryGoals");
+
+    const windowGrid = document.getElementById("windowGrid");
+    const resultTableBody = document.getElementById("resultTableBody");
+    const statusText = document.getElementById("statusText");
+
+    const canvas = document.getElementById("fieldCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const fieldImg = new Image();
+    fieldImg.src = "Spielfeld_blank.jpg";
+
+    let currentEvents = [];
+    let currentTeams = [];
+
+    function toPixel(x, y) {
+      return {
+        x: WIDTH / 2 + (WIDTH / 50.6) * x,
+        y: HEIGHT / 2 + (HEIGHT / 23.1) * y
+      };
+    }
+
+    function normalizeAttack(x, y, attacksRightGoal) {
+      if (attacksRightGoal) return { x, y };
+      return { x: -x, y: -y };
+    }
+
+    function distanceToRightGoal(x, y) {
+      const goalX = 20;
+      const goalY = 0;
+      return Math.sqrt((goalX - x) ** 2 + (goalY - y) ** 2);
+    }
+
+    function getPointsFromShot(x, y) {
+      const d = distanceToRightGoal(x, y);
+      if (d <= 7) return 3;
+      if (d >= 9) return 1;
+      return 2;
+    }
+
+    function getColor(value) {
+      if (value >= 2.5) return "green";
+      if (value >= 2.0) return "yellow";
+      return "red";
+    }
+
+    function parseGameClockToSeconds(clock) {
+      if (!clock || typeof clock !== "string") return null;
+
+      const parts = clock.split(":");
+      if (parts.length !== 2) return null;
+
+      const mm = parseInt(parts[0], 10);
+      const ss = parseInt(parts[1], 10);
+
+      if (Number.isNaN(mm) || Number.isNaN(ss)) return null;
+      return mm * 60 + ss;
+    }
+
+    function buildEventTimeline(events) {
+      const sorted = [...events].sort((a, b) => {
+        return Number(a.timestamp_ms || 0) - Number(b.timestamp_ms || 0);
+      });
+
+      let currentHalf = 1;
+      let previousClockSeconds = null;
+
+      return sorted.map((event) => {
+        const clockSeconds = parseGameClockToSeconds(event.game_clock);
+
+        if (clockSeconds != null && previousClockSeconds != null) {
+          const diff = previousClockSeconds - clockSeconds;
+
+          if (diff > 20 * 60) {
+            currentHalf += 1;
+          }
+        }
+
+        if (clockSeconds != null) {
+          previousClockSeconds = clockSeconds;
+        }
+
+        let absoluteMinute = 0;
+        if (clockSeconds != null) {
+          const minuteInHalf = Math.floor(clockSeconds / 60);
+          absoluteMinute = (currentHalf - 1) * 30 + minuteInHalf;
+        }
+
+        return {
+          ...event,
+          _derived_half: currentHalf,
+          _clock_seconds: clockSeconds,
+          _absolute_minute: absoluteMinute
+        };
+      });
+    }
+
+    function getMatchMinute(event) {
+      return Number(event._absolute_minute || 0);
+    }
+
+    function getWindowKey(minute) {
+      if (minute < 10) return "HZ1_00_10";
+      if (minute < 20) return "HZ1_10_20";
+      if (minute < 30) return "HZ1_20_30";
+      if (minute < 40) return "HZ2_30_40";
+      if (minute < 50) return "HZ2_40_50";
+      return "HZ2_50_60";
+    }
+
+    function createEmptyBuckets() {
+      const obj = {};
+      for (const key of WINDOW_KEYS) {
+        obj[key] = {
+          shots: 0,
+          points: 0,
+          goals: 0,
+          value: 0,
+          color: "red"
+        };
+      }
+      return obj;
+    }
+
+    function aggregateByTeamAndWindow(events) {
+      const attacksRightGoal = attackSideSelect.value === "right";
+      const result = {};
+      const timelineEvents = buildEventTimeline(events);
+
+      for (const event of timelineEvents) {
+        if (event.shot_position_x == null || event.shot_position_y == null) continue;
+        if (!event.team) continue;
+
+        const teamKey = event.team;
+        if (!result[teamKey]) {
+          result[teamKey] = createEmptyBuckets();
+        }
+
+        const rawX = Number(event.shot_position_x);
+        const rawY = Number(event.shot_position_y);
+        if (Number.isNaN(rawX) || Number.isNaN(rawY)) continue;
+
+        const norm = normalizeAttack(rawX, rawY, attacksRightGoal);
+        const points = getPointsFromShot(norm.x, norm.y);
+        const minute = getMatchMinute(event);
+        const windowKey = getWindowKey(minute);
+
+        result[teamKey][windowKey].shots += 1;
+        result[teamKey][windowKey].points += points;
+
+        if (Number(event.success) === 1) {
+          result[teamKey][windowKey].goals += 1;
+        }
+      }
+
+      for (const team of Object.keys(result)) {
+        for (const key of WINDOW_KEYS) {
+          const bucket = result[team][key];
+          bucket.value = bucket.shots > 0 ? bucket.points / bucket.shots : 0;
+          bucket.color = getColor(bucket.value);
+        }
+      }
+
+      return result;
+    }
+
+    function getTeamSummary(teamBuckets) {
+      let shots = 0;
+      let points = 0;
+      let goals = 0;
+
+      for (const key of WINDOW_KEYS) {
+        shots += teamBuckets[key].shots;
+        points += teamBuckets[key].points;
+        goals += teamBuckets[key].goals;
+      }
+
+      return { shots, points, goals };
+    }
+
+    function drawFieldBase() {
+      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      if (fieldImg.complete) {
+        ctx.drawImage(fieldImg, 0, 0, WIDTH, HEIGHT);
+      } else {
+        ctx.fillStyle = "#333";
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+      }
+    }
+
+    function drawShot(event) {
+      const attacksRightGoal = attackSideSelect.value === "right";
+
+      const rawX = Number(event.shot_position_x);
+      const rawY = Number(event.shot_position_y);
+      if (Number.isNaN(rawX) || Number.isNaN(rawY)) return;
+
+      const norm = normalizeAttack(rawX, rawY, attacksRightGoal);
+      const pix = toPixel(norm.x, norm.y);
+
+      ctx.beginPath();
+      ctx.arc(pix.x, pix.y, 7, 0, Math.PI * 2);
+      ctx.fillStyle = Number(event.success) === 1 ? "#4ade80" : "#f87171";
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "rgba(255,255,255,0.75)";
+      ctx.stroke();
+    }
+
+    function renderField(events, selectedTeam) {
+      drawFieldBase();
+
+      const filtered = selectedTeam === "__all__"
+        ? events
+        : events.filter(e => e.team === selectedTeam);
+
+      for (const event of filtered) {
+        drawShot(event);
+      }
+    }
+
+    function renderTeamSelect(teams) {
+      const oldValue = teamSelect.value;
+      teamSelect.innerHTML = `<option value="__all__">Beide Teams</option>`;
+
+      for (const team of teams) {
+        const opt = document.createElement("option");
+        opt.value = team;
+        opt.textContent = team;
+        teamSelect.appendChild(opt);
+      }
+
+      if (teams.includes(oldValue)) {
+        teamSelect.value = oldValue;
+      } else {
+        teamSelect.value = "__all__";
+      }
+    }
+
+    function renderSummary(aggregated, selectedTeam) {
+      if (selectedTeam === "__all__") {
+        let shots = 0;
+        let points = 0;
+        let goals = 0;
+
+        for (const team of Object.keys(aggregated)) {
+          const sum = getTeamSummary(aggregated[team]);
+          shots += sum.shots;
+          points += sum.points;
+          goals += sum.goals;
+        }
+
+        summaryTeam.textContent = "Beide Teams";
+        summaryShots.textContent = shots;
+        summaryPoints.textContent = points;
+        summaryGoals.textContent = goals;
+        return;
+      }
+
+      const buckets = aggregated[selectedTeam] || createEmptyBuckets();
+      const sum = getTeamSummary(buckets);
+
+      summaryTeam.textContent = selectedTeam;
+      summaryShots.textContent = sum.shots;
+      summaryPoints.textContent = sum.points;
+      summaryGoals.textContent = sum.goals;
+    }
+
+    function renderWindows(aggregated, selectedTeam) {
+      windowGrid.innerHTML = "";
+
+      let buckets;
+      if (selectedTeam === "__all__") {
+        buckets = createEmptyBuckets();
+
+        for (const team of Object.keys(aggregated)) {
+          for (const key of WINDOW_KEYS) {
+            buckets[key].shots += aggregated[team][key].shots;
+            buckets[key].points += aggregated[team][key].points;
+            buckets[key].goals += aggregated[team][key].goals;
+          }
+        }
+
+        for (const key of WINDOW_KEYS) {
+          buckets[key].value = buckets[key].shots > 0 ? buckets[key].points / buckets[key].shots : 0;
+          buckets[key].color = getColor(buckets[key].value);
+        }
+      } else {
+        buckets = aggregated[selectedTeam] || createEmptyBuckets();
+      }
+
+      for (const key of WINDOW_KEYS) {
+        const b = buckets[key];
+        const card = document.createElement("div");
+        card.className = `window-card ${b.color}`;
+
+        const valueClass =
+          b.color === "green" ? "green-text" :
+          b.color === "yellow" ? "yellow-text" : "red-text";
+
+        card.innerHTML = `
+          <div class="window-title">${WINDOW_LABELS[key]}</div>
+          <div class="window-line">Würfe: <strong>${b.shots}</strong></div>
+          <div class="window-line">Punkte: <strong>${b.points}</strong></div>
+          <div class="window-line">Tore: <strong>${b.goals}</strong></div>
+          <div class="window-value ${valueClass}">${b.value.toFixed(2)}</div>
+        `;
+
+        windowGrid.appendChild(card);
+      }
+    }
+
+    function renderTable(aggregated, selectedTeam) {
+      resultTableBody.innerHTML = "";
+
+      const teamsToShow = selectedTeam === "__all__"
+        ? Object.keys(aggregated)
+        : [selectedTeam];
+
+      for (const team of teamsToShow) {
+        const buckets = aggregated[team] || createEmptyBuckets();
+
+        for (const key of WINDOW_KEYS) {
+          const b = buckets[key];
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${team}</td>
+            <td>${WINDOW_LABELS[key]}</td>
+            <td>${b.shots}</td>
+            <td>${b.points}</td>
+            <td>${b.goals}</td>
+            <td>${b.value.toFixed(2)}</td>
+            <td><span class="badge ${b.color}">${b.color}</span></td>
+          `;
+          resultTableBody.appendChild(tr);
+        }
+      }
+    }
+
+    async function loadMatches() {
+      matchSelect.innerHTML = "";
+      const snap = await getDocs(collection(db, "matches"));
+
+      const matches = [];
+      snap.forEach(docSnap => {
+        const data = docSnap.data() || {};
+        matches.push({
+          id: docSnap.id,
+          label: `${data.team_home_name || "Heim"} vs. ${data.team_away_name || "Gast"} (${docSnap.id})`
+        });
+      });
+
+      matches.sort((a, b) => a.label.localeCompare(b.label, "de"));
+
+      for (const match of matches) {
+        const option = document.createElement("option");
+        option.value = match.id;
+        option.textContent = match.label;
+        matchSelect.appendChild(option);
+      }
+    }
+
+    async function loadEvents(matchId) {
+      const eventsRef = collection(db, "matches", matchId, "kinexon_events");
+      const snap = await getDocs(eventsRef);
+
+      const events = [];
+      snap.forEach(docSnap => {
+        const data = docSnap.data() || {};
+
+        if (
+          data.shot_position_x !== undefined &&
+          data.shot_position_x !== null &&
+          data.shot_position_y !== undefined &&
+          data.shot_position_y !== null &&
+          data.event === "shot"
+        ) {
+          events.push({ id: docSnap.id, ...data });
+        }
+      });
+
+      events.sort((a, b) => Number(a.timestamp_ms || 0) - Number(b.timestamp_ms || 0));
+      return events;
+    }
+
+    async function renderMatch() {
+      const matchId = matchSelect.value;
+      if (!matchId) {
+        statusText.textContent = "Kein Match ausgewählt.";
+        return;
+      }
+
+      statusText.textContent = `Lade Events für Match ${matchId} ...`;
+
+      try {
+        currentEvents = await loadEvents(matchId);
+
+        currentTeams = [...new Set(currentEvents.map(e => e.team).filter(Boolean))].sort((a, b) =>
+          a.localeCompare(b, "de")
+        );
+
+        renderTeamSelect(currentTeams);
+
+        const selectedTeam = teamSelect.value;
+        const aggregated = aggregateByTeamAndWindow(currentEvents);
+
+        renderSummary(aggregated, selectedTeam);
+        renderWindows(aggregated, selectedTeam);
+        renderTable(aggregated, selectedTeam);
+        renderField(currentEvents, selectedTeam);
+
+        const timeline = buildEventTimeline(currentEvents);
+        const halfInfo = timeline.length
+          ? ` | erkannte Halbzeiten bis: HZ${Math.max(...timeline.map(e => e._derived_half || 1))}`
+          : "";
+
+        statusText.textContent = `${currentEvents.length} Shot-Events aus kinexon_events geladen.${halfInfo}`;
+      } catch (err) {
+        console.error(err);
+        statusText.textContent = `Fehler beim Laden: ${err.message}`;
+      }
+    }
+
+    function rerenderFromCurrentData() {
+      const aggregated = aggregateByTeamAndWindow(currentEvents);
+      const selectedTeam = teamSelect.value;
+
+      renderSummary(aggregated, selectedTeam);
+      renderWindows(aggregated, selectedTeam);
+      renderTable(aggregated, selectedTeam);
+      renderField(currentEvents, selectedTeam);
+    }
+
+    reloadBtn.addEventListener("click", renderMatch);
+    matchSelect.addEventListener("change", renderMatch);
+    teamSelect.addEventListener("change", rerenderFromCurrentData);
+    attackSideSelect.addEventListener("change", rerenderFromCurrentData);
+
+    fieldImg.onload = async () => {
+      drawFieldBase();
+      await loadMatches();
+      await renderMatch();
+    };
+  </script>
+</body>
+</html>
