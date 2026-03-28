@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TVB Arena Scout</title>
+  <style>
+    :root {
+      --bg: #071427;
+      --panel: linear-gradient(180deg, #13243f 0%, #15263f 100%);
+      --panel-border: rgba(255,255,255,0.12);
+      --field: rgba(255,255,255,0.09);
+      --field-border: rgba(255,255,255,0.10);
+      --text: #eef4ff;
+      --muted: #aab8ce;
+      --primary: #2f8cff;
+      --danger: #7a3343;
+      --danger-border: #b24c63;
+      --success: #0d6d6f;
+      --success-border: #0aa3a6;
+      --darkbox: #020d1d;
+      --chip-active: rgba(47, 140, 255, 0.28);
+      --shadow: 0 18px 40px rgba(0,0,0,0.22);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #061223 0%, #0a1730 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1460px; margin: 0 auto; padding: 12px; }
+    .topbar {
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
+      margin-bottom: 10px; flex-wrap: wrap;
+    }
+    .brand { display:flex; gap:10px; align-items:center; }
+    .brand-badge {
+      width:44px; height:44px; border-radius:14px; background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.12); display:grid; place-items:center; font-weight:700;
+    }
+    .brand-text h1 { margin:0; font-size:22px; line-height:1.05; }
+    .brand-text p { margin:3px 0 0; color:var(--muted); font-size:12px; }
+    .nav-link {
+      color:#dfeaff; text-decoration:none; border:1px solid rgba(255,255,255,0.12);
+      border-radius:12px; padding:10px 14px; background:rgba(255,255,255,0.05); font-weight:700;
+    }
+    .top-actions {
+      position: sticky; top: 0; z-index: 30; display:grid; grid-template-columns: 1.4fr auto;
+      gap:10px; margin-bottom: 10px; padding: 8px 0; backdrop-filter: blur(8px);
+    }
+    .compact-bar, .action-bar, .card {
+      background: var(--panel); border:1px solid var(--panel-border); border-radius:22px; box-shadow: var(--shadow);
+    }
+    .compact-bar {
+      display:grid; grid-template-columns: 2.2fr .8fr .7fr .8fr .8fr auto; gap:8px;
+      padding:10px;
+      align-items:end;
+    }
+    .mini-field { display:flex; flex-direction:column; gap:4px; min-width:0; }
+    .mini-field label { color:var(--muted); font-size:12px; font-weight:700; }
+    .mini-field input, .mini-field select, .clock-box {
+      width:100%; min-height:44px; border-radius:14px; border:1px solid var(--field-border);
+      background:var(--field); color:var(--text); padding:10px 12px; font-size:16px; outline:none;
+    }
+    .clock-box {
+      background: var(--darkbox); display:flex; align-items:center; justify-content:center;
+      font-size:24px; font-weight:700;
+    }
+    .mini-clock-buttons { display:flex; gap:6px; flex-wrap:wrap; }
+    .mini-clock-buttons button, .action-bar button {
+      min-height:44px; border-radius:14px; padding:0 14px; border:1px solid var(--field-border);
+      background:var(--field); color:var(--text); font-size:15px; font-weight:700; cursor:pointer;
+    }
+    .action-bar {
+      display:flex; gap:8px; align-items:center; justify-content:flex-end; padding:10px;
+    }
+    button:hover { transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(180deg, #3d99ff 0%, #2079e8 100%); border-color:#4393f3; }
+    .btn-success { background: rgba(13, 109, 111, 0.32); border-color: var(--success-border); }
+    .btn-danger { background: rgba(122, 51, 67, 0.28); border-color: var(--danger-border); }
+    .btn-mic.live { background: rgba(13, 109, 111, 0.32); border-color: var(--success-border); }
+    .status-inline { color:#9ad8cb; font-size:13px; min-width: 110px; text-align:right; }
+
+    .main-grid {
+      display:grid; grid-template-columns: 1.2fr 1fr; gap:12px; align-items:start;
+    }
+    .left-stack, .right-stack { display:flex; flex-direction:column; gap:12px; }
+    .card { padding:14px; }
+    .title { margin:0 0 10px; font-size:20px; }
+    .muted { color:var(--muted); font-size:14px; line-height:1.35; }
+    .entry-grid { display:grid; grid-template-columns: 1.25fr .9fr; gap:12px; }
+    .field-grid-2 { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .field-group { display:flex; flex-direction:column; gap:6px; }
+    .field-group label { color:var(--muted); font-size:14px; font-weight:700; }
+    input, textarea {
+      width:100%; min-height:56px; border-radius:16px; border:1px solid var(--field-border);
+      background:var(--field); color:var(--text); padding:14px 16px; font-size:24px; outline:none;
+    }
+    input.readonly-input { cursor:pointer; }
+    textarea { min-height:100px; font-size:18px; resize:vertical; }
+    .chip-row, .btn-row { display:flex; gap:8px; flex-wrap:wrap; }
+    .chip-row button, .btn-row button {
+      min-height:56px; padding:0 16px; border-radius:16px; border:1px solid var(--field-border);
+      background:var(--field); color:var(--text); font-size:18px; font-weight:700; cursor:pointer;
+    }
+    button.active {
+      background: var(--chip-active); border-color:#5aa5ff; box-shadow:0 0 0 2px rgba(90,165,255,0.14) inset;
+    }
+    .player-chip {
+      min-width:130px; min-height:60px; display:flex; flex-direction:column; justify-content:center;
+      align-items:flex-start; gap:2px; text-align:left;
+    }
+    .player-chip .num { font-size:20px; line-height:1; }
+    .player-chip .name { font-size:12px; color:#d6e3f7; font-weight:600; line-height:1.15; }
+    .choice-grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .choice-card {
+      border:1px solid rgba(255,255,255,0.10); border-radius:18px; background:rgba(255,255,255,0.04); padding:12px;
+    }
+    .choice-card h3 { margin:0 0 10px; font-size:16px; }
+
+    .numpad-targets { display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:10px; }
+    .numpad-targets button { min-height:48px; border-radius:14px; }
+    .numpad-display {
+      display:grid; grid-template-columns: 1fr auto; gap:8px; align-items:center; margin-bottom:8px;
+    }
+    .numpad-display .active-target {
+      padding:10px 12px; border-radius:14px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.10);
+      color:var(--muted); font-size:13px; font-weight:700;
+    }
+    .key-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; }
+    .key-grid button {
+      min-height:58px; border-radius:16px; font-size:22px; font-weight:700; border:1px solid var(--field-border);
+      background: var(--field); color: var(--text); cursor:pointer;
+    }
+    .speech-grid { display:grid; grid-template-columns: auto 1fr; gap:12px; align-items:start; }
+    .compact-footer { margin-top: 12px; }
+    details {
+      border:1px solid rgba(255,255,255,0.10); border-radius:16px; background:rgba(255,255,255,0.04); overflow:hidden;
+    }
+    summary { list-style:none; cursor:pointer; padding:12px 14px; font-weight:700; font-size:15px; }
+    summary::-webkit-details-marker { display:none; }
+    .details-body { padding:0 14px 14px; }
+    pre {
+      margin:0; white-space:pre-wrap; word-break:break-word; font-size:11px; line-height:1.35; color:#dce7f7;
+      background: rgba(2,13,29,0.82); border:1px solid rgba(255,255,255,0.09); border-radius:16px; padding:12px;
+      max-height: 220px; overflow:auto;
+    }
+
+    @media (max-width: 1240px) {
+      .top-actions { grid-template-columns: 1fr; }
+      .compact-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .main-grid, .entry-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .wrap { padding: 10px; }
+      .compact-bar { grid-template-columns: 1fr 1fr; }
+      .field-grid-2, .choice-grid, .speech-grid, .numpad-targets { grid-template-columns: 1fr; }
+      .mini-clock-buttons { grid-column: 1 / -1; }
+      .action-bar { justify-content:stretch; flex-wrap:wrap; }
+      .action-bar button { flex: 1 1 calc(50% - 4px); }
+      .chip-row button, .btn-row button, .player-chip { flex:1 1 calc(50% - 4px); min-width: unset; }
+      input { font-size: 20px; }
+    }
+  </style>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      serverTimestamp,
+      getDocs,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJwAR1krrLK-fU-uCtLz8dqRvtdoTyPWY",
+      authDomain: "udoagentendaten.firebaseapp.com",
+      projectId: "udoagentendaten",
+      storageBucket: "udoagentendaten.firebasestorage.app",
+      messagingSenderId: "115120028998",
+      appId: "1:115120028998:web:fb24fc6ab5059288da7947",
+      measurementId: "G-J5M3ZWZ1V9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    let recognition = null;
+    let micArmed = false;
+    let holdTimeout = null;
+    let clockInterval = null;
+
+    const state = {
+      defenderSlot: null,
+      directionCode: null,
+      outcomeCode: null,
+      duelResultCode: null,
+      twoMinCode: null,
+      shotResultCode: null,
+      manualClockSeconds: null,
+      clockRunning: false,
+      timeoutActive: false,
+      timeoutTeam: "none",
+      period: 1,
+      voiceTranscript: "",
+      activeNumberTarget: "player"
+    };
+
+    const labels = {
+      direction: { 1: "zur_hand", 2: "gegen_hand" },
+      outcome: { 1: "gewonnen", 2: "verloren", 3: "fehler" },
+      duelResult: { 1: "spiel_geht_weiter", 2: "ballverlust", 3: "foul_bei_spieler", 4: "7m" },
+      twoMin: { 1: "nein", 2: "ja" },
+      shotResult: { 1: "tor", 2: "vorbei", 3: "einwurf", 4: "parade", 5: "block" }
+    };
+
+    function byId(id) { return document.getElementById(id); }
+    function pad2(v) { return String(v).padStart(2, "0"); }
+    function valueOrNull(v) { const t = String(v ?? "").trim(); return t === "" ? null : t; }
+    function formatClock(seconds) {
+      if (seconds === null || seconds === undefined || Number.isNaN(Number(seconds))) return "–";
+      const safe = Math.max(0, Number(seconds) || 0);
+      return `${pad2(Math.floor(safe / 60))}:${pad2(safe % 60)}`;
+    }
+    function formatTimestamp(ts) {
+      return `${ts.getFullYear()}-${pad2(ts.getMonth() + 1)}-${pad2(ts.getDate())} ${pad2(ts.getHours())}:${pad2(ts.getMinutes())}:${pad2(ts.getSeconds())}`;
+    }
+    function setSystemTimestampNow() { byId("timestamp").value = formatTimestamp(new Date()); }
+
+    function syncClockUi() {
+      byId("manualClockSeconds").value = state.manualClockSeconds === null ? "" : String(state.manualClockSeconds);
+      byId("clockDisplay").textContent = formatClock(state.manualClockSeconds);
+      byId("timeoutMini").textContent = state.timeoutActive ? `Timeout: ${state.timeoutTeam}` : "Kein Timeout";
+      byId("period").value = String(state.period);
+      byId("clockStateMini").textContent = state.clockRunning ? "läuft" : "stopp";
+    }
+
+    function updateCompactPreview(lastPayload = null) {
+      const preview = {
+        match_id: valueOrNull(byId("matchId").value),
+        team_player_number: valueOrNull(byId("playerNumber").value),
+        opponent_player_number: valueOrNull(byId("opponentNumber").value),
+        defender_slot: state.defenderSlot,
+        direction_code: state.directionCode,
+        outcome_code: state.outcomeCode,
+        duel_result_code: state.duelResultCode,
+        two_min_code: state.twoMinCode,
+        shot_result_code: state.shotResultCode,
+        manual_clock_seconds: state.manualClockSeconds,
+        voice_transcript: state.voiceTranscript || ""
+      };
+      byId("liveMapping").textContent = JSON.stringify(preview, null, 2);
+      byId("sequencePreview").textContent = buildScoutSequence(preview.team_player_number, preview.opponent_player_number) || "–";
+      if (lastPayload) byId("lastSent").textContent = JSON.stringify(lastPayload, null, 2);
+      syncClockUi();
+      updateTargetTabs();
+    }
+
+    function setActiveButton(groupId, value) {
+      document.querySelectorAll(`#${groupId} button`).forEach(btn => {
+        btn.classList.toggle("active", Number(btn.dataset.value) === Number(value));
+      });
+    }
+
+    function bindToggleGroup(groupId, stateKey) {
+      document.querySelectorAll(`#${groupId} button`).forEach(btn => {
+        btn.addEventListener("click", () => {
+          state[stateKey] = Number(btn.dataset.value);
+          setActiveButton(groupId, state[stateKey]);
+          updateCompactPreview();
+        });
+      });
+    }
+
+    function setSelectedPlayer(number) {
+      byId("playerNumber").value = String(number);
+      state.activeNumberTarget = "opponent";
+      document.querySelectorAll("#tvbQuickPlayers .player-chip").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.number === String(number));
+      });
+      updateCompactPreview();
+    }
+
+    function normalizeRosterEntry(player) {
+      if (!player || typeof player !== "object") return null;
+      const candidatesNum = [player.jersey_number, player.shirt_number, player.player_number, player.number, player.no, player.trikotnummer];
+      const rawNumber = candidatesNum.find(v => v !== undefined && v !== null && String(v).trim() !== "");
+      if (rawNumber === undefined) return null;
+      const number = String(rawNumber).trim();
+      const name = [player.name, player.player_name, player.full_name, player.display_name, player.firstname && player.lastname ? `${player.firstname} ${player.lastname}` : null].find(Boolean) || `TVB ${number}`;
+      return { number, name };
+    }
+
+    function collectRoster(matchData) {
+      const keys = ["team_home_players", "home_players", "tvb_players", "team_players", "players", "team_home_roster", "home_roster", "tvb_roster", "roster", "squad"];
+      const found = [];
+      for (const key of keys) {
+        const value = matchData?.[key];
+        if (Array.isArray(value)) value.forEach(p => { const n = normalizeRosterEntry(p); if (n) found.push(n); });
+        if (value && typeof value === "object" && !Array.isArray(value)) {
+          for (const subKey of ["players", "roster", "squad", "team_players"]) {
+            const nested = value[subKey];
+            if (Array.isArray(nested)) nested.forEach(p => { const n = normalizeRosterEntry(p); if (n) found.push(n); });
+          }
+        }
+      }
+      const uniq = [];
+      const seen = new Set();
+      found.forEach(entry => { if (!seen.has(entry.number)) { seen.add(entry.number); uniq.push(entry); } });
+      return uniq.sort((a, b) => Number(a.number) - Number(b.number));
+    }
+
+    function renderQuickPlayers(players) {
+      const box = byId("tvbQuickPlayers");
+      if (!players.length) {
+        box.innerHTML = `<div class="muted">Kein TVB-Roster im Match gefunden. Spielernummer per Numpad eingeben.</div>`;
+        return;
+      }
+      box.innerHTML = "";
+      players.forEach(player => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "player-chip";
+        btn.dataset.number = player.number;
+        btn.innerHTML = `<span class="num">#${player.number}</span><span class="name">${player.name}</span>`;
+        btn.addEventListener("click", () => setSelectedPlayer(player.number));
+        box.appendChild(btn);
+      });
+    }
+
+    async function loadMatchById(matchId) {
+      if (!matchId) return false;
+      try {
+        const snap = await getDoc(doc(db, "matches", matchId));
+        if (!snap.exists()) return false;
+        const data = snap.data() || {};
+        const home = data.team_home_name || data.home_team_name || "TVB";
+        const away = data.team_away_name || data.away_team_name || "Gegner";
+        byId("matchId").value = matchId;
+        byId("matchLabel").textContent = `${home} vs. ${away}`;
+        renderQuickPlayers(collectRoster(data));
+        setSystemTimestampNow();
+        updateCompactPreview();
+        return true;
+      } catch (err) {
+        console.error("Fehler beim Match-Load:", err);
+        return false;
+      }
+    }
+
+    async function loadMatches() {
+      const select = byId("matchSelect");
+      select.innerHTML = `<option value="">Lade Spiele...</option>`;
+      try {
+        const snap = await getDocs(collection(db, "matches"));
+        if (snap.empty) {
+          select.innerHTML = `<option value="">Keine Spiele gefunden</option>`;
+          return;
+        }
+        const matches = snap.docs.map(d => {
+          const data = d.data() || {};
+          const home = data.team_home_name || "TVB";
+          const away = data.team_away_name || "Gegner";
+          let dateStr = "ohne Datum";
+          const ts = data.date?.toDate ? data.date.toDate() : new Date(data.date || data.updated_at || Date.now());
+          if (ts && !isNaN(ts.getTime())) dateStr = ts.toLocaleDateString("de-DE");
+          return { id: d.id, label: `${dateStr} | ${home} vs. ${away}` };
+        }).sort((a, b) => a.label.localeCompare(b.label, "de"));
+        select.innerHTML = "";
+        matches.forEach(match => {
+          const opt = document.createElement("option");
+          opt.value = match.id;
+          opt.textContent = match.label;
+          select.appendChild(opt);
+        });
+        if (matches.length) {
+          select.value = matches[0].id;
+          await loadMatchById(matches[0].id);
+        }
+      } catch (err) {
+        console.error("Fehler beim Laden der Spiele:", err);
+        select.innerHTML = `<option value="">Fehler beim Laden</option>`;
+      }
+    }
+
+    function startClock() {
+      if (state.clockRunning) return;
+      state.clockRunning = true;
+      if (clockInterval) clearInterval(clockInterval);
+      clockInterval = window.setInterval(() => {
+        if (!state.clockRunning || state.timeoutActive) return;
+        if (state.manualClockSeconds === null) state.manualClockSeconds = 0;
+        state.manualClockSeconds += 1;
+        updateCompactPreview();
+      }, 1000);
+      updateCompactPreview();
+    }
+    function pauseClock() { state.clockRunning = false; if (clockInterval) { clearInterval(clockInterval); clockInterval = null; } updateCompactPreview(); }
+    function stopClock() { state.clockRunning = false; if (clockInterval) { clearInterval(clockInterval); clockInterval = null; } updateCompactPreview(); }
+    function resetClock() { state.clockRunning = false; if (clockInterval) { clearInterval(clockInterval); clockInterval = null; } state.manualClockSeconds = 0; updateCompactPreview(); }
+    function toggleTimeout(team) { if (state.timeoutActive && state.timeoutTeam === team) { state.timeoutActive = false; state.timeoutTeam = "none"; } else { state.timeoutActive = true; state.timeoutTeam = team; } updateCompactPreview(); }
+
+    function bindClockControls() {
+      byId("clockStartBtn").addEventListener("click", startClock);
+      byId("clockPauseBtn").addEventListener("click", pauseClock);
+      byId("clockStopBtn").addEventListener("click", stopClock);
+      byId("clockResetBtn").addEventListener("click", resetClock);
+      byId("manualClockSeconds").addEventListener("change", e => {
+        const raw = e.target.value.trim();
+        state.manualClockSeconds = raw === "" ? null : Math.max(0, Number(raw) || 0);
+        updateCompactPreview();
+      });
+      byId("period").addEventListener("change", e => { state.period = Math.max(1, Number(e.target.value) || 1); updateCompactPreview(); });
+      byId("timeoutTvhBtn").addEventListener("click", () => toggleTimeout("tvb"));
+      byId("timeoutOppBtn").addEventListener("click", () => toggleTimeout("opponent"));
+    }
+
+    function setActiveNumberTarget(target) {
+      state.activeNumberTarget = target;
+      updateTargetTabs();
+    }
+
+    function updateTargetTabs() {
+      document.querySelectorAll("#numpadTargets button").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.target === state.activeNumberTarget);
+      });
+      byId("activeTargetLabel").textContent = state.activeNumberTarget === "player" ? "Eingabeziel: TVB-Spieler" : "Eingabeziel: Gegner";
+    }
+
+    function getTargetInput() {
+      return state.activeNumberTarget === "player" ? byId("playerNumber") : byId("opponentNumber");
+    }
+
+    function appendDigit(digit) {
+      const input = getTargetInput();
+      input.value = `${input.value || ""}${digit}`;
+      if (state.activeNumberTarget === "player") {
+        document.querySelectorAll("#tvbQuickPlayers .player-chip").forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.number === input.value);
+        });
+      }
+      updateCompactPreview();
+    }
+
+    function backspaceDigit() {
+      const input = getTargetInput();
+      input.value = String(input.value || "").slice(0, -1);
+      updateCompactPreview();
+    }
+
+    function clearTarget() {
+      const input = getTargetInput();
+      input.value = "";
+      if (state.activeNumberTarget === "player") document.querySelectorAll("#tvbQuickPlayers .player-chip").forEach(btn => btn.classList.remove("active"));
+      updateCompactPreview();
+    }
+
+    function bindNumpad() {
+      document.querySelectorAll("#numpadTargets button").forEach(btn => btn.addEventListener("click", () => setActiveNumberTarget(btn.dataset.target)));
+      document.querySelectorAll("#numberPad button[data-digit]").forEach(btn => btn.addEventListener("click", () => appendDigit(btn.dataset.digit)));
+      byId("padBackspace").addEventListener("click", backspaceDigit);
+      byId("padClear").addEventListener("click", clearTarget);
+      byId("playerNumber").addEventListener("click", () => setActiveNumberTarget("player"));
+      byId("opponentNumber").addEventListener("click", () => setActiveNumberTarget("opponent"));
+    }
+
+    function parseVoiceSequence(text) {
+      const normalized = String(text || "")
+        .replace(/\bnull\b/gi, "")
+        .replace(/\bund\b/gi, ",")
+        .replace(/;/g, ",")
+        .replace(/\s+/g, "")
+        .replace(/,+/g, ",")
+        .replace(/(^,|,$)/g, "");
+      if (!normalized) return [];
+      return normalized.split(",").map(v => v.trim()).filter(Boolean).map(v => Number(v)).filter(v => Number.isFinite(v));
+    }
+
+    function applyVoiceTokens(tokens) {
+      if (!Array.isArray(tokens) || !tokens.length) { updateCompactPreview(); return; }
+      const [teamPlayer, opponent, defenderSlot, direction, outcome, duelResult, twoMin, shotResult] = tokens;
+      if (teamPlayer !== undefined) setSelectedPlayer(teamPlayer);
+      if (opponent !== undefined) byId("opponentNumber").value = String(opponent);
+      if (defenderSlot && defenderSlot >= 1 && defenderSlot <= 6) { state.defenderSlot = defenderSlot; setActiveButton("defenderButtons", defenderSlot); }
+      if (labels.direction[direction]) { state.directionCode = direction; setActiveButton("directionButtons", direction); }
+      if (labels.outcome[outcome]) { state.outcomeCode = outcome; setActiveButton("outcomeButtons", outcome); }
+      if (labels.duelResult[duelResult]) { state.duelResultCode = duelResult; setActiveButton("duelResultButtons", duelResult); }
+      if (labels.twoMin[twoMin]) { state.twoMinCode = twoMin; setActiveButton("twoMinButtons", twoMin); }
+      if (labels.shotResult[shotResult]) { state.shotResultCode = shotResult; setActiveButton("shotResultButtons", shotResult); }
+      updateCompactPreview();
+    }
+
+    function bindSpeech() {
+      const speechBtn = byId("speechBtn");
+      const transcriptEl = byId("voiceTranscript");
+      if (!SpeechRecognition) {
+        speechBtn.disabled = true;
+        speechBtn.textContent = "Sprache nicht verfügbar";
+        return;
+      }
+      recognition = new SpeechRecognition();
+      recognition.lang = "de-DE";
+      recognition.interimResults = true;
+      recognition.continuous = false;
+      recognition.onresult = event => {
+        let fullText = transcriptEl.value.trim();
+        let latestChunk = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) latestChunk += event.results[i][0].transcript;
+        latestChunk = latestChunk.trim();
+        if (!latestChunk) return;
+        const merged = [fullText, latestChunk].filter(Boolean).join(fullText ? ", " : "");
+        transcriptEl.value = merged;
+        state.voiceTranscript = merged;
+        applyVoiceTokens(parseVoiceSequence(merged));
+      };
+      recognition.onend = () => {
+        if (!micArmed) {
+          speechBtn.classList.remove("live");
+          speechBtn.textContent = "🎤 Push to Talk";
+          return;
+        }
+        holdTimeout = setTimeout(() => {
+          if (micArmed && recognition) { try { recognition.start(); } catch (err) { console.warn("Speech restart blocked:", err); } }
+        }, 250);
+      };
+      recognition.onerror = event => console.warn("Speech error:", event.error);
+      const startRec = e => { if (e) e.preventDefault(); micArmed = true; speechBtn.classList.add("live"); speechBtn.textContent = "🎙 Aufnahme aktiv"; clearTimeout(holdTimeout); try { recognition.start(); } catch (err) { console.warn("Speech start blocked:", err); } };
+      const stopRec = e => { if (e) e.preventDefault(); micArmed = false; try { recognition.stop(); } catch (err) { console.warn("Speech stop blocked:", err); } };
+      speechBtn.addEventListener("mousedown", startRec);
+      speechBtn.addEventListener("mouseup", stopRec);
+      speechBtn.addEventListener("mouseleave", stopRec);
+      speechBtn.addEventListener("touchstart", startRec, { passive: false });
+      speechBtn.addEventListener("touchend", stopRec, { passive: false });
+      transcriptEl.addEventListener("input", () => { state.voiceTranscript = transcriptEl.value.trim(); applyVoiceTokens(parseVoiceSequence(state.voiceTranscript)); });
+    }
+
+    function buildScoutSequence(teamPlayerNumber, opponentNumber) {
+      return [teamPlayerNumber, opponentNumber ?? "", state.defenderSlot ?? "", state.directionCode ?? "", state.outcomeCode ?? "", state.duelResultCode ?? "", state.twoMinCode ?? "", state.shotResultCode ?? ""].join(",");
+    }
+
+    function buildPayload() {
+      const matchId = byId("matchId").value.trim();
+      const systemTimestamp = byId("timestamp").value.trim();
+      const playerNumberRaw = byId("playerNumber").value.trim();
+      const opponentRaw = byId("opponentNumber").value.trim();
+      const notes = byId("notes").value.trim();
+      const voiceTranscript = byId("voiceTranscript").value.trim();
+
+      if (!matchId) throw new Error("Bitte Spiel wählen.");
+      if (!systemTimestamp) throw new Error("Bitte Systemzeit setzen.");
+      if (!playerNumberRaw) throw new Error("Bitte TVB-Spieler wählen oder Nummer eingeben.");
+      if (!Number.isFinite(state.defenderSlot)) throw new Error("Bitte Verteidigerposition 1–6 wählen.");
+      if (!state.directionCode) throw new Error("Bitte Richtung wählen.");
+      if (!state.outcomeCode) throw new Error("Bitte Ausgang wählen.");
+      if (!state.duelResultCode) throw new Error("Bitte Duellfolge wählen.");
+      if (!state.twoMinCode) throw new Error("Bitte 2 Minuten wählen.");
+
+      const teamPlayerNumber = Number(playerNumberRaw);
+      if (!Number.isFinite(teamPlayerNumber)) throw new Error("TVB-Spieler muss als Nummer vorliegen.");
+      const opponentNumber = opponentRaw === "" ? null : Number(opponentRaw);
+      if (opponentRaw !== "" && !Number.isFinite(opponentNumber)) throw new Error("Gegner bitte als Trikotnummer eingeben.");
+
+      return {
+        event_type: "duel",
+        source: "arena_scout",
+        match_id: matchId,
+        system_timestamp: systemTimestamp,
+        timestamp: systemTimestamp,
+        manual_clock_seconds: state.manualClockSeconds,
+        manual_clock_label: state.manualClockSeconds === null ? null : formatClock(state.manualClockSeconds),
+        period: state.period,
+        clock_running: state.clockRunning,
+        timeout_active: state.timeoutActive,
+        timeout_team: state.timeoutTeam,
+        team_player_number: teamPlayerNumber,
+        opponent_player_number: opponentNumber,
+        defender_slot: state.defenderSlot,
+        direction_code: state.directionCode,
+        direction_label: labels.direction[state.directionCode],
+        outcome_code: state.outcomeCode,
+        outcome_label: labels.outcome[state.outcomeCode],
+        duel_result_code: state.duelResultCode,
+        duel_result_label: labels.duelResult[state.duelResultCode],
+        two_min_code: state.twoMinCode,
+        two_min_label: labels.twoMin[state.twoMinCode],
+        shot_result_code: state.shotResultCode || null,
+        shot_result_label: state.shotResultCode ? labels.shotResult[state.shotResultCode] : null,
+        voice_transcript: voiceTranscript || null,
+        notes: notes || null,
+        scout_sequence: buildScoutSequence(teamPlayerNumber, opponentNumber),
+        created_at: serverTimestamp()
+      };
+    }
+
+    async function sendEvent() {
+      const status = byId("saveStatus");
+      status.textContent = "Sende ...";
+      try {
+        const payload = buildPayload();
+        await addDoc(collection(db, "matches", payload.match_id, "scout_events"), payload);
+        status.textContent = "Gesendet ✅";
+        updateCompactPreview({ ...payload, created_at: "serverTimestamp()" });
+        resetForm(false);
+        setSystemTimestampNow();
+      } catch (error) {
+        console.error("Fehler beim Senden:", error);
+        status.textContent = error?.message || "Fehler beim Senden ❌";
+      }
+    }
+
+    function resetForm(clearStatus = true) {
+      ["defenderButtons", "directionButtons", "outcomeButtons", "duelResultButtons", "twoMinButtons", "shotResultButtons"].forEach(groupId => {
+        document.querySelectorAll(`#${groupId} button`).forEach(btn => btn.classList.remove("active"));
+      });
+      document.querySelectorAll("#tvbQuickPlayers .player-chip").forEach(btn => btn.classList.remove("active"));
+      state.defenderSlot = null;
+      state.directionCode = null;
+      state.outcomeCode = null;
+      state.duelResultCode = null;
+      state.twoMinCode = null;
+      state.shotResultCode = null;
+      state.voiceTranscript = "";
+      state.activeNumberTarget = "player";
+      byId("playerNumber").value = "";
+      byId("opponentNumber").value = "";
+      byId("voiceTranscript").value = "";
+      byId("notes").value = "";
+      if (clearStatus) byId("saveStatus").textContent = "";
+      updateCompactPreview();
+    }
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      bindToggleGroup("defenderButtons", "defenderSlot");
+      bindToggleGroup("directionButtons", "directionCode");
+      bindToggleGroup("outcomeButtons", "outcomeCode");
+      bindToggleGroup("duelResultButtons", "duelResultCode");
+      bindToggleGroup("twoMinButtons", "twoMinCode");
+      bindToggleGroup("shotResultButtons", "shotResultCode");
+      bindClockControls();
+      bindSpeech();
+      bindNumpad();
+      byId("sendBtnTop").addEventListener("click", sendEvent);
+      byId("sendBtnBottom").addEventListener("click", sendEvent);
+      byId("resetBtnTop").addEventListener("click", () => resetForm(true));
+      byId("resetBtnBottom").addEventListener("click", () => resetForm(true));
+      byId("matchSelect").addEventListener("change", async e => { await loadMatchById(e.target.value); resetForm(true); });
+      setSystemTimestampNow();
+      updateCompactPreview();
+      await loadMatches();
+    });
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-badge">TVB</div>
+        <div class="brand-text">
+          <h1>Arena Scout</h1>
+          <p>Große Eingabeflächen · Numpad · Direkter Firestore-Versand</p>
+        </div>
+      </div>
+      <a class="nav-link" href="./index.html">← Startseite</a>
+    </div>
+
+    <div class="top-actions">
+      <section class="compact-bar">
+        <div class="mini-field">
+          <label for="matchSelect">Spiel</label>
+          <select id="matchSelect"></select>
+        </div>
+        <div class="mini-field">
+          <label for="matchId">Match ID</label>
+          <input id="matchId" type="text" readonly />
+        </div>
+        <div class="mini-field">
+          <label for="period">Periode</label>
+          <input id="period" type="number" min="1" step="1" value="1" />
+        </div>
+        <div class="mini-field">
+          <label for="manualClockSeconds">Sek.</label>
+          <input id="manualClockSeconds" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="mini-field">
+          <label>Stoppuhr</label>
+          <div id="clockDisplay" class="clock-box">–</div>
+        </div>
+        <div class="mini-clock-buttons">
+          <button id="clockStartBtn" class="btn-primary">Start</button>
+          <button id="clockPauseBtn">Pause</button>
+          <button id="clockStopBtn">Stop</button>
+          <button id="clockResetBtn" class="btn-danger">Reset</button>
+          <button id="timeoutTvhBtn">TVB TO</button>
+          <button id="timeoutOppBtn">Gegner TO</button>
+        </div>
+      </section>
+
+      <section class="action-bar">
+        <button id="sendBtnTop" class="btn-success">Senden</button>
+        <button id="resetBtnTop" class="btn-danger">Reset</button>
+        <div class="status-inline">
+          <div id="clockStateMini">stopp</div>
+          <div id="timeoutMini">Kein Timeout</div>
+        </div>
+      </section>
+    </div>
+
+    <div id="matchLabel" class="muted" style="margin: 0 0 10px 2px;">Kein Spiel geladen</div>
+
+    <div class="main-grid">
+      <div class="left-stack">
+        <section class="card">
+          <h2 class="title">Beteiligte</h2>
+          <div class="entry-grid">
+            <div>
+              <div class="field-grid-2">
+                <div class="field-group">
+                  <label for="playerNumber">TVB-Spieler</label>
+                  <input id="playerNumber" class="readonly-input" type="text" inputmode="none" readonly placeholder="per Klick oder Numpad" />
+                </div>
+                <div class="field-group">
+                  <label for="opponentNumber">Gegner (optional)</label>
+                  <input id="opponentNumber" class="readonly-input" type="text" inputmode="none" readonly placeholder="Trikotnummer per Numpad" />
+                </div>
+              </div>
+
+              <div class="field-group" style="margin-top:10px;">
+                <label>TVB-Spieler schnell anklicken</label>
+                <div id="tvbQuickPlayers" class="chip-row"></div>
+              </div>
+
+              <div class="field-group" style="margin-top:10px;">
+                <label>Verteidigerposition 1–6</label>
+                <div id="defenderButtons" class="chip-row">
+                  <button type="button" data-value="1">1</button>
+                  <button type="button" data-value="2">2</button>
+                  <button type="button" data-value="3">3</button>
+                  <button type="button" data-value="4">4</button>
+                  <button type="button" data-value="5">5</button>
+                  <button type="button" data-value="6">6</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="choice-card">
+              <h3>Nummernfeld</h3>
+              <div id="numpadTargets" class="numpad-targets">
+                <button type="button" data-target="player" class="active">TVB-Spieler</button>
+                <button type="button" data-target="opponent">Gegner</button>
+              </div>
+              <div class="numpad-display">
+                <div id="activeTargetLabel" class="active-target">Eingabeziel: TVB-Spieler</div>
+                <button id="padClear" type="button">C</button>
+              </div>
+              <div id="numberPad" class="key-grid">
+                <button type="button" data-digit="1">1</button>
+                <button type="button" data-digit="2">2</button>
+                <button type="button" data-digit="3">3</button>
+                <button type="button" data-digit="4">4</button>
+                <button type="button" data-digit="5">5</button>
+                <button type="button" data-digit="6">6</button>
+                <button type="button" data-digit="7">7</button>
+                <button type="button" data-digit="8">8</button>
+                <button type="button" data-digit="9">9</button>
+                <button id="padBackspace" type="button">⌫</button>
+                <button type="button" data-digit="0">0</button>
+                <button type="button" data-target="player" onclick="return false;">#</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="right-stack">
+        <section class="card">
+          <h2 class="title">Duell & Abschluss</h2>
+          <div class="choice-grid">
+            <div class="choice-card">
+              <h3>Richtung</h3>
+              <div id="directionButtons" class="chip-row">
+                <button type="button" data-value="1">Zur Hand</button>
+                <button type="button" data-value="2">Gegen Hand</button>
+              </div>
+            </div>
+            <div class="choice-card">
+              <h3>Ausgang</h3>
+              <div id="outcomeButtons" class="chip-row">
+                <button type="button" data-value="1">Gewonnen</button>
+                <button type="button" data-value="2">Verloren</button>
+                <button type="button" data-value="3">Fehler</button>
+              </div>
+            </div>
+            <div class="choice-card">
+              <h3>Duellfolge</h3>
+              <div id="duelResultButtons" class="chip-row">
+                <button type="button" data-value="1">Weiter</button>
+                <button type="button" data-value="2">Ballverlust</button>
+                <button type="button" data-value="3">Foul</button>
+                <button type="button" data-value="4">7m</button>
+              </div>
+            </div>
+            <div class="choice-card">
+              <h3>2 Minuten</h3>
+              <div id="twoMinButtons" class="chip-row">
+                <button type="button" data-value="1">Nein</button>
+                <button type="button" data-value="2">Ja</button>
+              </div>
+            </div>
+            <div class="choice-card" style="grid-column: 1 / -1;">
+              <h3>Abschluss</h3>
+              <div id="shotResultButtons" class="chip-row">
+                <button type="button" data-value="1">Tor</button>
+                <button type="button" data-value="2">Vorbei</button>
+                <button type="button" data-value="3">Einwurf</button>
+                <button type="button" data-value="4">Parade</button>
+                <button type="button" data-value="5">Block</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2 class="title">Sprache / Notiz</h2>
+          <div class="speech-grid">
+            <button id="speechBtn" class="btn-primary btn-mic">🎤 Push to Talk</button>
+            <div class="muted">Sprache mappt weiter: Spieler, Gegner, Verteidiger, Richtung, Ausgang, Duellfolge, 2 Minuten, Abschluss.</div>
+          </div>
+          <div class="field-grid-2" style="margin-top:10px;">
+            <div class="field-group">
+              <label for="voiceTranscript">Sprachsequenz</label>
+              <textarea id="voiceTranscript" placeholder="z. B. 3,9,3,1,1,1,1,1"></textarea>
+            </div>
+            <div class="field-group">
+              <label for="notes">Notiz</label>
+              <textarea id="notes" placeholder="Freitext optional"></textarea>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="compact-footer">
+      <section class="card">
+        <div class="action-bar" style="padding:0; border:none; background:none; box-shadow:none;">
+          <button id="sendBtnBottom" class="btn-success">Senden</button>
+          <button id="resetBtnBottom" class="btn-danger">Reset</button>
+          <div id="saveStatus" class="status-inline" style="text-align:left; min-width:180px;"></div>
+        </div>
+
+        <details style="margin-top:8px;">
+          <summary>Kontrollfelder</summary>
+          <div class="details-body" style="display:grid; gap:10px;">
+            <div>
+              <div class="muted" style="margin-bottom:6px;">Scout Sequence</div>
+              <pre id="sequencePreview">–</pre>
+            </div>
+            <div>
+              <div class="muted" style="margin-bottom:6px;">Live-Mapping</div>
+              <pre id="liveMapping">{}</pre>
+            </div>
+            <div>
+              <div class="muted" style="margin-bottom:6px;">Letztes gesendetes Event</div>
+              <pre id="lastSent">{}</pre>
+            </div>
+          </div>
+        </details>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
