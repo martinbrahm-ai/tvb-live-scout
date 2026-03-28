@@ -3,1293 +3,185 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arena Scout</title>
-
+  <title>TVB Live Scout</title>
   <style>
     :root {
-      --bg: #07111d;
-      --panel: #0d1726;
-      --panel-2: #122034;
-      --text: #f5f7fb;
-      --muted: #9fb0c5;
-      --border: rgba(255,255,255,0.12);
-      --zone: rgba(67, 116, 180, 0.10);
-      --zone-hover: rgba(0, 194, 168, 0.22);
-      --zone-active: rgba(0, 194, 168, 0.45);
-      --inactive: rgba(100, 130, 160, 0.08);
-      --accent: #2f8cff;
-      --danger: #ff6b6b;
-      --success: #00c2a8;
+      --bg: #071427;
+      --panel: linear-gradient(180deg, #13243f 0%, #15263f 100%);
+      --panel-border: rgba(255,255,255,0.12);
+      --text: #eef4ff;
+      --muted: #aab8ce;
+      --primary: #2f8cff;
+      --accent: #0aa3a6;
+      --shadow: 0 18px 40px rgba(0,0,0,0.24);
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    .page {
       min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #061223 0%, #0a1730 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .shell {
+      width: min(1180px, 100%);
       display: grid;
-      grid-template-columns: minmax(760px, 1fr) 460px;
+      gap: 24px;
+    }
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 30px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      align-items: center;
+    }
+    .logos {
+      display: flex;
       gap: 18px;
-      padding: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
     }
-
-    .card {
-      background: linear-gradient(180deg, var(--panel), var(--panel-2));
-      border: 1px solid var(--border);
+    .logo-box {
+      width: 140px;
+      height: 88px;
       border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.24);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      padding: 12px;
     }
-
-    .field-card { padding: 14px; }
-
-    .side-card {
-      padding: 16px;
+    .logo-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 44px;
+      line-height: 1.05;
+    }
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 24px;
+      padding: 22px;
+      text-decoration: none;
+      color: inherit;
+      min-height: 220px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      overflow: auto;
-      max-height: calc(100vh - 36px);
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      transition: transform .15s ease, border-color .15s ease;
     }
-
-    h1 {
-      margin: 0 0 8px;
-      font-size: 24px;
-      line-height: 1.15;
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(47,140,255,0.55);
     }
-
-    h2 {
-      margin: 2px 0 0;
-      font-size: 15px;
-      color: #dfe8f5;
-    }
-
-    .sub {
-      color: var(--muted);
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.08);
+      color: #dbe8fb;
       font-size: 13px;
-      line-height: 1.45;
-      margin-bottom: 12px;
-    }
-
-    .section {
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-      background: rgba(255,255,255,0.03);
-    }
-
-    svg {
-      width: 100%;
-      height: auto;
-      display: block;
-      background: #08111c;
-      border-radius: 14px;
-    }
-
-    .zone {
-      fill: var(--zone);
-      stroke: rgba(255,255,255,0.42);
-      stroke-width: 1.5;
-      vector-effect: non-scaling-stroke;
-      transition: fill .15s ease, stroke .15s ease;
-      cursor: pointer;
-    }
-
-    .zone:hover {
-      fill: var(--zone-hover);
-      stroke: rgba(255,255,255,0.95);
-    }
-
-    .zone.active {
-      fill: var(--zone-active);
-      stroke: #ffffff;
-    }
-
-    .zone.inactive {
-      fill: var(--inactive);
-      stroke: rgba(255,255,255,0.22);
-      pointer-events: none;
-      cursor: default;
-    }
-
-    .meta-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .pill {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 12px;
-      min-height: 64px;
-    }
-
-    .pill .k {
-      font-size: 11px;
-      text-transform: uppercase;
-      color: var(--muted);
-      letter-spacing: .04em;
-      margin-bottom: 6px;
-    }
-
-    .pill .v {
-      font-size: 15px;
       font-weight: 700;
+      width: fit-content;
     }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-    }
-
-    label {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.06);
-      color: #ffffff;
-      padding: 10px 12px;
-      font-size: 14px;
-      outline: none;
-    }
-
-    input, select {
-      height: 42px;
-    }
-
-    textarea {
-      min-height: 80px;
-      resize: vertical;
-      font-family: inherit;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(47,140,255,0.15);
-    }
-
-    select option {
-      color: #111111;
-      background: #ffffff;
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    button {
-      min-height: 40px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: rgba(255,255,255,0.06);
-      color: var(--text);
-      padding: 0 12px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    button:hover {
-      border-color: rgba(255,255,255,0.35);
-    }
-
-    button.active {
-      background: rgba(47,140,255,0.18);
-      border-color: var(--accent);
-    }
-
-    button.primary {
-      background: linear-gradient(180deg, #2f8cff, #1569d8);
-      border-color: #2f8cff;
-    }
-
-    button.success {
-      background: rgba(0,194,168,0.18);
-      border-color: rgba(0,194,168,0.55);
-    }
-
-    button.danger {
-      background: rgba(255,107,107,0.14);
-      border-color: rgba(255,107,107,0.42);
-    }
-
-    button.timer {
-      min-width: 82px;
-      min-height: 46px;
-      font-size: 15px;
-    }
-
-    button.mic-live {
-      background: rgba(0,194,168,0.18);
-      border-color: rgba(0,194,168,0.55);
-    }
-
-    .clock-box {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      align-items: end;
-    }
-
-    .clock-display {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-align: center;
-      padding: 10px 0;
-      border-radius: 12px;
-      background: #09111b;
-      border: 1px solid var(--border);
-    }
-
-    .hint {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
-    pre {
+    .card h2 {
       margin: 0;
-      padding: 12px;
-      border-radius: 12px;
-      background: #09111b;
-      border: 1px solid var(--border);
-      overflow: auto;
-      font-size: 12px;
-      line-height: 1.45;
-      color: #d8e2ef;
-      min-height: 120px;
+      font-size: 28px;
     }
-
-    .save-status {
-      font-size: 13px;
-      color: #b9d1ea;
-      min-height: 18px;
+    .card p {
+      font-size: 16px;
     }
-
-    @media (max-width: 1180px) {
-      .page { grid-template-columns: 1fr; }
-      .side-card { max-height: none; }
+    .cta {
+      color: #8fc3ff;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .info {
+      display: grid;
+      gap: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 24px;
+      padding: 22px;
+    }
+    .info strong { color: #fff; }
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: 1fr; }
+      h1 { font-size: 34px; }
     }
   </style>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      serverTimestamp,
-      getDocs,
-      doc,
-      getDoc
-    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyAJwAR1krrLK-fU-uCtLz8dqRvtdoTyPWY",
-      authDomain: "udoagentendaten.firebaseapp.com",
-      projectId: "udoagentendaten",
-      storageBucket: "udoagentendaten.firebasestorage.app",
-      messagingSenderId: "115120028998",
-      appId: "1:115120028998:web:fb24fc6ab5059288da7947",
-      measurementId: "G-J5M3ZWZ1V9"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    let recognition = null;
-    let micArmed = false;
-    let holdTimeout = null;
-    let clockInterval = null;
-
-    const state = {
-      zoneId: null,
-      defenderSlot: null,
-      directionCode: null,
-      points: null,
-      outcomeCode: null,
-      duelResultCode: null,
-      twoMinCode: null,
-      shotResultCode: null,
-
-      manualClockSeconds: null,
-      clockRunning: false,
-      timeoutActive: false,
-      timeoutTeam: "none",
-      period: 1,
-
-      voiceTranscript: "",
-      recognizedTokens: [],
-
-      eventPayload: null
-    };
-
-    const labels = {
-      defenderSlot: {
-        1: "1",
-        2: "2",
-        3: "3",
-        4: "4",
-        5: "5",
-        6: "6"
-      },
-      direction: {
-        1: "zur_hand",
-        2: "gegen_hand"
-      },
-      outcome: {
-        1: "gewonnen",
-        2: "verloren",
-        3: "fehler"
-      },
-      duelResult: {
-        1: "spiel_geht_weiter",
-        2: "ballverlust",
-        3: "foul_bei_spieler",
-        4: "7m",
-      },
-      twoMin: {
-        1: "nein",
-        2: "ja"
-      },
-      shotResult: {
-        1: "tor",
-        2: "vorbei",
-        3: "einwurf",
-        4: "parade",
-        5: "block"
-      }
-    };
-
-    function pad2(v) {
-      return String(v).padStart(2, "0");
-    }
-
-    function formatTimestamp(ts) {
-      const y = ts.getFullYear();
-      const m = pad2(ts.getMonth() + 1);
-      const d = pad2(ts.getDate());
-      const hh = pad2(ts.getHours());
-      const mm = pad2(ts.getMinutes());
-      const ss = pad2(ts.getSeconds());
-      return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
-    }
-
-    function formatClock(seconds) {
-      if (seconds === null || seconds === undefined || Number.isNaN(Number(seconds))) {
-        return "–";
-      }
-      const safe = Math.max(0, Number(seconds) || 0);
-      const mm = Math.floor(safe / 60);
-      const ss = safe % 60;
-      return `${pad2(mm)}:${pad2(ss)}`;
-    }
-
-    function setSystemTimestampNow() {
-      document.getElementById("timestamp").value = formatTimestamp(new Date());
-    }
-
-    function syncClockUi() {
-      document.getElementById("manualClockSeconds").value =
-        state.manualClockSeconds === null ? "" : String(state.manualClockSeconds);
-      document.getElementById("manualClockLabel").textContent = formatClock(state.manualClockSeconds);
-      document.getElementById("clockRunningLabel").textContent = state.clockRunning ? "läuft" : "gestoppt";
-      document.getElementById("timeoutLabel").textContent =
-        state.timeoutActive ? `aktiv (${state.timeoutTeam})` : "nein";
-      document.getElementById("period").value = String(state.period);
-    }
-
-    function updateMeta() {
-      document.getElementById("metaZone").textContent = state.zoneId ?? "–";
-      document.getElementById("metaPosition").textContent =
-        Number.isFinite(state.defenderSlot) ? labels.defenderSlot[state.defenderSlot] : "–";
-      document.getElementById("metaDirection").textContent =
-        state.directionCode ? `${labels.direction[state.directionCode]} (${state.directionCode})` : "–";
-      document.getElementById("metaPoints").textContent =
-        Number.isFinite(state.points) ? String(state.points) : "–";
-
-      syncClockUi();
-      renderLiveStatePreview();
-    }
-
-    function renderLiveStatePreview() {
-      const preview = {
-        team_player_number: valueOrNull(document.getElementById("playerNumber").value),
-        opponent_player_number: valueOrNull(document.getElementById("opponentNumber").value),
-        defender_slot: state.defenderSlot,
-        direction_code: state.directionCode,
-        outcome_code: state.outcomeCode,
-        duel_result_code: state.duelResultCode,
-        two_min_code: state.twoMinCode,
-        shot_zone_id: state.zoneId,
-        shot_points: state.points,
-        shot_result_code: state.shotResultCode,
-        manual_clock_seconds: state.manualClockSeconds,
-        voice_transcript: state.voiceTranscript || ""
-      };
-      document.getElementById("liveStateBox").textContent = JSON.stringify(preview, null, 2);
-    }
-
-    function valueOrNull(v) {
-      const trimmed = String(v ?? "").trim();
-      return trimmed === "" ? null : trimmed;
-    }
-
-    function bindToggleGroup(groupId, stateKey) {
-      const buttons = document.querySelectorAll(`#${groupId} button`);
-      buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
-          buttons.forEach(b => b.classList.remove("active"));
-          btn.classList.add("active");
-          state[stateKey] = Number(btn.dataset.value);
-          updateMeta();
-        });
-      });
-    }
-
-    function setActiveButton(groupId, value) {
-      const buttons = document.querySelectorAll(`#${groupId} button`);
-      buttons.forEach(b => b.classList.remove("active"));
-      if (value === null || value === undefined) return;
-      const target = document.querySelector(`#${groupId} button[data-value="${value}"]`);
-      if (target) target.classList.add("active");
-    }
-
-    function activateZones() {
-      const zones = document.querySelectorAll(".zone:not(.inactive)");
-      zones.forEach(zone => {
-        zone.addEventListener("click", () => {
-          zones.forEach(z => z.classList.remove("active"));
-          zone.classList.add("active");
-          state.zoneId = zone.dataset.zoneId;
-          state.points = Number(zone.dataset.points);
-          updateMeta();
-        });
-      });
-    }
-
-    function setActiveZone(zoneId) {
-      document.querySelectorAll(".zone").forEach(z => z.classList.remove("active"));
-      if (!zoneId) return;
-      const zone = document.querySelector(`.zone[data-zone-id="${zoneId}"]`);
-      if (zone) zone.classList.add("active");
-    }
-
-    function startClock() {
-      if (state.clockRunning) return;
-      state.clockRunning = true;
-      if (clockInterval) clearInterval(clockInterval);
-      clockInterval = window.setInterval(() => {
-        if (!state.clockRunning) return;
-        if (state.timeoutActive) return;
-        if (state.manualClockSeconds === null) state.manualClockSeconds = 0;
-        state.manualClockSeconds += 1;
-        syncClockUi();
-      }, 1000);
-      updateMeta();
-    }
-
-    function pauseClock() {
-      state.clockRunning = false;
-      if (clockInterval) {
-        clearInterval(clockInterval);
-        clockInterval = null;
-      }
-      updateMeta();
-    }
-
-    function stopClock() {
-      state.clockRunning = false;
-      if (clockInterval) {
-        clearInterval(clockInterval);
-        clockInterval = null;
-      }
-      updateMeta();
-    }
-
-    function resetClock() {
-      state.clockRunning = false;
-      if (clockInterval) {
-        clearInterval(clockInterval);
-        clockInterval = null;
-      }
-      state.manualClockSeconds = 0;
-      updateMeta();
-    }
-
-    function toggleTimeout(team) {
-      if (state.timeoutActive && state.timeoutTeam === team) {
-        state.timeoutActive = false;
-        state.timeoutTeam = "none";
-      } else {
-        state.timeoutActive = true;
-        state.timeoutTeam = team;
-      }
-      updateMeta();
-    }
-
-    function bindClockControls() {
-      document.getElementById("clockStartBtn").addEventListener("click", startClock);
-      document.getElementById("clockPauseBtn").addEventListener("click", pauseClock);
-      document.getElementById("clockStopBtn").addEventListener("click", stopClock);
-      document.getElementById("clockResetBtn").addEventListener("click", resetClock);
-
-      document.getElementById("manualClockSeconds").addEventListener("change", (e) => {
-        const raw = e.target.value.trim();
-        state.manualClockSeconds = raw === "" ? null : Math.max(0, Number(raw) || 0);
-        syncClockUi();
-        renderLiveStatePreview();
-      });
-
-      document.getElementById("period").addEventListener("change", (e) => {
-        state.period = Math.max(1, Number(e.target.value) || 1);
-        updateMeta();
-      });
-
-      document.getElementById("timeoutTvhBtn").addEventListener("click", () => toggleTimeout("tvb"));
-      document.getElementById("timeoutOppBtn").addEventListener("click", () => toggleTimeout("opponent"));
-    }
-
-    function parseVoiceSequence(text) {
-      const normalized = String(text || "")
-        .replace(/\bnull\b/gi, "")
-        .replace(/\bund\b/gi, ",")
-        .replace(/;/g, ",")
-        .replace(/\s+/g, "")
-        .replace(/,+/g, ",")
-        .replace(/(^,|,$)/g, "");
-
-      if (!normalized) return [];
-
-      return normalized
-        .split(",")
-        .map(v => v.trim())
-        .filter(Boolean)
-        .map(v => Number(v))
-        .filter(v => Number.isFinite(v));
-    }
-
-    function applyVoiceTokens(tokens) {
-      if (!Array.isArray(tokens) || tokens.length === 0) {
-        renderLiveStatePreview();
-        return;
-      }
-
-      state.recognizedTokens = tokens.slice();
-
-      const teamPlayer = tokens[0] ?? null;
-      const opponent = tokens[1] ?? null;
-      const defenderSlot = tokens[2] ?? null;
-      const direction = tokens[3] ?? null;
-      const outcome = tokens[4] ?? null;
-      const duelResult = tokens[5] ?? null;
-      const twoMin = tokens[6] ?? null;
-      const shotResult = tokens[7] ?? null;
-
-      if (teamPlayer !== null) {
-        document.getElementById("playerNumber").value = String(teamPlayer);
-      }
-      if (opponent !== null) {
-        document.getElementById("opponentNumber").value = String(opponent);
-      }
-
-      if (defenderSlot !== null && labels.defenderSlot[defenderSlot]) {
-        state.defenderSlot = defenderSlot;
-        setActiveButton("defenderButtons", defenderSlot);
-      }
-      if (direction !== null && labels.direction[direction]) {
-        state.directionCode = direction;
-        setActiveButton("directionButtons", direction);
-      }
-      if (outcome !== null && labels.outcome[outcome]) {
-        state.outcomeCode = outcome;
-        setActiveButton("outcomeButtons", outcome);
-      }
-      if (duelResult !== null && labels.duelResult[duelResult]) {
-        state.duelResultCode = duelResult;
-        setActiveButton("duelResultButtons", duelResult);
-      }
-      if (twoMin !== null && labels.twoMin[twoMin]) {
-        state.twoMinCode = twoMin;
-        setActiveButton("twoMinButtons", twoMin);
-      }
-      if (shotResult !== null && labels.shotResult[shotResult]) {
-        state.shotResultCode = shotResult;
-        setActiveButton("shotResultButtons", shotResult);
-      }
-
-      updateMeta();
-    }
-
-    function bindSpeech() {
-      const speechBtn = document.getElementById("speechBtn");
-      const transcriptEl = document.getElementById("voiceTranscript");
-
-      if (!SpeechRecognition) {
-        speechBtn.disabled = true;
-        speechBtn.textContent = "Sprache nicht verfügbar";
-        return;
-      }
-
-      recognition = new SpeechRecognition();
-      recognition.lang = "de-DE";
-      recognition.interimResults = true;
-      recognition.continuous = false;
-
-      recognition.onresult = (event) => {
-        let fullText = transcriptEl.value.trim();
-        let latestChunk = "";
-
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          latestChunk += event.results[i][0].transcript;
-        }
-
-        latestChunk = latestChunk.trim();
-        if (!latestChunk) return;
-
-        const merged = [fullText, latestChunk].filter(Boolean).join(fullText ? ", " : "");
-        transcriptEl.value = merged;
-        state.voiceTranscript = merged;
-
-        const tokens = parseVoiceSequence(merged);
-        applyVoiceTokens(tokens);
-      };
-
-      recognition.onend = () => {
-        if (!micArmed) {
-          speechBtn.classList.remove("mic-live");
-          speechBtn.textContent = "🎤 Push to Talk";
-          return;
-        }
-
-        holdTimeout = setTimeout(() => {
-          if (micArmed && recognition) {
-            try {
-              recognition.start();
-            } catch (err) {
-              console.warn("Speech restart blocked:", err);
-            }
-          }
-        }, 350);
-      };
-
-      recognition.onerror = (event) => {
-        console.warn("Speech error:", event.error);
-      };
-
-      speechBtn.addEventListener("mousedown", () => {
-        if (!recognition) return;
-        micArmed = true;
-        speechBtn.classList.add("mic-live");
-        speechBtn.textContent = "🎙 Aufnahme aktiv";
-        clearTimeout(holdTimeout);
-        try {
-          recognition.start();
-        } catch (err) {
-          console.warn("Speech start blocked:", err);
-        }
-      });
-
-      speechBtn.addEventListener("mouseup", () => {
-        if (!recognition) return;
-        clearTimeout(holdTimeout);
-        try {
-          recognition.stop();
-        } catch (err) {
-          console.warn("Speech stop blocked:", err);
-        }
-      });
-
-      speechBtn.addEventListener("mouseleave", () => {
-        if (!recognition) return;
-        try {
-          recognition.stop();
-        } catch (err) {
-          console.warn("Speech stop blocked:", err);
-        }
-      });
-
-      speechBtn.addEventListener("touchstart", (e) => {
-        e.preventDefault();
-        if (!recognition) return;
-        micArmed = true;
-        speechBtn.classList.add("mic-live");
-        speechBtn.textContent = "🎙 Aufnahme aktiv";
-        clearTimeout(holdTimeout);
-        try {
-          recognition.start();
-        } catch (err) {
-          console.warn("Speech start blocked:", err);
-        }
-      }, { passive: false });
-
-      speechBtn.addEventListener("touchend", (e) => {
-        e.preventDefault();
-        if (!recognition) return;
-        try {
-          recognition.stop();
-        } catch (err) {
-          console.warn("Speech stop blocked:", err);
-        }
-      }, { passive: false });
-
-      transcriptEl.addEventListener("input", () => {
-        state.voiceTranscript = transcriptEl.value.trim();
-        applyVoiceTokens(parseVoiceSequence(state.voiceTranscript));
-      });
-    }
-
-    async function loadMatchById(matchId) {
-      if (!matchId) return false;
-
-      try {
-        const snap = await getDoc(doc(db, "matches", matchId));
-        if (!snap.exists()) return false;
-
-        const data = snap.data() || {};
-        const home = data.team_home_name || "Unbekannt";
-        const away = data.team_away_name || "Unbekannt";
-
-        document.getElementById("matchId").value = matchId;
-        document.getElementById("matchLabel").textContent = `${home} vs. ${away}`;
-        setSystemTimestampNow();
-        return true;
-      } catch (err) {
-        console.error("Fehler beim direkten Match-Load:", err);
-        return false;
-      }
-    }
-
-    async function loadMatches() {
-      const select = document.getElementById("matchSelect");
-      select.innerHTML = `<option value="">Lade Spiele...</option>`;
-
-      try {
-        const snap = await getDocs(collection(db, "matches"));
-
-        if (snap.empty) {
-          select.innerHTML = `<option value="">Keine Spiele gefunden</option>`;
-          const fallbackId = document.getElementById("matchId").value.trim() || "62090160";
-          await loadMatchById(fallbackId);
-          return;
-        }
-
-        const matches = snap.docs.map(d => {
-          const data = d.data() || {};
-          const home = data.team_home_name || "Unbekannt";
-          const away = data.team_away_name || "Unbekannt";
-
-          let dateStr = "ohne Datum";
-          const ts = data.date?.toDate ? data.date.toDate() : new Date(data.date || data.updated_at);
-          if (ts && !isNaN(ts.getTime())) {
-            dateStr = ts.toLocaleDateString("de-DE");
-          }
-
-          return {
-            id: d.id,
-            label: `${dateStr} | ${home} vs. ${away}`
-          };
-        });
-
-        matches.sort((a, b) => a.label.localeCompare(b.label, "de"));
-
-        select.innerHTML = "";
-        matches.forEach(match => {
-          const opt = document.createElement("option");
-          opt.value = match.id;
-          opt.textContent = match.label;
-          select.appendChild(opt);
-        });
-
-        if (matches.length) {
-          select.value = matches[0].id;
-          await loadMatchById(matches[0].id);
-        }
-      } catch (err) {
-        console.error("Fehler beim Laden der Spiele:", err);
-        select.innerHTML = `<option value="">Fehler beim Laden</option>`;
-        const fallbackId = document.getElementById("matchId").value.trim() || "62090160";
-        await loadMatchById(fallbackId);
-      }
-    }
-
-    function buildScoutSequence(teamPlayerNumber, opponentNumber) {
-      return [
-        teamPlayerNumber,
-        opponentNumber ?? "",
-        state.defenderSlot ?? "",
-        state.directionCode ?? "",
-        state.outcomeCode ?? "",
-        state.duelResultCode ?? "",
-        state.twoMinCode ?? "",
-        state.shotResultCode ?? ""
-      ].join(",");
-    }
-
-    function buildEvent() {
-      const matchId = document.getElementById("matchId").value.trim();
-      const systemTimestamp = document.getElementById("timestamp").value.trim();
-      const playerNumberRaw = document.getElementById("playerNumber").value.trim();
-      const opponentRaw = document.getElementById("opponentNumber").value.trim();
-      const notes = document.getElementById("notes").value.trim();
-      const voiceTranscript = document.getElementById("voiceTranscript").value.trim();
-
-      if (!matchId) return alert("Bitte Spiel wählen.");
-      if (!systemTimestamp) return alert("Bitte Systemzeit setzen.");
-      if (!playerNumberRaw) return alert("Bitte TVB-Spielernummer setzen.");
-      if (!Number.isFinite(state.defenderSlot)) return alert("Bitte Verteidigerposition 1–6 wählen.");
-      if (!state.directionCode) return alert("Bitte Richtung wählen.");
-      if (!state.outcomeCode) return alert("Bitte Ausgang wählen.");
-      if (!state.duelResultCode) return alert("Bitte Duellfolge wählen.");
-      if (!state.twoMinCode) return alert("Bitte 2 Minuten wählen.");
-      if (state.shotResultCode && !state.zoneId) {
-        return alert("Bitte Wurfposition im Feld klicken.");
-      }
-
-      if (state.zoneId && !state.shotResultCode) {
-        return alert("Bitte Abschluss wählen.");
-      }
-
-      const teamPlayerNumber = Number(playerNumberRaw);
-      const opponentNumber = opponentRaw === "" ? null : Number(opponentRaw);
-
-      const scoutSequence = buildScoutSequence(teamPlayerNumber, opponentNumber);
-
-  const payload = {
-      event_type: "duel",
-      match_id: matchId,
-
-      system_timestamp: systemTimestamp,
-      timestamp: systemTimestamp,
-
-      manual_clock_seconds: state.manualClockSeconds,
-      manual_clock_label: state.manualClockSeconds === null ? null : formatClock(state.manualClockSeconds),
-      period: state.period,
-      clock_running: state.clockRunning,
-      timeout_active: state.timeoutActive,
-      timeout_team: state.timeoutTeam,
-
-      team_player_number: teamPlayerNumber,
-      opponent_player_number: opponentNumber,
-
-      defender_slot: state.defenderSlot,
-
-      direction_code: state.directionCode,
-      direction_label: labels.direction[state.directionCode],
-
-      outcome_code: state.outcomeCode,
-      outcome_label: labels.outcome[state.outcomeCode],
-
-      duel_result_code: state.duelResultCode,
-      duel_result_label: labels.duelResult[state.duelResultCode],
-
-      two_min_code: state.twoMinCode,
-      two_min_label: labels.twoMin[state.twoMinCode],
-
-      shot_zone_id: state.zoneId || null,
-      zone_id: state.zoneId || null,
-      shot_points: state.zoneId ? state.points : null,
-      points: state.zoneId ? state.points : null,
-
-      shot_result_code: state.shotResultCode || null,
-      shot_result_label: state.shotResultCode ? labels.shotResult[state.shotResultCode] : null,
-
-      voice_transcript: voiceTranscript || null,
-      notes: notes || null,
-
-      scout_sequence: scoutSequence,
-      source: "arena_scout",
-      created_at: serverTimestamp()
-    };
-
-      state.eventPayload = payload;
-      
-      
-      document.getElementById("sequenceBox").textContent = scoutSequence;
-      document.getElementById("jsonBox").textContent = JSON.stringify(
-        { ...payload, created_at: "serverTimestamp()" },
-        null,
-        2
-      );
-      document.getElementById("saveStatus").textContent = "Event gebaut. Bereit für Senden.";
-      return payload;
-    }
-
-    async function saveEvent() {
-      const payload = state.eventPayload || buildEvent();
-      if (!payload) return;
-
-      const saveStatus = document.getElementById("saveStatus");
-      saveStatus.textContent = "Speichere ...";
-
-      try {
-        await addDoc(collection(db, "matches", payload.match_id, "scout_events"), payload);
-        saveStatus.textContent = "Gespeichert ✅";
-        setSystemTimestampNow();
-      } catch (error) {
-        console.error("Fehler beim Speichern:", error);
-        saveStatus.textContent = "Fehler beim Speichern ❌";
-      }
-    }
-
-    function resetEventState() {
-      document.querySelectorAll(".zone").forEach(z => z.classList.remove("active"));
-      document.querySelectorAll("#defenderButtons button, #directionButtons button, #outcomeButtons button, #duelResultButtons button, #twoMinButtons button, #shotResultButtons button")
-        .forEach(b => b.classList.remove("active"));
-
-      state.zoneId = null;
-      state.defenderSlot = null;
-      state.directionCode = null;
-      state.points = null;
-      state.outcomeCode = null;
-      state.duelResultCode = null;
-      state.twoMinCode = null;
-      state.shotResultCode = null;
-      state.eventPayload = null;
-      state.voiceTranscript = "";
-      state.recognizedTokens = [];
-
-      document.getElementById("playerNumber").value = "";
-      document.getElementById("opponentNumber").value = "";
-      document.getElementById("voiceTranscript").value = "";
-      document.getElementById("notes").value = "";
-      document.getElementById("sequenceBox").textContent = "–";
-      document.getElementById("jsonBox").textContent = "{}";
-      document.getElementById("saveStatus").textContent = "";
-      updateMeta();
-    }
-
-    window.addEventListener("DOMContentLoaded", async () => {
-      activateZones();
-
-      bindToggleGroup("defenderButtons", "defenderSlot");
-      bindToggleGroup("directionButtons", "directionCode");
-      bindToggleGroup("outcomeButtons", "outcomeCode");
-      bindToggleGroup("duelResultButtons", "duelResultCode");
-      bindToggleGroup("twoMinButtons", "twoMinCode");
-      bindToggleGroup("shotResultButtons", "shotResultCode");
-
-      bindClockControls();
-      bindSpeech();
-
-      document.getElementById("buildBtn").addEventListener("click", buildEvent);
-      document.getElementById("saveBtn").addEventListener("click", saveEvent);
-      document.getElementById("resetBtn").addEventListener("click", resetEventState);
-      document.getElementById("matchSelect").addEventListener("change", async (e) => {
-        await loadMatchById(e.target.value);
-      });
-
-      setSystemTimestampNow();
-      updateMeta();
-      await loadMatches();
-    });
-  </script>
 </head>
 <body>
-  <div class="page">
-    <section class="card field-card">
-      <h1>Arena Scout</h1>
-      <div class="sub">
-        Spiele werden aus <code>matches</code> geladen. Senden schreibt nach
-        <code>/matches/{matchId}/scout_events</code>.
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="logos">
+          <div class="logo-box"><img src="./assets/capaneo-logo.png" alt="Capaneo Logo" onerror="this.style.display='none'" /></div>
+          <div class="logo-box"><img src="./assets/tvb-logo.png" alt="TVB Logo" onerror="this.style.display='none'" /></div>
+        </div>
+        <h1>TVB Live Scout</h1>
+        <p>Startseite für Arena-Eingabe, KINEXON-Taktikboard und weitere Unterseiten. Die Arena-Eingabe schreibt Scout-Events direkt nach Firestore. Die Wurfposition wird nicht mehr manuell gepflegt, sondern kommt aus KINEXON.</p>
       </div>
-      <div class="sub" id="matchLabel">Kein Spiel geladen</div>
-
-      <svg viewBox="0 0 1200 800" aria-label="Handball-Halbfeld mit Angriffs-Zonen">
-        <image href="./Sektoren.jpeg" width="1200" height="800" preserveAspectRatio="none" />
-
-        <polygon id="ra_1" class="zone"
-          points="61,665 179,666 170,730 58,727"
-          data-zone-id="ra_1" data-points="1"></polygon>
-
-        <polygon id="ra_2" class="zone"
-          points="58,603 207,605 179,666 61,665"
-          data-zone-id="ra_2" data-points="2"></polygon>
-
-        <polygon id="ra_3" class="zone"
-          points="58,544 247,559 207,605 58,603"
-          data-zone-id="ra_3" data-points="3"></polygon>
-
-        <polygon id="hr_1" class="zone"
-          points="178,426 287,522 247,559 58,544"
-          data-zone-id="rr_1" data-points="1"></polygon>
-
-        <polygon id="rr_2" class="zone"
-          points="284,378 348,495 287,522 178,426"
-          data-zone-id="hr_2" data-points="2"></polygon>
-
-        <polygon id="rr_3" class="zone"
-          points="457,362 458,474 348,495 284,378"
-          data-zone-id="hr_3" data-points="3"></polygon>
-
-        <polygon id="rm_main" class="zone"
-          points="457,362 727,358 727,474 458,474"
-          data-zone-id="rm_main" data-points="3"></polygon>
-
-        <polygon id="rl_3" class="zone"
-          points="727,358 875,371 843,488 727,474"
-          data-zone-id="hl_3" data-points="3"></polygon>
-
-        <polygon id="rl_2" class="zone"
-          points="875,371 1022,427 923,530 843,488"
-          data-zone-id="hl_2" data-points="2"></polygon>
-
-        <polygon id="rl_1" class="zone"
-          points="1022,427 1133,546 953,567 923,530"
-          data-zone-id="hl_1" data-points="1"></polygon>
-
-        <polygon id="la_3" class="zone"
-          points="953,567 1133,546 1134,608 989,608"
-          data-zone-id="la_3" data-points="3"></polygon>
-
-        <polygon id="la_2" class="zone"
-          points="989,608 1134,608 1133,660 1013,664"
-          data-zone-id="la_2" data-points="2"></polygon>
-
-        <polygon id="la_1" class="zone"
-          points="1013,664 1133,660 1134,725 1021,730"
-          data-zone-id="la_1" data-points="1"></polygon>
-
-        <polygon id="rueckraum" class="zone"
-          points="61,347 227,291 434,251 636,243 835,261 981,291 1133,342 1131,519 1025,427 856,366 679,360 479,360 317,371 175,422 96,485 62,522"
-          data-zone-id="rr_1" data-points="1"></polygon>
-
-        <polygon id="kreis" class="zone"
-          points="226,584 218,605 256,592 306,575 364,560 417,547 473,543 519,539 562,535 620,536 668,539 745,551 822,568 881,591 939,610 993,632 955,568 870,506 774,480 604,471 449,474 335,504 218,599"
-          data-zone-id="km_1" data-points="3"></polygon>
-      </svg>
-
-      <div class="meta-strip">
-        <div class="pill"><div class="k">Wurfzone</div><div class="v" id="metaZone">–</div></div>
-        <div class="pill"><div class="k">Verteidiger</div><div class="v" id="metaPosition">–</div></div>
-        <div class="pill"><div class="k">Richtung</div><div class="v" id="metaDirection">–</div></div>
-        <div class="pill"><div class="k">Punkte</div><div class="v" id="metaPoints">–</div></div>
+      <div class="info">
+        <div><strong>Empfohlene Struktur</strong><br />
+          <span style="color:#aab8ce;">index.html · arena-scout.html · kinexon_tactic_dashboard.html · assets/...</span>
+        </div>
+        <div><strong>Wichtig</strong><br />
+          <span style="color:#aab8ce;">Passe nur die Logodateinamen an, falls sie in deinem assets-Ordner anders heißen.</span>
+        </div>
       </div>
     </section>
 
-    <aside class="card side-card">
-      <div class="section">
-        <h2>Match / Zeit</h2>
+    <section class="cards">
+      <a class="card" href="./arena-scout.html">
+        <div class="tag">Arena</div>
+        <h2>Arena-Eingabe</h2>
+        <p>Große Touch-Eingaben, feste TVB-Spielerbuttons aus dem Match-Roster, Push-to-talk und direkter Firestore-Versand mit Auto-Reset.</p>
+        <div class="cta">Öffnen →</div>
+      </a>
 
-        <div class="grid-2">
-          <div>
-            <label for="matchSelect">Spiel laden</label>
-            <select id="matchSelect"></select>
-          </div>
-          <div>
-            <label for="matchId">Match ID</label>
-            <input id="matchId" value="62090160" />
-          </div>
-        </div>
+      <a class="card" href="./kinexon_tactic_dashboard.html">
+        <div class="tag">KINEXON</div>
+        <h2>Taktikboard</h2>
+        <p>Das bisherige KINEXON-Dashboard als eigene Unterseite. Hier kommt die Wurfposition her.</p>
+        <div class="cta">Öffnen →</div>
+      </a>
 
-        <div class="grid-2" style="margin-top:10px;">
-          <div>
-            <label for="timestamp">Systemzeit</label>
-            <input id="timestamp" />
-          </div>
-          <div>
-            <label for="period">Halbzeit / Periode</label>
-            <input id="period" type="number" min="1" max="4" value="1" />
-          </div>
-        </div>
-
-        <div class="clock-box" style="margin-top:10px;">
-          <div>
-            <label for="manualClockSeconds">Stoppuhr Sekunden (optional)</label>
-            <input id="manualClockSeconds" type="number" placeholder="optional" />
-          </div>
-          <div>
-            <label>Stoppuhr</label>
-            <div class="clock-display" id="manualClockLabel">–</div>
-          </div>
-        </div>
-
-        <div class="button-row" style="margin-top:10px;">
-          <button type="button" class="timer primary" id="clockStartBtn">Start</button>
-          <button type="button" class="timer" id="clockPauseBtn">Pause</button>
-          <button type="button" class="timer" id="clockStopBtn">Stop</button>
-          <button type="button" class="timer danger" id="clockResetBtn">Reset</button>
-        </div>
-
-        <div class="grid-2" style="margin-top:10px;">
-          <div class="pill">
-            <div class="k">Uhrstatus</div>
-            <div class="v" id="clockRunningLabel">gestoppt</div>
-          </div>
-          <div class="pill">
-            <div class="k">Timeout</div>
-            <div class="v" id="timeoutLabel">nein</div>
-          </div>
-        </div>
-
-        <div class="button-row" style="margin-top:10px;">
-          <button type="button" id="timeoutTvhBtn">TVB Timeout</button>
-          <button type="button" id="timeoutOppBtn">Gegner Timeout</button>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2>Beteiligte</h2>
-
-        <div class="grid-2" style="margin-top:10px;">
-          <div>
-            <label for="playerNumber">TVB-Spieler (Pflicht)</label>
-            <input id="playerNumber" type="number" />
-          </div>
-          <div>
-            <label for="opponentNumber">Gegner (optional)</label>
-            <input id="opponentNumber" type="number" />
-          </div>
-        </div>
-
-        <div style="margin-top:10px;">
-          <label>Verteidigerposition 1–6</label>
-          <div class="button-row" id="defenderButtons">
-            <button type="button" data-value="1">1</button>
-            <button type="button" data-value="2">2</button>
-            <button type="button" data-value="3">3</button>
-            <button type="button" data-value="4">4</button>
-            <button type="button" data-value="5">5</button>
-            <button type="button" data-value="6">6</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2>Duell</h2>
-
-        <div style="margin-top:10px;">
-          <label>Richtung am Verteidiger vorbei</label>
-          <div class="button-row" id="directionButtons">
-            <button type="button" data-value="1">Zur Hand</button>
-            <button type="button" data-value="2">Gegen Hand</button>
-          </div>
-        </div>
-
-        <div style="margin-top:10px;">
-          <label>Ausgang</label>
-          <div class="button-row" id="outcomeButtons">
-            <button type="button" data-value="1">Gewonnen</button>
-            <button type="button" data-value="2">Verloren</button>
-            <button type="button" data-value="3">Fehler</button>
-          </div>
-        </div>
-        
-        <div style="margin-top:10px;">
-          <label>Duellfolge</label>
-          <div class="button-row" id="duelResultButtons">
-            <button type="button" data-value="1">Weiter</button>
-            <button type="button" data-value="2">Ballverlust</button>
-            <button type="button" data-value="3">Foul</button>
-            <button type="button" data-value="4">7m</button>
-          </div>
-        </div>
-
-        <div style="margin-top:10px;">
-          <label>2 Minuten</label>
-          <div class="button-row" id="twoMinButtons">
-            <button type="button" data-value="1">Nein</button>
-            <button type="button" data-value="2">Ja</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2>Abschluss</h2>
-
-        <div class="hint" style="margin-top:10px;">
-          Wurfposition wird über Klick ins Spielfeld gesetzt.
-        </div>
-
-        <div style="margin-top:10px;">
-          <label>Abschluss</label>
-          <div class="button-row" id="shotResultButtons">
-            <button type="button" data-value="1">Tor</button>
-            <button type="button" data-value="2">Vorbei</button>
-            <button type="button" data-value="3">Einwurf</button>
-            <button type="button" data-value="4">Parade</button>
-            <button type="button" data-value="5">Block</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2>Sprache / Notiz</h2>
-
-        <div class="hint" style="margin-top:10px;">
-          Codes starten immer bei 1. Push-to-talk spricht Zahlenfolgen wie:
-          <code>3,9,3,1,1,1,1,1</code>.
-          Das Mapping läuft live. Gesendet wird erst bei <b>Senden</b>.
-        </div>
-
-        <div class="button-row" style="margin-top:10px;">
-          <button type="button" id="speechBtn">🎤 Push to Talk</button>
-        </div>
-
-        <div style="margin-top:10px;">
-          <label for="voiceTranscript">Sprachsequenz</label>
-          <textarea id="voiceTranscript" placeholder="z. B. 3,9,3,1,1,1,1,1"></textarea>
-        </div>
-
-        <div style="margin-top:10px;">
-          <label for="notes">Notiz</label>
-          <textarea id="notes"></textarea>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2>Aktion</h2>
-
-        <div class="button-row" style="margin-top:10px;">
-          <button class="primary" id="buildBtn" type="button">JSON bauen</button>
-          <button class="success" id="saveBtn" type="button">Senden</button>
-          <button class="danger" id="resetBtn" type="button">Reset</button>
-        </div>
-
-        <div class="save-status" id="saveStatus" style="margin-top:10px;"></div>
-      </div>
-
-      <div class="section">
-        <h2>Live-Mapping</h2>
-        <pre id="liveStateBox">{}</pre>
-      </div>
-
-      <div class="section">
-        <h2>Scout Sequence</h2>
-        <pre id="sequenceBox">–</pre>
-      </div>
-
-      <div class="section">
-        <h2>Event JSON</h2>
-        <pre id="jsonBox">{}</pre>
-      </div>
-    </aside>
-  </div>
+      <a class="card" href="https://tvb-test-app.streamlit.app" target="_blank" rel="noopener noreferrer">
+        <div class="tag">Streamlit</div>
+        <h2>Alert-Tab</h2>
+        <p>Öffnet die Streamlit-App für Alerts, Analytics und die Links zu den HTML-Unterseiten.</p>
+        <div class="cta">Öffnen →</div>
+      </a>
+    </section>
+  </main>
 </body>
 </html>
